@@ -1,0 +1,2 @@
+# KuScript
+language programming
