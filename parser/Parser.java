@@ -90,10 +90,9 @@ public class Parser {
         else if (compareType(TokenType.WORD) && (compareType(1, TokenType.LEFT_PAREN)))
             return new FunctionCallStatement(functionCallExpression());
         else if (compareType(TokenType.WORD) && (compareType(1, TokenType.EQUALS)))
-            return assignment();
+            return new AssignmentStatement((AssignmentExpression) assignment());
         else if (compareType(TokenType.CONST) && compareType(1, TokenType.WORD) && (compareType(2, TokenType.EQUALS)))
-            return constAssignment();
-
+            return new AssignmentStatement((AssignmentExpression) assignment());
 
         return elementArrayAssignmentStatement();
     }
@@ -108,8 +107,7 @@ public class Parser {
 
     private Statement assignmentOperatorStatement() {
         if (compareType(TokenType.WORD) && compareType(1, TokenType.OPERATOR_EQUALS))
-            return assignmentOperator();
-
+            return new AssignmentOperatorStatement((AssignmentOperatorExpression) assignmentOperator());
 
         return incrementStatement();
     }
@@ -439,18 +437,20 @@ public class Parser {
     }
 
     private Expression assignmentExpression() {
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.EQUALS)) {
-            return new AssignmentExpression((AssignmentStatement) assignment());
-        }
+        if (compareType(TokenType.CONST) && compareType(1, TokenType.WORD) && (compareType(2, TokenType.EQUALS)))
+            return assignment();
+        if (compareType(TokenType.WORD) && compareType(1, TokenType.EQUALS))
+            return assignment();
+        if (compareType(TokenType.WORD) && compareType(1, TokenType.OPERATOR_EQUALS))
+            return assignmentOperator();
 
         return functionExpression();
     }
 
 
     private Expression functionExpression() {
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.LEFT_PAREN)) {
+        if (compareType(TokenType.WORD) && compareType(1, TokenType.LEFT_PAREN))
             return functionCallExpression();
-        }
 
         return primary();
     }
@@ -508,23 +508,17 @@ public class Parser {
         return new ElementAssignmentArrayStatement(elementArrayExpression, expression());
     }
 
-    private Statement constAssignment() {
-        consume(TokenType.CONST);
+    private Expression assignment() {
+        boolean isConst = match(TokenType.CONST);
         String word = getCurrentToken().getValue();
         consume(TokenType.WORD, TokenType.EQUALS);
-        return new ConstAssignmentStatement(word, expression());
-    }
-
-    private Statement assignment() {
-        String word = getCurrentToken().getValue();
-        consume(TokenType.WORD, TokenType.EQUALS);
-        return new AssignmentStatement(word, expression());
+        return new AssignmentExpression(word, expression(), isConst);
     }
 
     private Statement multiplyAssignment() {
         ArrayList<String> words = new ArrayList<>();
         ArrayList<Expression> expressions = new ArrayList<>();
-        AssignmentOperatorStatement.ASSIGNMENT_OPERATORS assignment_operator = null;
+        AssignmentOperatorExpression.ASSIGNMENT_OPERATORS assignment_operator = null;
 
         do {
             words.add(getCurrentToken().getValue());
@@ -532,7 +526,7 @@ public class Parser {
         } while(match(TokenType.COMMA));
 
         if (compareType(TokenType.OPERATOR_EQUALS)) {
-            assignment_operator = AssignmentOperatorStatement.ASSIGNMENT_OPERATORS.getType(getCurrentToken().getValue());
+            assignment_operator = AssignmentOperatorExpression.ASSIGNMENT_OPERATORS.getType(getCurrentToken().getValue());
             consume(TokenType.OPERATOR_EQUALS);
         }
         else
@@ -545,12 +539,12 @@ public class Parser {
         return new MultiplyAssignmentStatement(words, expressions, assignment_operator);
     }
 
-    private Statement assignmentOperator() {
+    private Expression assignmentOperator() {
         final String word = getCurrentToken().getValue();
         consume(TokenType.WORD);
         final String operator = getCurrentToken().getValue();
         consume(TokenType.OPERATOR_EQUALS);
-        return new AssignmentOperatorStatement(word, expression(), AssignmentOperatorStatement.ASSIGNMENT_OPERATORS.getType(operator));
+        return new AssignmentOperatorExpression(word, expression(), AssignmentOperatorExpression.ASSIGNMENT_OPERATORS.getType(operator));
     }
 
     private Statement leftUnary(TokenType tokenType, UnaryExpression.OPERATORS operator) {

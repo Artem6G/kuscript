@@ -1,31 +1,25 @@
 package parser.ast.statements;
 
-import lib.Value;
-import lib.variables.Variables;
-import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.Visitor;
+import parser.ast.expressions.AssignmentExpression;
 
 public class AssignmentStatement implements Statement {
 
-    public final String variable;
-    public final Expression expression;
-    public Value value;
+    public final AssignmentExpression assignmentExpression;
 
-    public AssignmentStatement(String variable, Expression expression) {
-        this.variable = variable;
-        this.expression = expression;
+    public AssignmentStatement(AssignmentExpression assignmentExpression) {
+        this.assignmentExpression = assignmentExpression;
     }
 
     @Override
     public void execute() {
-        value = expression.eval();
-        Variables.setVariable(variable, value);
+        assignmentExpression.eval();
     }
 
     @Override
     public String toString() {
-        return String.format("%s = %s", variable, expression);
+        return assignmentExpression.toString();
     }
 
     @Override

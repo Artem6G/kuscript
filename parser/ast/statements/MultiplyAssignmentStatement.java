@@ -5,6 +5,7 @@ import lib.variables.Variables;
 import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.Visitor;
+import parser.ast.expressions.AssignmentOperatorExpression;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -13,10 +14,10 @@ public class MultiplyAssignmentStatement  implements Statement {
 
     public final ArrayList<String> variables;
     public final ArrayList<Expression> expressions;
-    private final AssignmentOperatorStatement.ASSIGNMENT_OPERATORS assignment_operator;
+    private final AssignmentOperatorExpression.ASSIGNMENT_OPERATORS assignment_operator;
     private final int expressionsSize;
 
-    public MultiplyAssignmentStatement(ArrayList<String> variables, ArrayList<Expression> expressions, AssignmentOperatorStatement.ASSIGNMENT_OPERATORS assignment_operator) {
+    public MultiplyAssignmentStatement(ArrayList<String> variables, ArrayList<Expression> expressions, AssignmentOperatorExpression.ASSIGNMENT_OPERATORS assignment_operator) {
         this.assignment_operator = assignment_operator;
         this.expressionsSize = expressions.size();
         this.variables = variables;
@@ -40,7 +41,7 @@ public class MultiplyAssignmentStatement  implements Statement {
         else
             for (int i = 0; i < expressionsSize; i++) {
                 final String variable = variables.get(i);
-                Variables.setVariable(variable, AssignmentOperatorStatement.receive(assignment_operator, variable, values.get(i)));
+                Variables.setVariable(variable, AssignmentOperatorExpression.receive(assignment_operator, variable, values.get(i)));
             }
     }
 

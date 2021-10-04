@@ -74,17 +74,12 @@ public class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(AssignmentOperatorStatement assignmentOperatorStatement) {
-        assignmentOperatorStatement.EXPRESSION.accept(this);
+        assignmentOperatorStatement.assignmentOperatorExpression.accept(this);
     }
 
     @Override
     public void visit(AssignmentStatement assignmentStatement) {
-        assignmentStatement.expression.accept(this);
-    }
-
-    @Override
-    public void visit(ConstAssignmentStatement constAssignmentStatement) {
-        constAssignmentStatement.expression.accept(this);
+        assignmentStatement.assignmentExpression.accept(this);
     }
 
     @Override
@@ -129,7 +124,12 @@ public class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(AssignmentExpression assignmentExpression) {
-        assignmentExpression.assignmentStatement.accept(this);
+        assignmentExpression.expression.accept(this);
+    }
+
+    @Override
+    public void visit(AssignmentOperatorExpression assignmentOperatorExpression) {
+        assignmentOperatorExpression.EXPRESSION.accept(this);
     }
 
     @Override

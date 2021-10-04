@@ -34,7 +34,6 @@ public interface Visitor {
     void visit(SwitchStatement switchStatement);
     void visit(UnaryStatement unaryStatement);
     void visit(WhileStatement whileStatement);
-    void visit(ConstAssignmentStatement constAssignmentStatement);
     void visit(ReturnStatement returnStatement);
     void visit(DefineFunctionStatement defineFunctionStatement);
     void visit(FunctionCallExpression functionCallExpression);
@@ -43,4 +42,5 @@ public interface Visitor {
     void visit(BinaryConditionalExpression binaryConditionalExpression);
     void visit(ImportStatement importStatement);
     void visit(AssignmentExpression assignmentExpression);
+    void visit(AssignmentOperatorExpression assignmentOperatorExpression);
 }

@@ -1,22 +1,28 @@
 package parser.ast.expressions;
 
 import lib.Value;
+import lib.variables.Variables;
 import parser.ast.Expression;
 import parser.ast.Visitor;
-import parser.ast.statements.AssignmentStatement;
 
 public class AssignmentExpression implements Expression {
-    public AssignmentStatement assignmentStatement;
+    public final String variable;
+    public final Expression expression;
+    public final boolean isConst;
 
-    public AssignmentExpression(AssignmentStatement assignmentStatement) {
-        this.assignmentStatement = assignmentStatement;
+    public AssignmentExpression(String variable, Expression expression, boolean isConst) {
+        this.variable = variable;
+        this.expression = expression;
+        this.isConst = isConst;
     }
 
     @Override
     public Value eval() {
-        assignmentStatement.execute();
-        return assignmentStatement.value;
+        final Value value = expression.eval();
+        Variables.setVariable(variable, value, isConst);
+        return value;
     }
+
 
     @Override
     public void accept(Visitor visitor) {
@@ -25,6 +31,6 @@ public class AssignmentExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("(%s)", assignmentStatement.toString());
+        return isConst ? String.format("(const %s = %s)", variable, expression.toString()) : String.format("(%s = %s)", variable, expression.toString());
     }
 }
