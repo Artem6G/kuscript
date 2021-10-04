@@ -75,17 +75,6 @@ public class Parser {
         return statement();
     }
 
-    private String label() {
-        String label = null;
-
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.COLON)) {
-            label = getCurrentToken().getValue();
-            consume(TokenType.WORD, TokenType.COLON);
-        }
-
-        return label;
-    }
-
     private Statement statement() {
         if (match(TokenType.IF))
             return ifElse();
@@ -111,65 +100,6 @@ public class Parser {
             return new PassStatement();
 
         return assignmentStatement();
-    }
-
-    private Statement _return() {
-        Expression expression;
-
-        if (match(TokenType.SEMICOLON))
-            expression = new ValueExpression(DefineFunction.DEFAULT_VALUE);
-        else
-            expression = expression();
-
-        return new ReturnStatement(expression);
-    }
-
-    private Statement def() {
-        String word = getCurrentToken().getValue();
-        consume(TokenType.WORD);
-        Arguments arguments = new Arguments();
-
-        consume(TokenType.LEFT_PAREN);
-
-        if (!match(TokenType.RIGHT_PAREN)) {
-            do {
-                arguments.add(getCurrentToken().getValue());
-                consume(TokenType.WORD);
-            } while (match(TokenType.COMMA));
-            consume(TokenType.RIGHT_PAREN);
-        }
-
-        return new DefineFunctionStatement(word, arguments, rawBlockOrStatement());
-    }
-
-    private BreakStatement _break() {
-        String word = word();
-
-        if (word == null)
-            return new BreakStatement();
-        else {
-            return new BreakStatement(word);
-        }
-    }
-
-    private ContinueStatement _continue() {
-        String word = word();
-
-        if (word == null)
-            return new ContinueStatement();
-        else
-            return new ContinueStatement(word);
-    }
-
-    private String word() {
-        String word = null;
-
-        if (compareType(TokenType.WORD)) {
-            word = getCurrentToken().getValue();
-            consume(TokenType.WORD);
-        }
-
-        return word;
     }
 
     private Statement assignmentStatement() {
@@ -729,6 +659,54 @@ public class Parser {
         }
     }
 
+    private Statement _return() {
+        Expression expression;
+
+        if (match(TokenType.SEMICOLON))
+            expression = new ValueExpression(DefineFunction.DEFAULT_VALUE);
+        else
+            expression = expression();
+
+        return new ReturnStatement(expression);
+    }
+
+    private Statement def() {
+        String word = getCurrentToken().getValue();
+        consume(TokenType.WORD);
+        Arguments arguments = new Arguments();
+
+        consume(TokenType.LEFT_PAREN);
+
+        if (!match(TokenType.RIGHT_PAREN)) {
+            do {
+                arguments.add(getCurrentToken().getValue());
+                consume(TokenType.WORD);
+            } while (match(TokenType.COMMA));
+            consume(TokenType.RIGHT_PAREN);
+        }
+
+        return new DefineFunctionStatement(word, arguments, rawBlockOrStatement());
+    }
+
+    private BreakStatement _break() {
+        String word = word();
+
+        if (word == null)
+            return new BreakStatement();
+        else {
+            return new BreakStatement(word);
+        }
+    }
+
+    private ContinueStatement _continue() {
+        String word = word();
+
+        if (word == null)
+            return new ContinueStatement();
+        else
+            return new ContinueStatement(word);
+    }
+
     private Statement _switch() {
         Statement statement;
         ConstantExpression expression;
@@ -808,6 +786,28 @@ public class Parser {
         }
 
         return new ArrayExpression(elements);
+    }
+
+    private String label() {
+        String label = null;
+
+        if (compareType(TokenType.WORD) && compareType(1, TokenType.COLON)) {
+            label = getCurrentToken().getValue();
+            consume(TokenType.WORD, TokenType.COLON);
+        }
+
+        return label;
+    }
+
+    private String word() {
+        String word = null;
+
+        if (compareType(TokenType.WORD)) {
+            word = getCurrentToken().getValue();
+            consume(TokenType.WORD);
+        }
+
+        return word;
     }
 
     private boolean compareType(int fromPosition, TokenType tokenType) {

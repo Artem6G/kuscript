@@ -12,7 +12,7 @@ public class ConstAssignmentStatement extends AssignmentStatement implements Sta
 
     @Override
     public void execute() {
-        Variables.setConst(variable, expression.eval());
+        Variables.setVariable(variable, expression.eval(), true);
     }
 
     @Override

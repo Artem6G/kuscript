@@ -34,17 +34,15 @@ public final class Variables {
     }
 
     public static void setVariable(String key, Value value) {
-        if (!isExists(key)) {
-            variables.put(key, new Variable(value, false));
-        }
-        else
-            variables.get(key).setValue(value);
+        setVariable(key, value, false);
     }
 
-    public static void setConst(String key, Value value) {
+    public static void setVariable(String key, Value value, boolean isConst) {
         if (!isExists(key)) {
-            variables.put(key, new Variable(value, true));
+            variables.put(key, new Variable(value, isConst));
         }
+        else if(!isConst)
+            variables.get(key).setValue(value);
         else
             throw new RuntimeException("");
     }
