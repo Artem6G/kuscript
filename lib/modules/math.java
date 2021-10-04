@@ -39,9 +39,11 @@ public class math {
 
     @FunctionInit
     private static Value $log(List<Value> args) {
-        if (args.size() != 1)
-            throw new RuntimeException();
-
-        return new DoubleValue(Math.log(args.get(0).asDouble()));
+        if (args.size() == 1)
+            return new DoubleValue(Math.log(args.get(0).asDouble()));
+        else if(args.size() == 2)
+            return new DoubleValue(Math.log(args.get(0).asDouble()) / Math.log(args.get(1).asDouble()));
+        else
+            throw new RuntimeException("");
     }
 }

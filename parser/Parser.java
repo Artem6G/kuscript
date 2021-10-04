@@ -4,6 +4,7 @@ import lexer.Token;
 import lexer.TokenType;
 import lib.arguments.Arguments;
 import lib.functions.DefineFunction;
+import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.expressions.*;
 import parser.ast.statements.*;
@@ -113,7 +114,7 @@ public class Parser {
     }
 
     private Statement _return() {
-        parser.ast.Expression expression;
+        Expression expression;
 
         if (match(TokenType.SEMICOLON))
             expression = new ValueExpression(DefineFunction.DEFAULT_VALUE);
@@ -220,25 +221,25 @@ public class Parser {
         throw new RuntimeException("");
     }
 
-    private parser.ast.Expression expression() {
+    private Expression expression() {
         return ternary();
     }
 
-    private parser.ast.Expression ternary() {
-        parser.ast.Expression expression = logical_equivalence();
+    private Expression ternary() {
+        Expression expression = logical_equivalence();
 
         if (match(TokenType.QUERY)) {
-            final parser.ast.Expression trueExpr = logical_equivalence();
+            final Expression trueExpr = logical_equivalence();
             match(TokenType.COLON);
-            final parser.ast.Expression falseExpr = logical_equivalence();
+            final Expression falseExpr = logical_equivalence();
             return new TernaryExpression(expression, trueExpr, falseExpr);
         }
 
         return expression;
     }
 
-    private parser.ast.Expression logical_equivalence() {
-        parser.ast.Expression expression = logical_implication();
+    private Expression logical_equivalence() {
+        Expression expression = logical_implication();
 
         while (true) {
             if (match(TokenType.CORRESPONDENCE)) {
@@ -260,8 +261,8 @@ public class Parser {
         return expression;
     }
 
-    private parser.ast.Expression logical_implication() {
-        parser.ast.Expression expression = logical_disjunction();
+    private Expression logical_implication() {
+        Expression expression = logical_disjunction();
 
         while (true) {
             if (match(TokenType.IMPLICATION)) {
@@ -281,8 +282,8 @@ public class Parser {
     }
 
 
-    private parser.ast.Expression logical_disjunction() {
-        parser.ast.Expression expression = logical_conjunction();
+    private Expression logical_disjunction() {
+        Expression expression = logical_conjunction();
 
         while (true) {
             if (match(TokenType.DISJUNCTION)) {
@@ -311,8 +312,8 @@ public class Parser {
         return expression;
     }
 
-    private parser.ast.Expression logical_conjunction() {
-        parser.ast.Expression expression = conditional();
+    private Expression logical_conjunction() {
+        Expression expression = conditional();
 
         while (true) {
             if (match(TokenType.CONJUNCTION)) {
@@ -336,8 +337,8 @@ public class Parser {
         return expression;
     }
 
-    private parser.ast.Expression conditional() {
-        parser.ast.Expression expression = spaceship();
+    private Expression conditional() {
+        Expression expression = spaceship();
 
         while (true) {
             if (match(TokenType.MORE)) {
@@ -363,7 +364,7 @@ public class Parser {
         return expression;
     }
 
-    private parser.ast.Expression conditional_expr(BinaryExpression.OPERATORS operator, parser.ast.Expression expression1, parser.ast.Expression expression2) {
+    private Expression conditional_expr(BinaryExpression.OPERATORS operator, Expression expression1, Expression expression2) {
 
         if (match(TokenType.CORRESPONDENCE)) {
             return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.CORRESPONDENCE, expression1, expression2, logical_implication());
@@ -387,8 +388,8 @@ public class Parser {
         return new BinaryExpression(operator, expression1, expression2);
     }
 
-    private parser.ast.Expression spaceship() {
-        parser.ast.Expression expression = shift();
+    private Expression spaceship() {
+        Expression expression = shift();
 
         while (true) {
             if (match(TokenType.SPACESHIP)) {
@@ -403,8 +404,8 @@ public class Parser {
     }
 
 
-    private parser.ast.Expression shift() {
-        parser.ast.Expression expression = concatenate();
+    private Expression shift() {
+        Expression expression = concatenate();
 
         while (true) {
             if (match(TokenType.LEFT_SHIFT)) {
@@ -428,8 +429,8 @@ public class Parser {
         return expression;
     }
 
-    private parser.ast.Expression concatenate() {
-        parser.ast.Expression expression = additive();
+    private Expression concatenate() {
+        Expression expression = additive();
 
         while (true) {
             if (match(TokenType.CONCATENATE)) {
@@ -443,8 +444,8 @@ public class Parser {
         return expression;
     }
 
-    private parser.ast.Expression additive() {
-        parser.ast.Expression expression = multiplicative();
+    private Expression additive() {
+        Expression expression = multiplicative();
 
         while (true) {
             if (match(TokenType.PLUS)) {
@@ -462,8 +463,8 @@ public class Parser {
         return expression;
     }
 
-    private parser.ast.Expression multiplicative() {
-        parser.ast.Expression expression = power();
+    private Expression multiplicative() {
+        Expression expression = power();
 
         while (true) {
             if (match(TokenType.MULTIPLY)) {
@@ -485,8 +486,8 @@ public class Parser {
         return expression;
     }
 
-    private parser.ast.Expression power() {
-        parser.ast.Expression expression = unary();
+    private Expression power() {
+        Expression expression = unary();
 
         while (true) {
             if (match(TokenType.POWER)) {
@@ -498,7 +499,7 @@ public class Parser {
         }
     }
 
-    private parser.ast.Expression unary() {
+    private Expression unary() {
         if (match(TokenType.NEGATION))
             return new UnaryExpression(UnaryExpression.OPERATORS.NEGATION, functionExpression());
         if (match(TokenType.NO))
@@ -525,7 +526,7 @@ public class Parser {
         return functionExpression();
     }
 
-    private parser.ast.Expression functionExpression() {
+    private Expression functionExpression() {
         if (compareType(TokenType.WORD) && compareType(1, TokenType.LEFT_PAREN)) {
             return functionCallExpression();
         }
@@ -533,7 +534,7 @@ public class Parser {
         return primary();
     }
 
-    private parser.ast.Expression primary() {
+    private Expression primary() {
         final Token currentToken = getCurrentToken();
 
         if (compareType(TokenType.LEFT_BRACKET)) {
@@ -564,7 +565,7 @@ public class Parser {
             return new VariableExpression(currentToken.getValue());
         }
         if (match(TokenType.LEFT_PAREN)) {
-            parser.ast.Expression result = expression();
+            Expression result = expression();
             match(TokenType.RIGHT_PAREN);
             return result;
         }
@@ -572,7 +573,7 @@ public class Parser {
         throw new RuntimeException("unknown expression");
     }
 
-    private parser.ast.Expression expressionForArray() {
+    private Expression expressionForArray() {
         if (compareType(TokenType.LEFT_BRACKET)) {
             return array();
         }
@@ -601,7 +602,7 @@ public class Parser {
 
     private Statement multiplyAssignment() {
         ArrayList<String> words = new ArrayList<>();
-        ArrayList<parser.ast.Expression> expressions = new ArrayList<>();
+        ArrayList<Expression> expressions = new ArrayList<>();
         AssignmentOperatorStatement.ASSIGNMENT_OPERATORS assignment_operator = null;
 
         do {
@@ -652,7 +653,7 @@ public class Parser {
 
     private Statement anyFor() {
         Statement[] statements = new Statement[2];
-        parser.ast.Expression expression;
+        Expression expression;
 
         if (compareType(1, TokenType.BOOLEAN))
             return booleanFor();
@@ -690,11 +691,11 @@ public class Parser {
     }
 
     private Statement rangeFor() {
-        parser.ast.Expression expression = expression();
+        Expression expression = expression();
         consume(TokenType.RANGE);
         consume(TokenType.LEFT_PAREN);
 
-        ArrayList<parser.ast.Expression> expressions = new ArrayList<>();
+        ArrayList<Expression> expressions = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
             expressions.add(expression());
@@ -707,13 +708,13 @@ public class Parser {
     }
 
     private Statement booleanFor() {
-        parser.ast.Expression expression = expression();
+        Expression expression = expression();
         consume(TokenType.BOOLEAN);
         return new ForBooleanStatement(expression, rawBlockOrStatement());
     }
 
     private Statement ifElse() {
-        LinkedHashMap<parser.ast.Expression, Statement> conditionals = new LinkedHashMap<>();
+        LinkedHashMap<Expression, Statement> conditionals = new LinkedHashMap<>();
 
         conditionals.put(expression(), blockOrCultivatedStatement());
 
@@ -733,7 +734,7 @@ public class Parser {
         ConstantExpression expression;
         LinkedHashMap<ConstantExpression, Statement> conditionals = new LinkedHashMap<>();
         boolean breakSwitch = match(TokenType.BREAK);
-        parser.ast.Expression valueExpression = expression();
+        Expression valueExpression = expression();
 
         while (match(TokenType.CASE)) {
             expression = new ConstantExpression(expression());
@@ -773,7 +774,7 @@ public class Parser {
     private FunctionCallExpression functionCallExpression() {
         String word = getCurrentToken().getValue();
         consume(TokenType.WORD, TokenType.LEFT_PAREN);
-        ArrayList<parser.ast.Expression> expressions = new ArrayList<>();
+        ArrayList<Expression> expressions = new ArrayList<>();
 
         if (!match(TokenType.RIGHT_PAREN)) {
             do {
@@ -785,9 +786,9 @@ public class Parser {
     }
 
 
-    private parser.ast.Expression element() {
+    private Expression element() {
         final String variable = consume(TokenType.WORD).getValue();
-        final List<parser.ast.Expression> indexes = new ArrayList<>();
+        final List<Expression> indexes = new ArrayList<>();
 
         do {
             consume(TokenType.LEFT_SQUARE);
@@ -798,7 +799,7 @@ public class Parser {
         return new ElementArrayExpression(variable, indexes);
     }
 
-    private parser.ast.Expression array() {
+    private Expression array() {
         consume(TokenType.LEFT_BRACKET);
         final List<ConstantExpression> elements = new ArrayList<>();
         while (!match(TokenType.RIGHT_BRACKET)) {
