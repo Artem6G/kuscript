@@ -43,24 +43,6 @@ public class Parser {
         return statement();
     }
 
-    private Statement blockOrCultivatedStatement() {
-        String label = label();
-
-        ArrayList<Statement> statements = anyBlock();
-
-        if (statements != null)
-            if (label == null)
-                return new BlockStatement(statements);
-            else
-                return new BlockStatement(statements, label);
-
-        return cultivatedStatement();
-    }
-
-    private Statement cultivatedStatement() {
-        return new CultivatedStatement(statement());
-    }
-
     private Statement blockOrStatement() {
         String label = label();
 
@@ -453,8 +435,17 @@ public class Parser {
         if (match(TokenType.MINUS))
             return new UnaryExpression(UnaryExpression.OPERATORS.MINUS, functionExpression());
 
+        return assignmentExpression();
+    }
+
+    private Expression assignmentExpression() {
+        if (compareType(TokenType.WORD) && compareType(1, TokenType.EQUALS)) {
+            return new AssignmentExpression((AssignmentStatement) assignment());
+        }
+
         return functionExpression();
     }
+
 
     private Expression functionExpression() {
         if (compareType(TokenType.WORD) && compareType(1, TokenType.LEFT_PAREN)) {
@@ -646,14 +637,14 @@ public class Parser {
     private Statement ifElse() {
         LinkedHashMap<Expression, Statement> conditionals = new LinkedHashMap<>();
 
-        conditionals.put(expression(), blockOrCultivatedStatement());
+        conditionals.put(expression(), rawBlockOrStatement());
 
         while (match(TokenType.ELIF)) {
-            conditionals.put(expression(), blockOrCultivatedStatement());
+            conditionals.put(expression(), rawBlockOrStatement());
         }
 
         if (match(TokenType.ELSE)) {
-            return new IfElseStatement(conditionals, blockOrCultivatedStatement());
+            return new IfElseStatement(conditionals, rawBlockOrStatement());
         } else {
             return new IfStatement(conditionals);
         }

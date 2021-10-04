@@ -42,4 +42,5 @@ public interface Visitor {
     void visit(ForEachStatement forEachStatement);
     void visit(BinaryConditionalExpression binaryConditionalExpression);
     void visit(ImportStatement importStatement);
+    void visit(AssignmentExpression assignmentExpression);
 }

@@ -1,5 +1,6 @@
 package parser.ast.statements;
 
+import lib.variables.Variables;
 import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.Visitor;
@@ -23,14 +24,19 @@ public class IfElseStatement implements Statement {
 
     @Override
     public void execute() {
-        for (int i = 0; i < size; i++) {
-            if (expressions.get(i).eval().asBoolean()) {
-                statements.get(i).execute();
-                return;
+        try {
+            Variables.push();
+            for (int i = 0; i < size; i++) {
+                if (expressions.get(i).eval().asBoolean()) {
+                    statements.get(i).execute();
+                    return;
+                }
             }
-        }
 
-        elseStatement.execute();
+            elseStatement.execute();
+        } finally {
+            Variables.pop();
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package parser.ast.statements;
 
+import lib.Value;
 import lib.variables.Variables;
 import parser.ast.Expression;
 import parser.ast.Statement;
@@ -9,6 +10,7 @@ public class AssignmentStatement implements Statement {
 
     public final String variable;
     public final Expression expression;
+    public Value value;
 
     public AssignmentStatement(String variable, Expression expression) {
         this.variable = variable;
@@ -17,7 +19,8 @@ public class AssignmentStatement implements Statement {
 
     @Override
     public void execute() {
-        Variables.setVariable(variable, expression.eval());
+        value = expression.eval();
+        Variables.setVariable(variable, value);
     }
 
     @Override

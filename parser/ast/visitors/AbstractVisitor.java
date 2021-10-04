@@ -128,6 +128,11 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
+    public void visit(AssignmentExpression assignmentExpression) {
+        assignmentExpression.assignmentStatement.accept(this);
+    }
+
+    @Override
     public void visit(BlockStatement blockStatement) {
         for (Statement statement : blockStatement.statements)
             statement.accept(this);
