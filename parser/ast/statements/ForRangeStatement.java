@@ -70,7 +70,7 @@ public class ForRangeStatement implements Statement {
 
     @Override
     public String toString() {
-        return String.format("for %s range %s %s", expression, expressions.stream().map(Object::toString).collect(Collectors.joining(", ")), statement);
+        return String.format("for %s range(%s) %s", expression, expressions.stream().map(Object::toString).collect(Collectors.joining(", ")), statement);
     }
 
     @Override

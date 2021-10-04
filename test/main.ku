@@ -1,2 +1,10 @@
 import "std"
-println("Hello, World!")
+import "time"
+
+i, start = 0, time()
+
+for i range(-1000000, 1000000);
+
+println(i)
+
+println(time() - start)

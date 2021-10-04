@@ -30,7 +30,7 @@ public class ModuleImport {
                         try {
                             return (Value) method.invoke(null, values);
                         } catch (InvocationTargetException | IllegalAccessException e) {
-                            throw new RuntimeException(e);
+                            throw new RuntimeException(method.getName() + " | " + e.getCause().getMessage());
                         }
                     });
                 }
@@ -49,7 +49,7 @@ public class ModuleImport {
                 throw new RuntimeException("file not found");
             }
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getCause().getMessage());
         }
     }
 

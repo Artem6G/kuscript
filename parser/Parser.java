@@ -692,6 +692,7 @@ public class Parser {
     private Statement rangeFor() {
         parser.ast.Expression expression = expression();
         consume(TokenType.RANGE);
+        consume(TokenType.LEFT_PAREN);
 
         ArrayList<parser.ast.Expression> expressions = new ArrayList<>();
 
@@ -701,6 +702,7 @@ public class Parser {
                 break;
         }
 
+        consume(TokenType.RIGHT_PAREN);
         return new ForRangeStatement(expression, expressions, rawBlockOrStatement());
     }
 
