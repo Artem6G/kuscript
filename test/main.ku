@@ -1,4 +1,4 @@
 import "std"
 import "math"
 
-println(2 / 1.0)
+println(-log(3))

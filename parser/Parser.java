@@ -486,11 +486,11 @@ public class Parser {
     }
 
     private parser.ast.Expression power() {
-        parser.ast.Expression expression = functionExpression();
+        parser.ast.Expression expression = unary();
 
         while (true) {
             if (match(TokenType.POWER)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.POWER, expression, functionExpression());
+                expression = new BinaryExpression(BinaryExpression.OPERATORS.POWER, expression, unary());
                 continue;
             }
 
@@ -498,25 +498,17 @@ public class Parser {
         }
     }
 
-    private parser.ast.Expression functionExpression() {
-            if (compareType(TokenType.WORD) && compareType(1, TokenType.LEFT_PAREN)) {
-                return functionCallExpression();
-            }
-
-            return unary();
-    }
-
     private parser.ast.Expression unary() {
         if (match(TokenType.NEGATION))
-            return new UnaryExpression(UnaryExpression.OPERATORS.NEGATION, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.NEGATION, functionExpression());
         if (match(TokenType.NO))
-            return new UnaryExpression(UnaryExpression.OPERATORS.NO, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.NO, functionExpression());
         if (match(TokenType.PLUS))
-            return new UnaryExpression(UnaryExpression.OPERATORS.PLUS, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.PLUS, functionExpression());
         if (match(TokenType.INCREMENT))
-            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_INCREMENT, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_INCREMENT, functionExpression());
         if (match(TokenType.DECREMENT))
-            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_DECREMENT, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_DECREMENT, functionExpression());
         if (compareType(TokenType.WORD) && compareType(1, TokenType.INCREMENT)) {
             final Token token = getCurrentToken();
             consume(TokenType.WORD, TokenType.INCREMENT);
@@ -528,7 +520,15 @@ public class Parser {
             return new UnaryExpression(UnaryExpression.OPERATORS.RIGHT_DECREMENT, new VariableExpression(token.getValue()));
         }
         if (match(TokenType.MINUS))
-            return new UnaryExpression(UnaryExpression.OPERATORS.MINUS, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.MINUS, functionExpression());
+
+        return functionExpression();
+    }
+
+    private parser.ast.Expression functionExpression() {
+        if (compareType(TokenType.WORD) && compareType(1, TokenType.LEFT_PAREN)) {
+            return functionCallExpression();
+        }
 
         return primary();
     }
