@@ -164,8 +164,8 @@ public class UnaryExpression implements Expression {
     @Override
     public String toString() {
         if (OPERATION == OPERATORS.RIGHT_DECREMENT || OPERATION == OPERATORS.RIGHT_INCREMENT)
-            return String.format("%s%s", EXPR1, OPERATION);
-        return String.format("%s%s", OPERATION, EXPR1);
+            return String.format("(%s%s)", EXPR1, OPERATION);
+        return String.format("(%s%s)", OPERATION, EXPR1);
     }
 
     @Override

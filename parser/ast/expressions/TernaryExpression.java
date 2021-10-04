@@ -21,7 +21,7 @@ public class TernaryExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("%s ? %s : %s", condition, trueExpr, falseExpr);
+        return String.format("(%s ? %s : %s)", condition, trueExpr, falseExpr);
     }
 
     @Override

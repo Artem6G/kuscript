@@ -25,6 +25,6 @@ public class AssignmentExpression implements Expression {
 
     @Override
     public String toString() {
-        return assignmentStatement.toString();
+        return String.format("(%s)", assignmentStatement.toString());
     }
 }

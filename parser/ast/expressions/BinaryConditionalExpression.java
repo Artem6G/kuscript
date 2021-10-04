@@ -39,6 +39,6 @@ public class BinaryConditionalExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("%s %s %s %s %s", EXPR1, OPERATION1, EXPR2, OPERATION2, EXPR3);
+        return String.format("(%s %s %s %s %s)", EXPR1, OPERATION1, EXPR2, OPERATION2, EXPR3);
     }
 }

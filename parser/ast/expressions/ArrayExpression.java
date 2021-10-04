@@ -30,7 +30,7 @@ public final class ArrayExpression implements parser.ast.Expression {
 
     @Override
     public String toString() {
-        return String.format("{%s}", expressions.stream().map(Object::toString).collect(Collectors.joining(", ")));
+        return String.format("({%s})", expressions.stream().map(Object::toString).collect(Collectors.joining(", ")));
     }
 
     @Override

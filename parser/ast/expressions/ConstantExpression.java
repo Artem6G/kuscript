@@ -26,7 +26,7 @@ public class ConstantExpression implements Expression {
 
     @Override
     public String toString() {
-        return expression.toString();
+        return String.format("(%s)", expression.toString());
     }
 
     private static class ConstVisitor extends AbstractVisitor {

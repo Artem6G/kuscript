@@ -460,7 +460,7 @@ public class BinaryExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("%s %s %s", EXPR1, OPERATION, EXPR2);
+        return String.format("(%s %s %s)", EXPR1, OPERATION, EXPR2);
     }
 
     @Override

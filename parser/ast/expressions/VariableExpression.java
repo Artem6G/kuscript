@@ -20,7 +20,7 @@ public class VariableExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("%s", WORD);
+        return String.format("(%s)", WORD);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class ValueExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("%s", VALUE);
+        return String.format("(%s)", VALUE);
     }
 
     @Override
