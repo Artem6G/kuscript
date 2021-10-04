@@ -1,6 +1,7 @@
 package lib.variables;
 
 import lib.Value;
+import lib.values.NoneValue;
 
 import java.util.HashMap;
 import java.util.Stack;
@@ -34,6 +35,9 @@ public final class Variables {
     }
 
     public static void setVariable(String key, Value value) {
+        if (value instanceof NoneValue)
+            throw new RuntimeException("");
+
         setVariable(key, value, false);
     }
 
