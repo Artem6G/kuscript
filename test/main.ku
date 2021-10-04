@@ -1,10 +1,4 @@
 import "std"
-import "time"
+import "math"
 
-i, start = 0, time()
-
-for i range(-1000000, 1000000);
-
-println(i)
-
-println(time() - start)
+println(2 / 1.0)

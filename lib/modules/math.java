@@ -9,12 +9,12 @@ import java.util.List;
 
 public class math {
     @FieldInit
-    private static DoubleValue PI = new DoubleValue(Math.PI);
+    private static final DoubleValue $PI = new DoubleValue(Math.PI);
     @FieldInit
-    private static DoubleValue E = new DoubleValue(Math.E);
+    private static final DoubleValue $E = new DoubleValue(Math.E);
 
     @FunctionInit
-    private static Value sin(List<Value> args) {
+    private static Value $sin(List<Value> args) {
         if (args.size() != 1)
             throw new RuntimeException();
 
@@ -22,7 +22,7 @@ public class math {
     }
 
     @FunctionInit
-    private static Value cos(List<Value> args) {
+    private static Value $cos(List<Value> args) {
         if (args.size() != 1)
             throw new RuntimeException();
 
@@ -30,10 +30,18 @@ public class math {
     }
 
     @FunctionInit
-    private static Value tan(List<Value> args) {
+    private static Value $tan(List<Value> args) {
         if (args.size() != 1)
             throw new RuntimeException();
 
         return new DoubleValue(Math.tan(args.get(0).asDouble()));
+    }
+
+    @FunctionInit
+    private static Value $log(List<Value> args) {
+        if (args.size() != 1)
+            throw new RuntimeException();
+
+        return new DoubleValue(Math.log(args.get(0).asDouble()));
     }
 }

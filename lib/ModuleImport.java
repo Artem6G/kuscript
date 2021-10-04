@@ -26,11 +26,11 @@ public class ModuleImport {
             for (final Method method : aClass.getDeclaredMethods()) {
                 if (method.isAnnotationPresent(FunctionInit.class)) {
                     method.setAccessible(true);
-                    Functions.set(method.getName(), values -> {
+                    Functions.set(method.getName().replace("$", ""), values -> {
                         try {
                             return (Value) method.invoke(null, values);
                         } catch (InvocationTargetException | IllegalAccessException e) {
-                            throw new RuntimeException(method.getName() + " | " + e.getCause().getMessage());
+                            throw new RuntimeException(method.getName().replace("$", "") + " | " + e.getCause().getMessage());
                         }
                     });
                 }
@@ -39,7 +39,7 @@ public class ModuleImport {
             for (Field field : aClass.getDeclaredFields()) {
                 if (field.isAnnotationPresent(FieldInit.class)) {
                     field.setAccessible(true);
-                    Variables.setConst(field.getName(), (Value) field.get(null));
+                    Variables.setConst(field.getName().replace("$", ""), (Value) field.get(null));
                 }
             }
         } catch (ClassNotFoundException ign) {

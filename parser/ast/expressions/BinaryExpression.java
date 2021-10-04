@@ -133,6 +133,9 @@ public class BinaryExpression implements Expression {
     public static Value spaceship(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new DoubleValue(Double.compare(value1.asDouble(), value2.asDouble()));
+
                 return new IntegerValue(Integer.compare(value1.asInteger(), value2.asInteger()));
             case DOUBLE:
                 return new DoubleValue(Double.compare(value1.asDouble(), value2.asDouble()));
@@ -144,6 +147,9 @@ public class BinaryExpression implements Expression {
     public static Value strictly_smaller(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new BooleanValue(value1.asDouble() <= value2.asDouble());
+
                 return new BooleanValue(value1.asInteger() <= value2.asInteger());
             case DOUBLE:
                 return new BooleanValue(value1.asDouble() <= value2.asDouble());
@@ -155,6 +161,9 @@ public class BinaryExpression implements Expression {
     public static Value strictly_more(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new BooleanValue(value1.asDouble() >= value2.asDouble());
+
                 return new BooleanValue(value1.asInteger() >= value2.asInteger());
             case DOUBLE:
                 return new BooleanValue(value1.asDouble() >= value2.asDouble());
@@ -166,6 +175,9 @@ public class BinaryExpression implements Expression {
     public static Value smaller(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new BooleanValue(value1.asDouble() < value2.asDouble());
+
                 return new BooleanValue(value1.asInteger() < value2.asInteger());
             case DOUBLE:
                 return new BooleanValue(value1.asDouble() < value2.asDouble());
@@ -177,6 +189,9 @@ public class BinaryExpression implements Expression {
     public static Value more(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new BooleanValue(value1.asDouble() > value2.asDouble());
+
                 return new BooleanValue(value1.asInteger() > value2.asInteger());
             case DOUBLE:
                 return new BooleanValue(value1.asDouble() > value2.asDouble());
@@ -213,6 +228,9 @@ public class BinaryExpression implements Expression {
     public static Value correspondence(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new BooleanValue(value1.asDouble() == value2.asDouble());
+
                 return new BooleanValue(value1.asInteger() == value2.asInteger());
             case BOOLEAN:
                 return new BooleanValue(value1.asBoolean() == value2.asBoolean());
@@ -232,6 +250,9 @@ public class BinaryExpression implements Expression {
     private Value not_correspondence(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new BooleanValue(value1.asDouble() != value2.asDouble());
+
                 return new BooleanValue(value1.asInteger() != value2.asInteger());
             case BOOLEAN:
                 return new BooleanValue(value1.asBoolean() != value2.asBoolean());
@@ -349,6 +370,9 @@ public class BinaryExpression implements Expression {
     public static Value add(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new DoubleValue(value1.asDouble() + value2.asDouble());
+
                 return new IntegerValue(value1.asInteger() + value2.asInteger());
             case DOUBLE:
                 return new DoubleValue(value1.asDouble() + value2.asDouble());
@@ -360,6 +384,9 @@ public class BinaryExpression implements Expression {
     public static Value subtract(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new DoubleValue(value1.asDouble() - value2.asDouble());
+
                 return new IntegerValue(value1.asInteger() - value2.asInteger());
             case DOUBLE:
                 return new DoubleValue(value1.asDouble() - value2.asDouble());
@@ -371,6 +398,9 @@ public class BinaryExpression implements Expression {
     public static Value multiply(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new DoubleValue(value1.asDouble() * value2.asDouble());
+
                 return new IntegerValue(value1.asInteger() * value2.asInteger());
             case DOUBLE:
                 return new DoubleValue(value1.asDouble() * value2.asDouble());
@@ -382,6 +412,9 @@ public class BinaryExpression implements Expression {
     public static Value divide(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new DoubleValue(value1.asDouble() / value2.asDouble());
+
                 return new IntegerValue(value1.asInteger() / value2.asInteger());
             case DOUBLE:
                 return new DoubleValue(value1.asDouble() / value2.asDouble());
@@ -393,6 +426,9 @@ public class BinaryExpression implements Expression {
     public static Value mod(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new DoubleValue(value1.asDouble() % value2.asDouble());
+
                 return new IntegerValue(value1.asInteger() % value2.asInteger());
             case DOUBLE:
                 return new DoubleValue(value1.asDouble() % value2.asDouble());
@@ -404,6 +440,9 @@ public class BinaryExpression implements Expression {
     public static Value power(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
+                if (DataType.type(value2) == DataType.DOUBLE)
+                    return new DoubleValue(Math.pow(value1.asDouble(), value2.asDouble()));
+
                 return new IntegerValue((int) Math.pow(value1.asDouble(), value2.asDouble()));
             case DOUBLE:
                 return new DoubleValue(Math.pow(value1.asDouble(), value2.asDouble()));
