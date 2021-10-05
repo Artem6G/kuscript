@@ -1,6 +1,3 @@
 import "std"
 import "math"
-def test(a)
-    return s + a
-
-println(test(s=3))
+println("Hello, World!")

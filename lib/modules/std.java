@@ -6,6 +6,7 @@ import lib.values.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class std {
@@ -19,6 +20,13 @@ public class std {
     private static Value $println(List<Value> args) {
         System.out.println(argsToString(args));
         return new NoneValue();
+    }
+
+    @FunctionInit
+    private static StringValue $input(List<Value> args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            return new StringValue(scanner.next());
+        }
     }
 
     @FunctionInit

@@ -11,7 +11,7 @@ public class IntegerValue implements Value {
 
     @Override
     public boolean asBoolean() {
-        return value != 0;
+        throw new RuntimeException("");
     }
 
     @Override
