@@ -1,7 +1,6 @@
 import "std"
 import "math"
+def test(a)
+    return s + a
 
-println(test(s = 42))
-
-def test(b)
-    return s + b
+println(test(s=3))
