@@ -21,21 +21,16 @@ public class SwitchBreakStatement extends SwitchStatement implements Statement {
 
         for (int i = 0; i < size; i++) {
             if (BinaryExpression.correspondence(expressions.get(i).eval(), value).asBoolean()) {
-                Variables.push();
                 try {
                     statements.get(i).execute();
                 } catch (BreakStatement breakStatement) {
                     return;
-                } finally {
-                    Variables.pop();
                 }
                 return;
             }
         }
 
-        Variables.push();
         defaultStatement.execute();
-        Variables.pop();
 
     }
 

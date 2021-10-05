@@ -17,7 +17,6 @@ public class WhileStatement implements Statement {
 
     @Override
     public void execute() {
-        Variables.push();
          while (expression.eval().asBoolean())
              try {
                  statement.execute();
@@ -30,7 +29,6 @@ public class WhileStatement implements Statement {
                  if (continueStatement.getMessage() != null)
                      throw continueStatement;
              }
-        Variables.pop();
     }
 
     @Override

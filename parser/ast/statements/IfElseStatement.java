@@ -24,8 +24,6 @@ public class IfElseStatement implements Statement {
 
     @Override
     public void execute() {
-        try {
-            Variables.push();
             for (int i = 0; i < size; i++) {
                 if (expressions.get(i).eval().asBoolean()) {
                     statements.get(i).execute();
@@ -34,9 +32,6 @@ public class IfElseStatement implements Statement {
             }
 
             elseStatement.execute();
-        } finally {
-            Variables.pop();
-        }
     }
 
     @Override

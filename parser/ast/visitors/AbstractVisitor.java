@@ -8,7 +8,7 @@ import parser.ast.statements.*;
 public class AbstractVisitor implements Visitor {
     @Override
     public void visit(ConstantExpression constantExpression) {
-        constantExpression.accept(this);
+        // mine visitor inside
     }
 
     @Override

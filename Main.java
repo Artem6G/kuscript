@@ -4,6 +4,7 @@ import parser.Parser;
 import parser.ast.Statement;
 import parser.ast.statements.BreakStatement;
 import parser.ast.statements.ContinueStatement;
+import parser.ast.visitors.FunctionAdder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,9 +24,10 @@ public class Main {
         System.out.println();
 
 
-        // ast
+        // ast && visitors
         for (Statement statement : new Parser(tokens).parse()) {
             System.out.println(statement);
+            statement.accept(new FunctionAdder());
         }
 
         System.out.println("====================================");

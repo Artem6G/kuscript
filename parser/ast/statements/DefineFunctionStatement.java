@@ -1,12 +1,8 @@
 package parser.ast.statements;
 
 import lib.arguments.Arguments;
-import lib.functions.DefineFunction;
-import lib.functions.Functions;
-import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.Visitor;
-import parser.ast.expressions.FunctionCallExpression;
 
 public class DefineFunctionStatement implements Statement{
     public final String name;
@@ -21,7 +17,7 @@ public class DefineFunctionStatement implements Statement{
 
     @Override
     public void execute() {
-        Functions.set(name, new DefineFunction(arguments, body));
+        // all work in the visitor
     }
 
     @Override

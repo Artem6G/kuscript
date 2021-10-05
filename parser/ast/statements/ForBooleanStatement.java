@@ -24,7 +24,6 @@ public class ForBooleanStatement implements Statement {
 
         String word = ((VariableExpression) expression).WORD;
 
-        Variables.push();
         for (byte i = 0; i < 2; i++)
             try {
                 Variables.setVariable(word, new BooleanValue(i != 0));
@@ -38,7 +37,6 @@ public class ForBooleanStatement implements Statement {
                 if (continueStatement.getMessage() != null)
                     throw continueStatement;
             }
-        Variables.pop();
     }
 
     @Override

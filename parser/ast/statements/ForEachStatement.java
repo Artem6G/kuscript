@@ -23,7 +23,6 @@ public class ForEachStatement implements Statement {
     public void execute() {
         String word = variableExpression.WORD;
 
-        Variables.push();
         for (Value value : expression.eval().asArray().values)
             try {
                 Variables.setVariable(word, value);
@@ -37,7 +36,6 @@ public class ForEachStatement implements Statement {
                 if (continueStatement.getMessage() != null)
                     throw continueStatement;
             }
-        Variables.pop();
     }
 
     @Override

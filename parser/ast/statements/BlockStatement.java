@@ -23,7 +23,6 @@ public class BlockStatement implements Statement {
 
     @Override
     public void execute() {
-        Variables.push();
         for (Statement statement : statements)
             try {
                 statement.execute();
@@ -38,7 +37,6 @@ public class BlockStatement implements Statement {
                 else
                     throw stat;
             }
-        Variables.pop();
     }
 
     @Override

@@ -1,4 +1,7 @@
 import "std"
-a, b, c, d = 1, 1, 1, 1
-a += b += c += ++d
-println(a, b, c, d)
+import "math"
+
+println(test(s = 42))
+
+def test(b)
+    return s + b

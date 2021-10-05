@@ -37,22 +37,15 @@ public class SwitchStatement implements Statement {
                 bool = BinaryExpression.correspondence(expressions.get(i).eval(), value).asBoolean();
 
                 if (bool) {
-                    Variables.push();
                     try {
                         statements.get(i).execute();
                     } catch (BreakStatement breakStatement) {
                         return;
-                    } finally {
-                        Variables.pop();
                     }
                 }
         }
 
-
-        Variables.push();
         defaultStatement.execute();
-        Variables.pop();
-
     }
 
     @Override

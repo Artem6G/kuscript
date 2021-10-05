@@ -17,7 +17,6 @@ public class DoWhileStatement implements Statement {
 
     @Override
     public void execute() {
-        Variables.push();
         do {
             try {
                 statement.execute();
@@ -31,7 +30,6 @@ public class DoWhileStatement implements Statement {
                     throw continueStatement;
             }
         } while (expression.eval().asBoolean());
-        Variables.pop();
     }
 
     @Override

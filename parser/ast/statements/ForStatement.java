@@ -21,7 +21,6 @@ public class ForStatement implements Statement {
 
     @Override
     public void execute() {
-        Variables.push();
         for (firstStatement.execute(); expression.eval().asBoolean(); secondStatement.execute())
             try {
                 thirdStatement.execute();
@@ -34,7 +33,6 @@ public class ForStatement implements Statement {
                 if (continueStatement.getMessage() != null)
                     throw continueStatement;
             }
-        Variables.pop();
     }
 
     @Override

@@ -572,7 +572,7 @@ public class Parser {
 
         if (compareType(1, TokenType.BOOLEAN))
             return booleanFor();
-        else if (compareType(1, TokenType.RANGE))
+        else if (compareType(1, TokenType.COLON) && compareType(2, TokenType.RANGE))
             return rangeFor();
         else if (compareType(1, TokenType.COLON))
             return foreach();
@@ -607,6 +607,7 @@ public class Parser {
 
     private Statement rangeFor() {
         Expression expression = expression();
+        consume(TokenType.COLON);
         consume(TokenType.RANGE);
         consume(TokenType.LEFT_PAREN);
 

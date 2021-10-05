@@ -51,7 +51,6 @@ public class ForRangeStatement implements Statement {
             throw new RuntimeException("");
         }
 
-        Variables.push();
         for (int i = start; i < stop; i += step)
             try {
                 Variables.setVariable(word, new IntegerValue(i));
@@ -65,12 +64,11 @@ public class ForRangeStatement implements Statement {
                 if (continueStatement.getMessage() != null)
                     throw continueStatement;
             }
-        Variables.pop();
     }
 
     @Override
     public String toString() {
-        return String.format("for %s range(%s) %s", expression, expressions.stream().map(Object::toString).collect(Collectors.joining(", ")), statement);
+        return String.format("for %s : range(%s) %s", expression, expressions.stream().map(Object::toString).collect(Collectors.joining(", ")), statement);
     }
 
     @Override
