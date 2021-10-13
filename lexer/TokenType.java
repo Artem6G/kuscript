@@ -47,7 +47,9 @@ public enum TokenType {
 
     QUERY, // ?
     COLON, // :
-    SEMICOLON,
+    SEMICOLON, // ;
+
+    FULL_BYPASS, // *:
 
     EQUALS, // =
     NOT_CORRESPONDENCE, // !=
@@ -63,30 +65,7 @@ public enum TokenType {
     PLUS, // +
     MINUS, // -
 
-    OPERATOR_EQUALS,
-
-/*  POWER_EQUALS **=
-    MOD_EQUALS %=
-    DIVIDE_EQUALS /=
-    MULTIPLY_EQUALS *=
-    PLUS_EQUALS +=
-    MINUS_EQUALS -=
-    CONCATENATE_EQUALS .=
-    SPACESHIP_EQUALS <=>=
-    LEFT_SHIFT_EQUALS <<=
-    RIGHT_SHIFT_EQUALS >>=
-    RIGHT_UNSIGNED_SHIFT_EQUALS >>>=
-    XOR_EQUALS ^=
-    NOR_EQUALS ~|=
-    NAND_EQUALS ~&=
-    CONJUNCTION_EQUALS &=
-    DISJUNCTION_EQUALS |=
-    EQUIVALENCE_EQUALS <>=
-    IMPLICATION_EQUALS ->=
-    REVERSE_IMPLICATION_EQUALS <-=
-*/
-
-    CONCATENATE, // .
+    OPERATOR_EQUALS, // {OPERATOR}=
 
     LEFT_PAREN, // (
     RIGHT_PAREN, // )

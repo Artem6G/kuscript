@@ -99,8 +99,6 @@ public class AssignmentOperatorExpression implements Expression {
                 return BinaryExpression.mod(firstValue, value);
             case POWER_EQUALS:
                 return BinaryExpression.power(firstValue, value);
-            case CONCATENATE_EQUALS:
-                return BinaryExpression.concatenate(firstValue, value);
             case SPACESHIP_EQUALS:
                 return BinaryExpression.spaceship(firstValue, value);
             case LEFT_SHIFT_EQUALS:

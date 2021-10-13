@@ -1,4 +1,3 @@
 import "std"
-import "math"
 
-println((a = int(input()) % 10) == 1 ? 0 : a)
+println("1" + "сука")

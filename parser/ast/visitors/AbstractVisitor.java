@@ -1,5 +1,6 @@
 package parser.ast.visitors;
 
+import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.Visitor;
 import parser.ast.expressions.*;
@@ -111,6 +112,13 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
+    public void visit(FullBypassForEachStatement fullBypassForEachStatement) {
+        fullBypassForEachStatement.variableExpression.accept(this);
+        fullBypassForEachStatement.expression.accept(this);
+        fullBypassForEachStatement.statement.accept(this);
+    }
+
+    @Override
     public void visit(BinaryConditionalExpression binaryConditionalExpression) {
         binaryConditionalExpression.EXPR1.accept(this);
         binaryConditionalExpression.EXPR2.accept(this);
@@ -157,7 +165,8 @@ public class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(ForBooleanStatement forBooleanStatement) {
-        forBooleanStatement.expression.accept(this);
+        for (Expression expression : forBooleanStatement.expressions)
+            expression.accept(this);
         forBooleanStatement.statement.accept(this);
     }
 

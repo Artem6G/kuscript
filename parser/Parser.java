@@ -131,7 +131,7 @@ public class Parser {
         throw new RuntimeException("");
     }
 
-    private Expression expression() {
+    public Expression expression() {
         return ternary();
     }
 
@@ -315,36 +315,21 @@ public class Parser {
 
 
     private Expression shift() {
-        Expression expression = concatenate();
+        Expression expression = additive();
 
         while (true) {
             if (match(TokenType.LEFT_SHIFT)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.LEFT_SHIFT, expression, concatenate());
+                expression = new BinaryExpression(BinaryExpression.OPERATORS.LEFT_SHIFT, expression, additive());
                 continue;
             }
 
             if (match(TokenType.RIGHT_SHIFT)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.RIGHT_SHIFT, expression, concatenate());
+                expression = new BinaryExpression(BinaryExpression.OPERATORS.RIGHT_SHIFT, expression, additive());
                 continue;
             }
 
             if (match(TokenType.RIGHT_UNSIGNED_SHIFT)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.RIGHT_UNSIGNED_SHIFT, expression, concatenate());
-                continue;
-            }
-
-            break;
-        }
-
-        return expression;
-    }
-
-    private Expression concatenate() {
-        Expression expression = additive();
-
-        while (true) {
-            if (match(TokenType.CONCATENATE)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.CONCATENATE, expression, additive());
+                expression = new BinaryExpression(BinaryExpression.OPERATORS.RIGHT_UNSIGNED_SHIFT, expression, additive());
                 continue;
             }
 
@@ -570,12 +555,14 @@ public class Parser {
         Statement[] statements = new Statement[2];
         Expression expression;
 
-        if (compareType(1, TokenType.BOOLEAN))
+        if (compareType(TokenType.BOOLEAN))
             return booleanFor();
         else if (compareType(1, TokenType.COLON) && compareType(2, TokenType.RANGE))
             return rangeFor();
         else if (compareType(1, TokenType.COLON))
             return foreach();
+        else if (compareType(1, TokenType.FULL_BYPASS))
+            return fullBypassForeach();
 
         if (match(TokenType.COMMA)) {
             statements[0] = new PassStatement();
@@ -597,6 +584,12 @@ public class Parser {
             statements[1] = statement();
 
         return new ForStatement(statements[0], expression, statements[1], rawBlockOrStatement());
+    }
+
+    private Statement fullBypassForeach() {
+        VariableExpression variableExpression = (VariableExpression) expression();
+        consume(TokenType.FULL_BYPASS);
+        return new FullBypassForEachStatement(variableExpression, expression(), rawBlockOrStatement());
     }
 
     private Statement foreach() {
@@ -624,9 +617,14 @@ public class Parser {
     }
 
     private Statement booleanFor() {
-        Expression expression = expression();
+        List<Expression> expressions = new ArrayList<>();
         consume(TokenType.BOOLEAN);
-        return new ForBooleanStatement(expression, rawBlockOrStatement());
+
+        do {
+            expressions.add(expression());
+        } while (match(TokenType.COMMA));
+
+        return new ForBooleanStatement(expressions, rawBlockOrStatement());
     }
 
     private Statement ifElse() {

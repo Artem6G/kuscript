@@ -10,7 +10,7 @@ public class Lexer {
     private final String INPUT;
     private final StringBuilder stringBuilder = new StringBuilder();
     private final ArrayList<Token> TOKENS;
-    private final String OPERATOR_CHARS = ";.+-/*(){}[]%<>*|=^~&!?:,";
+    private final String OPERATOR_CHARS = ";+-/*(){}[]%<>*|=^~&!?:,";
     private final String WORD_CHARS = "`_$";
     private final String FORMAT_CHARS = "\"tfrnb'\\";
     private final String FORMAT_EQUALS_CHARS = "\"\t\f\r\n\b'\\";
@@ -46,7 +46,6 @@ public class Lexer {
         put("]", TokenType.RIGHT_SQUARE);
         put("*", TokenType.MULTIPLY);
         put("**", TokenType.POWER);
-        put(".", TokenType.CONCATENATE);
         put(">", TokenType.MORE);
         put("<", TokenType.SMALLER);
         put(">=", TokenType.STRICTLY_MORE);
@@ -78,6 +77,7 @@ public class Lexer {
         put("--", TokenType.DECREMENT);
         put(",", TokenType.COMMA);
         put("$", TokenType.PRINT_EXPRESSION);
+        put("*:", TokenType.FULL_BYPASS);
         put(";", TokenType.SEMICOLON);
     }};
     private final ArrayList<String> OPERATOR_EQUALS = new ArrayList<>(Arrays.asList(
@@ -87,7 +87,6 @@ public class Lexer {
             "%=",
             "*=",
             "**=",
-            ".=",
             "<=>=",
             "<<=",
             ">>=",
@@ -268,8 +267,8 @@ public class Lexer {
 
     private void tokenizeText() {
         clearBuilder();
+        next(); // skip "
 
-        next();
          while (currentChar != '"') {
 
              if (currentChar == '\\') {

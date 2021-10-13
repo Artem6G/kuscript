@@ -1,32 +1,60 @@
 package lib.modules;
 
+import lexer.Lexer;
 import lib.FunctionInit;
 import lib.Value;
 import lib.values.*;
+import parser.Parser;
+import parser.ast.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class std {
     @FunctionInit
-    private static Value $print(List<Value> args) {
+    private static NoneValue $print(List<Value> args) {
         System.out.print(argsToString(args));
         return new NoneValue();
     }
 
     @FunctionInit
-    private static Value $println(List<Value> args) {
+    private static NoneValue $println(List<Value> args) {
         System.out.println(argsToString(args));
         return new NoneValue();
     }
 
     @FunctionInit
+    private static Value $eval(List<Value> args) {
+        if (args.size() != 1)
+            throw new RuntimeException("zero argument");
+
+        return new Parser(new Lexer(args.get(0).asString()).lex()).expression().eval();
+    }
+
+    @FunctionInit
+    private static NoneValue $exec(List<Value> args) {
+        if (args.size() != 1)
+            throw new RuntimeException("zero argument");
+
+        new Parser(new Lexer(args.get(0).asString()).lex()).parse().forEach(Statement::execute);
+
+        return new NoneValue();
+    }
+
+    @FunctionInit
     private static StringValue $input(List<Value> args) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            return new StringValue(scanner.next());
-        }
+        return new StringValue(new Scanner(System.in).nextLine());
+    }
+
+    @FunctionInit
+    private static StringValue type(List<Value> args) {
+        if (args.size() != 1)
+            throw new RuntimeException("zero argument");
+
+        return new StringValue(DataType.type(args.get(0)).toString().toLowerCase(Locale.ROOT));
     }
 
     @FunctionInit
@@ -87,7 +115,7 @@ public class std {
     }
 
     @FunctionInit
-    private static StringValue $str(List<Value> args) {
+    private static StringValue $string(List<Value> args) {
         if (args.size() != 1)
             throw new RuntimeException("zero argument");
 

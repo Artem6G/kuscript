@@ -39,6 +39,7 @@ public interface Visitor {
     void visit(FunctionCallExpression functionCallExpression);
     void visit(FunctionCallStatement functionCallStatement);
     void visit(ForEachStatement forEachStatement);
+    void visit(FullBypassForEachStatement fullBypassForEachStatement);
     void visit(BinaryConditionalExpression binaryConditionalExpression);
     void visit(ImportStatement importStatement);
     void visit(AssignmentExpression assignmentExpression);

@@ -7,27 +7,36 @@ import parser.ast.Statement;
 import parser.ast.Visitor;
 import parser.ast.expressions.VariableExpression;
 
+import java.util.List;
+
 public class ForBooleanStatement implements Statement {
 
-    public final Expression expression;
+    public final List<Expression> expressions;
     public final Statement statement;
+    private int size;
 
-    public ForBooleanStatement (Expression expression, Statement statement) {
-        this.expression = expression;
+    public ForBooleanStatement (List<Expression> expressions, Statement statement) {
+        this.expressions = expressions;
         this.statement = statement;
     }
 
     @Override
     public void execute() {
-        if (!(expression instanceof VariableExpression))
-            throw new RuntimeException();
+        size = expressions.size();
+        setVariables(size);
+    }
 
-        String word = ((VariableExpression) expression).WORD;
-
+    private void setVariables(int n) {
         for (byte i = 0; i < 2; i++)
             try {
-                Variables.setVariable(word, new BooleanValue(i != 0));
-                statement.execute();
+                Variables.setVariable(((VariableExpression) expressions.get(size - n)).WORD, new BooleanValue(i != 0));
+
+                if (n != 1) {
+                    setVariables(n - 1);
+                } else {
+                    statement.execute();
+                }
+
             } catch (BreakStatement breakStatement) {
                 if (breakStatement.getMessage() == null)
                     break;
@@ -41,7 +50,7 @@ public class ForBooleanStatement implements Statement {
 
     @Override
     public String toString() {
-        return String.format("for %s boolean %s", expression, statement);
+        return String.format("for boolean %s %s", expressions, statement);
     }
 
     @Override

@@ -81,8 +81,6 @@ public class BinaryExpression implements Expression {
                 return power(EXPR1.eval(), EXPR2.eval());
             case MOD:
                 return mod(EXPR1.eval(), EXPR2.eval());
-            case CONCATENATE:
-                return concatenate(EXPR1.eval(), EXPR2.eval());
             case CONJUNCTION:
                 return conjunction(EXPR1.eval(), EXPR2.eval());
             case DISJUNCTION:
@@ -376,6 +374,8 @@ public class BinaryExpression implements Expression {
                 return new IntegerValue(value1.asInteger() + value2.asInteger());
             case DOUBLE:
                 return new DoubleValue(value1.asDouble() + value2.asDouble());
+            case STRING:
+                return new StringValue(value1.asString() + value2.asString());
             default:
                 throw new RuntimeException("");
         }
@@ -449,13 +449,6 @@ public class BinaryExpression implements Expression {
             default:
                 throw new RuntimeException("");
         }
-    }
-
-    public static Value concatenate(Value value1, Value value2) {
-        if (!(value1 instanceof NullValue) && !(value2 instanceof NullValue))
-            return new StringValue(value1.asString() + value2.asString());
-        else
-            throw new RuntimeException("");
     }
 
     @Override

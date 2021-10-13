@@ -1,3 +1,1 @@
 import "std"
-import "math"
-println("Hello, World!")
