@@ -1,10 +1,7 @@
 import "std"
 import "time"
 
-a = time()
+def c(a)
+    println(text)
 
-i = 0
-while i < 100000000
-    i += 1
-
-println(time() - a)
+c(text=2)

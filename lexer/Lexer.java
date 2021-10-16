@@ -277,7 +277,7 @@ public class Lexer {
 
                  if (index != -1) {
                      stringBuilder.append(FORMAT_EQUALS_CHARS.charAt(index));
-                     next();
+                     next(2);
                      continue;
                  }
                  else
