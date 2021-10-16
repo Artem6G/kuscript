@@ -8,8 +8,8 @@ import java.util.Stack;
 
 public final class Variables {
 
-    private static final Stack<HashMap<String, Variable>> STACK;
-    private static HashMap<String, Variable> variables;
+    private static final Stack<HashMap<String, Value>> STACK;
+    private static HashMap<String, Value> variables;
 
     static {
         STACK = new Stack<>();
@@ -31,27 +31,14 @@ public final class Variables {
     public static Value get(String key) {
         if (!isExists(key)) throw new RuntimeException("");
 
-        return variables.get(key).getValue();
+        return variables.get(key);
     }
 
     public static void setVariable(String key, Value value) {
         if (value instanceof NoneValue)
             throw new RuntimeException("");
 
-        setVariable(key, value, false);
+        variables.put(key, value);
     }
 
-    public static void setVariable(String key, Value value, boolean isConst) {
-        if (!isExists(key)) {
-            variables.put(key, new Variable(value, isConst));
-        }
-        else if(!isConst)
-            variables.get(key).setValue(value);
-        else
-            throw new RuntimeException("");
-    }
-
-    public static boolean isConstVariable(String key) {
-        return variables.get(key).isConst;
-    }
 }

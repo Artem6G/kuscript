@@ -2,15 +2,15 @@ package parser.ast.statements;
 
 import lib.ModuleImport;
 
+import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.Visitor;
-import parser.ast.expressions.ConstantExpression;
 
 public class ImportStatement implements Statement {
 
-    public final ConstantExpression constantExpression;
+    public final Expression constantExpression;
 
-    public ImportStatement(ConstantExpression constantExpression) {
+    public ImportStatement(Expression constantExpression) {
         this.constantExpression = constantExpression;
     }
 

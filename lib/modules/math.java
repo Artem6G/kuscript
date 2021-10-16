@@ -10,6 +10,7 @@ import java.util.List;
 public class math {
     @FieldInit
     private static final DoubleValue $PI = new DoubleValue(Math.PI);
+
     @FieldInit
     private static final DoubleValue $E = new DoubleValue(Math.E);
 

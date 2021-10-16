@@ -8,18 +8,16 @@ import parser.ast.Visitor;
 public class AssignmentExpression implements Expression {
     public final String variable;
     public final Expression expression;
-    public final boolean isConst;
 
-    public AssignmentExpression(String variable, Expression expression, boolean isConst) {
+    public AssignmentExpression(String variable, Expression expression) {
         this.variable = variable;
         this.expression = expression;
-        this.isConst = isConst;
     }
 
     @Override
     public Value eval() {
         final Value value = expression.eval();
-        Variables.setVariable(variable, value, isConst);
+        Variables.setVariable(variable, value);
         return value;
     }
 
@@ -31,6 +29,6 @@ public class AssignmentExpression implements Expression {
 
     @Override
     public String toString() {
-        return isConst ? String.format("(const %s = %s)", variable, expression.toString()) : String.format("(%s = %s)", variable, expression.toString());
+        return String.format("(%s = %s)", variable, expression.toString());
     }
 }

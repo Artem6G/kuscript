@@ -8,7 +8,7 @@ import java.util.List;
 
 public class time {
     @FunctionInit
-    private static Value time(List<Value> args) {
+    private static Value $time(List<Value> args) {
         if (args.size() != 0)
             throw new RuntimeException();
 

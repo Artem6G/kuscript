@@ -1,17 +1,16 @@
 package parser.ast.statements;
 
 import lib.Value;
-import lib.variables.Variables;
+import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.Visitor;
 import parser.ast.expressions.BinaryExpression;
-import parser.ast.expressions.ConstantExpression;
 
 import java.util.LinkedHashMap;
 
 public class SwitchBreakStatement extends SwitchStatement implements Statement {
 
-    public SwitchBreakStatement(parser.ast.Expression valueExpression, LinkedHashMap<ConstantExpression, Statement> conditions, Statement defaultStatement) {
+    public SwitchBreakStatement(parser.ast.Expression valueExpression, LinkedHashMap<Expression, Statement> conditions, Statement defaultStatement) {
         super(valueExpression, conditions, defaultStatement);
     }
 

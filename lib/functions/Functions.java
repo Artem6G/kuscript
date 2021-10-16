@@ -1,7 +1,5 @@
 package lib.functions;
 
-import lib.variables.Variables;
-
 import java.util.HashMap;
 
 public class Functions {
@@ -16,7 +14,6 @@ public class Functions {
     }
 
     public static Function get(String key) {
-            Variables.push();
             if (!isExists(key)) throw new RuntimeException("");
             return functions.get(key);
     }

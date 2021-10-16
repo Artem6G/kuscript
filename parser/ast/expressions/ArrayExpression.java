@@ -2,6 +2,7 @@ package parser.ast.expressions;
 
 import lib.values.ArrayValue;
 import lib.Value;
+import parser.ast.Expression;
 import parser.ast.Visitor;
 
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.stream.Collectors;
 
 public final class ArrayExpression implements parser.ast.Expression {
 
-    public final List<ConstantExpression> expressions;
+    public final List<Expression> expressions;
 
-    public ArrayExpression(List<ConstantExpression> expressions) {
+    public ArrayExpression(List<Expression> expressions) {
         this.expressions = expressions;
     }
 

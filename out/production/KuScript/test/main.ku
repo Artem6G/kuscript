@@ -1,3 +1,10 @@
 import "std"
+import "time"
 
-println("1" + "сука")
+a = time()
+
+i = 0
+while i < 100000000
+    i += 1
+
+println(time() - a)

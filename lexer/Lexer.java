@@ -31,11 +31,10 @@ public class Lexer {
             "import",
             "boolean",
             "null",
-            "const",
             "def",
             "return"
     ));
-    private final HashMap<String, TokenType> OPERATORS = new HashMap<String, TokenType>() {{
+    private final HashMap<String, TokenType> OPERATORS = new HashMap<>() {{
         put("+", TokenType.PLUS);
         put("-", TokenType.MINUS);
         put("/", TokenType.DIVIDE);

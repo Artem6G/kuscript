@@ -41,7 +41,7 @@ public class ModuleImport {
             for (Field field : aClass.getDeclaredFields()) {
                 if (field.isAnnotationPresent(FieldInit.class)) {
                     field.setAccessible(true);
-                    Variables.setVariable(field.getName().replace("$", ""), (Value) field.get(null), true);
+                    Variables.setVariable(field.getName().replace("$", ""), (Value) field.get(null));
                 }
             }
         } catch (ClassNotFoundException ign) {

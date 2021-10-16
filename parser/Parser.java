@@ -63,7 +63,7 @@ public class Parser {
         else if (match(TokenType.DEF))
             return def();
         else if (match(TokenType.IMPORT))
-            return new ImportStatement(new ConstantExpression(expression()));
+            return new ImportStatement(expression());
         else if (match(TokenType.WHILE))
             return new WhileStatement(expression(), rawBlockOrStatement());
         else if (match(TokenType.SWITCH))
@@ -90,8 +90,6 @@ public class Parser {
         else if (compareType(TokenType.WORD) && (compareType(1, TokenType.LEFT_PAREN)))
             return new FunctionCallStatement(functionCallExpression());
         else if (compareType(TokenType.WORD) && (compareType(1, TokenType.EQUALS)))
-            return new AssignmentStatement((AssignmentExpression) assignment());
-        else if (compareType(TokenType.CONST) && compareType(1, TokenType.WORD) && (compareType(2, TokenType.EQUALS)))
             return new AssignmentStatement((AssignmentExpression) assignment());
 
         return elementArrayAssignmentStatement();
@@ -422,8 +420,6 @@ public class Parser {
     }
 
     private Expression assignmentExpression() {
-        if (compareType(TokenType.CONST) && compareType(1, TokenType.WORD) && (compareType(2, TokenType.EQUALS)))
-            return assignment();
         if (compareType(TokenType.WORD) && compareType(1, TokenType.EQUALS))
             return assignment();
         if (compareType(TokenType.WORD) && compareType(1, TokenType.OPERATOR_EQUALS))
@@ -494,10 +490,9 @@ public class Parser {
     }
 
     private Expression assignment() {
-        boolean isConst = match(TokenType.CONST);
         String word = getCurrentToken().getValue();
         consume(TokenType.WORD, TokenType.EQUALS);
-        return new AssignmentExpression(word, expression(), isConst);
+        return new AssignmentExpression(word, expression());
     }
 
     private Statement multiplyAssignment() {
@@ -693,13 +688,13 @@ public class Parser {
 
     private Statement _switch() {
         Statement statement;
-        ConstantExpression expression;
-        LinkedHashMap<ConstantExpression, Statement> conditionals = new LinkedHashMap<>();
+        Expression expression;
+        LinkedHashMap<Expression, Statement> conditionals = new LinkedHashMap<>();
         boolean breakSwitch = match(TokenType.BREAK);
         Expression valueExpression = expression();
 
         while (match(TokenType.CASE)) {
-            expression = new ConstantExpression(expression());
+            expression = expression();
 
             if (compareType(TokenType.CASE))
                 statement = new PassStatement();
@@ -763,9 +758,9 @@ public class Parser {
 
     private Expression array() {
         consume(TokenType.LEFT_BRACKET);
-        final List<ConstantExpression> elements = new ArrayList<>();
+        final List<Expression> elements = new ArrayList<>();
         while (!match(TokenType.RIGHT_BRACKET)) {
-            elements.add(new ConstantExpression(expressionForArray()));
+            elements.add(expressionForArray());
             match(TokenType.COMMA);
         }
 

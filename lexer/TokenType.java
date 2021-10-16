@@ -11,8 +11,6 @@ public enum TokenType {
 
     BOOLEAN,
 
-    CONST,
-
     INTEGER_VALUE,
     DOUBLE_VALUE,
     BOOLEAN_VALUE,

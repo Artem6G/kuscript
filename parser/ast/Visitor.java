@@ -1,7 +1,6 @@
 package parser.ast;
 
 import parser.ast.expressions.*;
-import parser.ast.expressions.ConstantExpression;
 import parser.ast.statements.*;
 
 public interface Visitor {
@@ -13,7 +12,6 @@ public interface Visitor {
     void visit(UnaryExpression unaryExpression);
     void visit(ValueExpression valueExpression);
     void visit(VariableExpression variableExpression);
-    void visit(ConstantExpression constantExpression);
     void visit(AssignmentOperatorStatement assignmentOperatorStatement);
     void visit(AssignmentStatement assignmentStatement);
     void visit(BlockStatement blockStatement);

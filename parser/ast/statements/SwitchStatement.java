@@ -1,11 +1,10 @@
 package parser.ast.statements;
 
 import lib.Value;
-import lib.variables.Variables;
+import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.Visitor;
 import parser.ast.expressions.BinaryExpression;
-import parser.ast.expressions.ConstantExpression;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,12 +12,12 @@ import java.util.LinkedHashMap;
 public class SwitchStatement implements Statement {
 
     public final parser.ast.Expression valueExpression;
-    public final ArrayList<ConstantExpression> expressions;
+    public final ArrayList<Expression> expressions;
     public final ArrayList<Statement> statements;
     public final Statement defaultStatement;
     protected final int size;
 
-    public SwitchStatement(parser.ast.Expression valueExpression, LinkedHashMap<ConstantExpression, Statement> conditions, Statement defaultStatement) {
+    public SwitchStatement(parser.ast.Expression valueExpression, LinkedHashMap<Expression, Statement> conditions, Statement defaultStatement) {
         size = conditions.size();
         this.valueExpression = valueExpression;
         this.expressions = new ArrayList<>(conditions.keySet());
