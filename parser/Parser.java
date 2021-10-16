@@ -78,7 +78,7 @@ public class Parser {
             return doWhile();
         else if (match(TokenType.CONTINUE))
             return _continue();
-        else if (match(TokenType.SEMICOLON))
+        else if (match(TokenType.PASS))
             return new PassStatement();
 
         return assignmentStatement();
@@ -641,7 +641,7 @@ public class Parser {
     private Statement _return() {
         Expression expression;
 
-        if (match(TokenType.SEMICOLON))
+        if (match(TokenType.PASS))
             expression = new ValueExpression(DefineFunction.DEFAULT_VALUE);
         else
             expression = expression();

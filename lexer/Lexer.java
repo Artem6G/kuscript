@@ -32,7 +32,8 @@ public class Lexer {
             "boolean",
             "null",
             "def",
-            "return"
+            "return",
+            "pass"
     ));
     private final HashMap<String, TokenType> OPERATORS = new HashMap<>() {{
         put("+", TokenType.PLUS);
@@ -77,7 +78,6 @@ public class Lexer {
         put(",", TokenType.COMMA);
         put("$", TokenType.PRINT_EXPRESSION);
         put("*:", TokenType.FULL_BYPASS);
-        put(";", TokenType.SEMICOLON);
     }};
     private final ArrayList<String> OPERATOR_EQUALS = new ArrayList<>(Arrays.asList(
             "+=",

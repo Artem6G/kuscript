@@ -25,6 +25,8 @@ public enum TokenType {
     CASE,
     DEFAULT,
 
+    PASS,
+
     DO,
     WHILE,
     FOR,
@@ -45,7 +47,6 @@ public enum TokenType {
 
     QUERY, // ?
     COLON, // :
-    SEMICOLON, // ;
 
     FULL_BYPASS, // *:
 
