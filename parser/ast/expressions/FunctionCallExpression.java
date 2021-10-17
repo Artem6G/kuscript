@@ -1,7 +1,8 @@
 package parser.ast.expressions;
 
 import lib.Value;
-import lib.functions.Functions;
+import lib.values.FunctionValue;
+import lib.variables.Variables;
 import parser.ast.Expression;
 import parser.ast.Visitor;
 
@@ -23,7 +24,7 @@ public class FunctionCallExpression implements Expression {
         List<Value> valueList = new ArrayList<>();
         for (Expression expression : expressionList)
             valueList.add(expression.eval());
-        return Functions.get(name).execute(valueList);
+        return ((FunctionValue)Variables.get(name)).function.execute(valueList);
     }
 
     @Override

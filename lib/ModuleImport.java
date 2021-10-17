@@ -1,7 +1,7 @@
 package lib;
 
 import lexer.Lexer;
-import lib.functions.Functions;
+import lib.values.FunctionValue;
 import lib.variables.Variables;
 import parser.Parser;
 import parser.ast.Statement;
@@ -28,13 +28,13 @@ public class ModuleImport {
             for (final Method method : aClass.getDeclaredMethods()) {
                 if (method.isAnnotationPresent(FunctionInit.class)) {
                     method.setAccessible(true);
-                    Functions.set(method.getName().replace("$", ""), values -> {
+                    Variables.setVariable(method.getName().replace("$", ""), new FunctionValue(values -> {
                         try {
                             return (Value) method.invoke(null, values);
                         } catch (InvocationTargetException | IllegalAccessException e) {
                             throw new RuntimeException(method.getName().replace("$", "") + " | " + e.getCause().getMessage());
                         }
-                    });
+                    }));
                 }
             }
 

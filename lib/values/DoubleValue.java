@@ -2,6 +2,8 @@ package lib.values;
 
 import lib.Value;
 
+import java.util.function.Function;
+
 public class DoubleValue implements Value {
 
     private final double value;
@@ -33,6 +35,11 @@ public class DoubleValue implements Value {
     @Override
     public ArrayValue asArray() {
         throw new RuntimeException("");
+    }
+
+    @Override
+    public FunctionValue asFunction() {
+        return null;
     }
 
     @Override

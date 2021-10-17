@@ -31,6 +31,11 @@ public class BooleanValue implements Value {
     }
 
     @Override
+    public FunctionValue asFunction() {
+        return null;
+    }
+
+    @Override
     public String asString() {
         return value ? "true" : "false";
     }

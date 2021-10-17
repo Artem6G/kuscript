@@ -1,7 +1,8 @@
 import "std"
 import "time"
 
-def c(a)
-    println(text)
+def a(b)
+    return 4
 
-c(text=2)
+c = {a, a, a, a}
+a = {1, 2, 3}[2]

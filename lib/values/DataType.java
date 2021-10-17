@@ -9,6 +9,7 @@ public enum DataType {
     BOOLEAN,
     STRING,
     NULL,
+    FUNCTION,
     ARRAY;
 
     public static DataType type(Value value) {
@@ -26,6 +27,8 @@ public enum DataType {
             return ARRAY;
         else if (value instanceof NullValue)
             return NULL;
+        else if (value instanceof FunctionValue)
+            return FUNCTION;
 
         throw new RuntimeException("");
     }

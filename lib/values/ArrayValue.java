@@ -55,6 +55,11 @@ public class ArrayValue implements Value {
     }
 
     @Override
+    public FunctionValue asFunction() {
+        return null;
+    }
+
+    @Override
     public String toString() {
         return asString();
     }

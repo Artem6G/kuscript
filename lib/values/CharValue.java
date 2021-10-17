@@ -1,7 +1,6 @@
 package lib.values;
 
 import lib.Value;
-
 public class CharValue implements Value {
 
     private final char value;
@@ -33,6 +32,11 @@ public class CharValue implements Value {
     @Override
     public ArrayValue asArray() {
         throw new RuntimeException("");
+    }
+
+    @Override
+    public FunctionValue asFunction() {
+        return null;
     }
 
     @Override

@@ -35,6 +35,11 @@ public class IntegerValue implements Value {
     }
 
     @Override
+    public FunctionValue asFunction() {
+        return null;
+    }
+
+    @Override
     public char asChar() {
         throw new RuntimeException("");
     }

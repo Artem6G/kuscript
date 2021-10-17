@@ -1,8 +1,16 @@
 package lib.values;
 
 import lib.Value;
+import lib.functions.Function;
 
-public class NoneValue implements Value {
+public class FunctionValue implements Value {
+
+    public final Function function;
+
+    public FunctionValue(Function function) {
+        this.function = function;
+    }
+
     @Override
     public double asDouble() {
         throw new RuntimeException("");
@@ -15,7 +23,7 @@ public class NoneValue implements Value {
 
     @Override
     public String asString() {
-        throw new RuntimeException("");
+        return null;
     }
 
     @Override
@@ -35,11 +43,6 @@ public class NoneValue implements Value {
 
     @Override
     public FunctionValue asFunction() {
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return "none";
+        return this;
     }
 }
