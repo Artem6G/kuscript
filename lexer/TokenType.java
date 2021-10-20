@@ -9,8 +9,6 @@ public enum TokenType {
     OCTAL_NUM,
     BINARY_NUM,
 
-    BOOLEAN,
-
     INTEGER_VALUE,
     DOUBLE_VALUE,
     BOOLEAN_VALUE,

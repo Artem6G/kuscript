@@ -563,9 +563,7 @@ public class Parser {
         Statement[] statements = new Statement[2];
         Expression expression;
 
-        if (compareType(TokenType.BOOLEAN))
-            return booleanFor();
-        else if (compareType(1, TokenType.COLON) && compareType(2, TokenType.RANGE))
+        if (compareType(1, TokenType.COLON) && compareType(2, TokenType.RANGE))
             return rangeFor();
         else if (compareType(1, TokenType.COLON))
             return foreach();
@@ -622,17 +620,6 @@ public class Parser {
 
         consume(TokenType.RIGHT_PAREN);
         return new ForRangeStatement(expression, expressions, rawBlockOrStatement());
-    }
-
-    private Statement booleanFor() {
-        List<Expression> expressions = new ArrayList<>();
-        consume(TokenType.BOOLEAN);
-
-        do {
-            expressions.add(expression());
-        } while (match(TokenType.COMMA));
-
-        return new ForBooleanStatement(expressions, rawBlockOrStatement());
     }
 
     private Statement ifElse() {

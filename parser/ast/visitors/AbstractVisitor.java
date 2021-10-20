@@ -166,13 +166,6 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(ForBooleanStatement forBooleanStatement) {
-        for (Expression expression : forBooleanStatement.expressions)
-            expression.accept(this);
-        forBooleanStatement.statement.accept(this);
-    }
-
-    @Override
     public void visit(ForRangeStatement forRangeStatement) {
         for (parser.ast.Expression expression : forRangeStatement.expressions)
             expression.accept(this);

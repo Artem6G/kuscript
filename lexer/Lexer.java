@@ -29,7 +29,6 @@ public class Lexer {
             "do",
             "range",
             "import",
-            "boolean",
             "null",
             "def",
             "return",

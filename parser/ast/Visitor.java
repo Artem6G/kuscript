@@ -19,7 +19,6 @@ public interface Visitor {
     void visit(CultivatedStatement cultivatedStatement);
     void visit(DoWhileStatement doWhileStatement);
     void visit(ElementAssignmentArrayStatement elementAssignmentArrayStatement);
-    void visit(ForBooleanStatement forBooleanStatement);
     void visit(ForRangeStatement forRangeStatement);
     void visit(ForStatement forStatement);
     void visit(IfElseStatement ifElseStatement);
