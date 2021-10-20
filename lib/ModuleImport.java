@@ -5,7 +5,6 @@ import lib.values.FunctionValue;
 import lib.variables.Variables;
 import parser.Parser;
 import parser.ast.Statement;
-import parser.ast.visitors.FunctionAdder;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -51,8 +50,6 @@ public class ModuleImport {
 
     private static void statementsExecute(String path) throws IOException {
         List<Statement> statements = new Parser(new Lexer(new String(Files.readAllBytes(Paths.get(path)))).lex()).parse();
-
-        statements.forEach(x -> x.accept(new FunctionAdder()));
         statements.forEach(Statement::execute);
     }
 }

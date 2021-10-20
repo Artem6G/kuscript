@@ -23,6 +23,7 @@ public class FunctionCallValueExpression implements Expression {
         List<Value> valueList = new ArrayList<>();
         for (Expression expression : expressionList)
             valueList.add(expression.eval());
+
         return ((FunctionValue) variable.eval()).function.execute(valueList);
     }
 

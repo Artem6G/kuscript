@@ -1,6 +1,9 @@
 package parser.ast.statements;
 
 import lib.arguments.Arguments;
+import lib.functions.DefineFunction;
+import lib.values.FunctionValue;
+import lib.variables.Variables;
 import parser.ast.Statement;
 import parser.ast.Visitor;
 
@@ -17,7 +20,7 @@ public class DefineFunctionStatement implements Statement{
 
     @Override
     public void execute() {
-        // all work in the visitor
+        Variables.setVariable(name, new FunctionValue(new DefineFunction(arguments, body)));
     }
 
     @Override

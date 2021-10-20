@@ -12,8 +12,6 @@ public interface Visitor {
     void visit(UnaryExpression unaryExpression);
     void visit(ValueExpression valueExpression);
     void visit(VariableExpression variableExpression);
-    void visit(AssignmentOperatorStatement assignmentOperatorStatement);
-    void visit(AssignmentStatement assignmentStatement);
     void visit(BlockStatement blockStatement);
     void visit(BreakStatement breakStatement);
     void visit(CultivatedStatement cultivatedStatement);
@@ -33,7 +31,6 @@ public interface Visitor {
     void visit(WhileStatement whileStatement);
     void visit(ReturnStatement returnStatement);
     void visit(DefineFunctionStatement defineFunctionStatement);
-    void visit(FunctionCallStatement functionCallStatement);
     void visit(ForEachStatement forEachStatement);
     void visit(FullBypassForEachStatement fullBypassForEachStatement);
     void visit(BinaryConditionalExpression binaryConditionalExpression);
@@ -42,4 +39,5 @@ public interface Visitor {
     void visit(AssignmentOperatorExpression assignmentOperatorExpression);
     void visit(ElementValueArrayExpression elementValueArrayExpression);
     void visit(FunctionCallValueExpression elementFunctionArrayExpression);
+    void visit(ExpressionStatement expressionStatement);
 }

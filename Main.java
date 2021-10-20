@@ -4,7 +4,6 @@ import parser.Parser;
 import parser.ast.Statement;
 import parser.ast.statements.BreakStatement;
 import parser.ast.statements.ContinueStatement;
-import parser.ast.visitors.FunctionAdder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,11 +22,8 @@ public class Main {
 
         List<Statement> statements = new Parser(tokens).parse();
 
-        // ast && visitors
-        statements.forEach(x -> {
-            System.out.println(x);
-            x.accept(new FunctionAdder());
-        });
+        // ast
+        statements.forEach(System.out::println);
 
         System.out.println("====================================");
 

@@ -87,10 +87,6 @@ public class Parser {
     private Statement assignmentStatement() {
         if (compareType(TokenType.WORD) && (compareType(1, TokenType.COMMA)))
             return multiplyAssignment();
-        else if (compareType(TokenType.WORD) && (compareType(1, TokenType.LEFT_PAREN)))
-            return new FunctionCallStatement(functionCallExpression());
-        else if (compareType(TokenType.WORD) && (compareType(1, TokenType.EQUALS)))
-            return new AssignmentStatement((AssignmentExpression) assignment());
 
         return elementArrayAssignmentStatement();
     }
@@ -99,13 +95,6 @@ public class Parser {
         if (compareType(TokenType.WORD) && compareType(1, TokenType.LEFT_SQUARE))
             return elementArrayAssignment();
 
-
-        return assignmentOperatorStatement();
-    }
-
-    private Statement assignmentOperatorStatement() {
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.OPERATOR_EQUALS))
-            return new AssignmentOperatorStatement((AssignmentOperatorExpression) assignmentOperator());
 
         return incrementStatement();
     }
@@ -126,7 +115,7 @@ public class Parser {
         else if (compareType(TokenType.DECREMENT) && compareType(1, TokenType.WORD))
             return leftUnary(TokenType.DECREMENT, UnaryExpression.OPERATORS.LEFT_DECREMENT);
 
-        throw new RuntimeException("");
+        return new ExpressionStatement(expression());
     }
 
     public Expression expression() {
