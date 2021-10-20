@@ -89,12 +89,6 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(FunctionCallExpression functionCallExpression) {
-        for (parser.ast.Expression expression : functionCallExpression.expressionList)
-            expression.accept(this);
-    }
-
-    @Override
     public void visit(FunctionCallStatement functionCallStatement) {
         functionCallStatement.functionCallExpression.accept(this);
     }
@@ -122,7 +116,7 @@ public class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(ImportStatement importStatement) {
-        importStatement.constantExpression.accept(this);
+        importStatement.expression.accept(this);
     }
 
     @Override
@@ -133,6 +127,19 @@ public class AbstractVisitor implements Visitor {
     @Override
     public void visit(AssignmentOperatorExpression assignmentOperatorExpression) {
         assignmentOperatorExpression.EXPRESSION.accept(this);
+    }
+
+    @Override
+    public void visit(ElementValueArrayExpression elementValueArrayExpression) {
+        elementValueArrayExpression.expressionIndex.accept(this);
+        elementValueArrayExpression.expression.accept(this);
+    }
+
+    @Override
+    public void visit(FunctionCallValueExpression elementFunctionArrayExpression) {
+        elementFunctionArrayExpression.variable.accept(this);
+        for (Expression expression : elementFunctionArrayExpression.expressionList)
+            expression.accept(this);
     }
 
     @Override

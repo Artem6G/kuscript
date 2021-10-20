@@ -366,16 +366,19 @@ public class BinaryExpression implements Expression {
     }
 
     public static Value add(Value value1, Value value2) {
-        switch (DataType.type(value1)) {
-            case INT:
-                if (DataType.type(value2) == DataType.DOUBLE)
-                    return new DoubleValue(value1.asDouble() + value2.asDouble());
+        DataType typeValue1 = DataType.type(value1);
+        DataType typeValue2 = DataType.type(value2);
 
+        if (typeValue1 == DataType.STRING || typeValue2 == DataType.STRING)
+            return new StringValue(value1.asString() + value2.asString());
+
+        switch (typeValue1) {
+            case INT:
+                if (typeValue2 == DataType.DOUBLE)
+                    return new DoubleValue(value1.asDouble() + value2.asDouble());
                 return new IntegerValue(value1.asInteger() + value2.asInteger());
             case DOUBLE:
                 return new DoubleValue(value1.asDouble() + value2.asDouble());
-            case STRING:
-                return new StringValue(value1.asString() + value2.asString());
             default:
                 throw new RuntimeException("");
         }

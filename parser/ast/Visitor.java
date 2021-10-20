@@ -34,7 +34,6 @@ public interface Visitor {
     void visit(WhileStatement whileStatement);
     void visit(ReturnStatement returnStatement);
     void visit(DefineFunctionStatement defineFunctionStatement);
-    void visit(FunctionCallExpression functionCallExpression);
     void visit(FunctionCallStatement functionCallStatement);
     void visit(ForEachStatement forEachStatement);
     void visit(FullBypassForEachStatement fullBypassForEachStatement);
@@ -42,4 +41,6 @@ public interface Visitor {
     void visit(ImportStatement importStatement);
     void visit(AssignmentExpression assignmentExpression);
     void visit(AssignmentOperatorExpression assignmentOperatorExpression);
+    void visit(ElementValueArrayExpression elementValueArrayExpression);
+    void visit(FunctionCallValueExpression elementFunctionArrayExpression);
 }

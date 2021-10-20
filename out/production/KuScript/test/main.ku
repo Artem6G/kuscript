@@ -1,8 +1,2 @@
-import "std"
-import "time"
-
-def a(b)
-    return 4
-
-c = {a, a, a, a}
-a = {1, 2, 3}[2]
+import {"std", "time"}
+println(time())

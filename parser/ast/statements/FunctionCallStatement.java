@@ -2,12 +2,12 @@ package parser.ast.statements;
 
 import parser.ast.Statement;
 import parser.ast.Visitor;
-import parser.ast.expressions.FunctionCallExpression;
+import parser.ast.expressions.FunctionCallValueExpression;
 
 public class FunctionCallStatement implements Statement {
-    public final FunctionCallExpression functionCallExpression;
+    public final FunctionCallValueExpression functionCallExpression;
 
-    public FunctionCallStatement(FunctionCallExpression functionCallExpression) {
+    public FunctionCallStatement(FunctionCallValueExpression functionCallExpression) {
         this.functionCallExpression = functionCallExpression;
     }
 

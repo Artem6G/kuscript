@@ -2,7 +2,6 @@ package parser.ast.expressions;
 
 import lib.Value;
 import lib.values.FunctionValue;
-import lib.variables.Variables;
 import parser.ast.Expression;
 import parser.ast.Visitor;
 
@@ -10,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FunctionCallExpression implements Expression {
-    private final String name;
+public class FunctionCallValueExpression implements Expression {
+    public final Expression variable;
     public final List<Expression> expressionList;
 
-    public FunctionCallExpression(String name, List<Expression> expressionsList) {
-        this.name = name;
+    public FunctionCallValueExpression(Expression variable, List<Expression> expressionsList) {
+        this.variable = variable;
         this.expressionList = expressionsList;
     }
 
@@ -24,7 +23,7 @@ public class FunctionCallExpression implements Expression {
         List<Value> valueList = new ArrayList<>();
         for (Expression expression : expressionList)
             valueList.add(expression.eval());
-        return ((FunctionValue)Variables.get(name)).function.execute(valueList);
+        return ((FunctionValue) variable.eval()).function.execute(valueList);
     }
 
     @Override
@@ -34,6 +33,6 @@ public class FunctionCallExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("(%s(%s))", name, expressionList.stream().map(Object::toString).collect(Collectors.joining(", ")));
+        return String.format("(%s(%s))", variable, expressionList.stream().map(Object::toString).collect(Collectors.joining(", ")));
     }
 }

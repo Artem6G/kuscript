@@ -380,11 +380,36 @@ public class Parser {
     }
 
     private Expression power() {
-        Expression expression = unary();
+        Expression expression = arrOrFunc();
 
         while (true) {
             if (match(TokenType.POWER)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.POWER, expression, unary());
+                expression = new BinaryExpression(BinaryExpression.OPERATORS.POWER, expression, arrOrFunc());
+                continue;
+            }
+
+            return expression;
+        }
+    }
+
+    private Expression arrOrFunc() {
+        Expression expression = unary();
+
+        while (true) {
+            if (match(TokenType.LEFT_SQUARE)) {
+                expression = new ElementValueArrayExpression(expression, expression());
+                consume(TokenType.RIGHT_SQUARE);
+                continue;
+            }
+            if (match(TokenType.LEFT_PAREN)) {
+                ArrayList<Expression> expressions = new ArrayList<>();
+                if (!match(TokenType.RIGHT_PAREN)) {
+                    do {
+                        expressions.add(expression());
+                    } while (match(TokenType.COMMA));
+                    consume(TokenType.RIGHT_PAREN);
+                }
+                expression = new FunctionCallValueExpression(expression, expressions);
                 continue;
             }
 
@@ -394,15 +419,15 @@ public class Parser {
 
     private Expression unary() {
         if (match(TokenType.NEGATION))
-            return new UnaryExpression(UnaryExpression.OPERATORS.NEGATION, functionExpression());
+            return new UnaryExpression(UnaryExpression.OPERATORS.NEGATION, primary());
         if (match(TokenType.NO))
-            return new UnaryExpression(UnaryExpression.OPERATORS.NO, functionExpression());
+            return new UnaryExpression(UnaryExpression.OPERATORS.NO, primary());
         if (match(TokenType.PLUS))
-            return new UnaryExpression(UnaryExpression.OPERATORS.PLUS, functionExpression());
+            return new UnaryExpression(UnaryExpression.OPERATORS.PLUS, primary());
         if (match(TokenType.INCREMENT))
-            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_INCREMENT, functionExpression());
+            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_INCREMENT, primary());
         if (match(TokenType.DECREMENT))
-            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_DECREMENT, functionExpression());
+            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_DECREMENT, primary());
         if (compareType(TokenType.WORD) && compareType(1, TokenType.INCREMENT)) {
             final Token token = getCurrentToken();
             consume(TokenType.WORD, TokenType.INCREMENT);
@@ -414,7 +439,7 @@ public class Parser {
             return new UnaryExpression(UnaryExpression.OPERATORS.RIGHT_DECREMENT, new VariableExpression(token.getValue()));
         }
         if (match(TokenType.MINUS))
-            return new UnaryExpression(UnaryExpression.OPERATORS.MINUS, functionExpression());
+            return new UnaryExpression(UnaryExpression.OPERATORS.MINUS, primary());
 
         return assignmentExpression();
     }
@@ -425,26 +450,14 @@ public class Parser {
         if (compareType(TokenType.WORD) && compareType(1, TokenType.OPERATOR_EQUALS))
             return assignmentOperator();
 
-        return functionExpression();
-    }
-
-
-    private Expression functionExpression() {
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.LEFT_PAREN))
-            return functionCallExpression();
-
         return primary();
     }
 
     private Expression primary() {
         final Token currentToken = getCurrentToken();
 
-        if (compareType(TokenType.LEFT_BRACKET)) {
+        if (compareType(TokenType.LEFT_BRACKET))
             return array();
-        }
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.LEFT_SQUARE)) {
-            return element();
-        }
         if (match(TokenType.INTEGER_VALUE))
             return new ValueExpression(Integer.parseInt(currentToken.getValue()));
         if (match(TokenType.BOOLEAN_VALUE))
@@ -728,7 +741,7 @@ public class Parser {
         return null;
     }
 
-    private FunctionCallExpression functionCallExpression() {
+    private FunctionCallValueExpression functionCallExpression() {
         String word = getCurrentToken().getValue();
         consume(TokenType.WORD, TokenType.LEFT_PAREN);
         ArrayList<Expression> expressions = new ArrayList<>();
@@ -739,9 +752,8 @@ public class Parser {
             } while (match(TokenType.COMMA));
             consume(TokenType.RIGHT_PAREN);
         }
-        return new FunctionCallExpression(word, expressions);
+        return new FunctionCallValueExpression(new VariableExpression(word), expressions);
     }
-
 
     private Expression element() {
         final String variable = consume(TokenType.WORD).getValue();

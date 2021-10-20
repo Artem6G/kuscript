@@ -1,8 +1,1 @@
-import "std"
-import "time"
-
-def a(b)
-    return 4
-
-c = {a, a, a, a}
-a = c[1]
+import {"std", "time"}

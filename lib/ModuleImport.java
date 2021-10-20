@@ -16,13 +16,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class ModuleImport {
-    private final String name;
-
-    public ModuleImport(String name) {
-        this.name = name;
-    }
-
-    public void importModule() {
+    public static void importModule(String name) {
         try {
             Class<?> aClass = Class.forName("lib.modules." + name);
             for (final Method method : aClass.getDeclaredMethods()) {
@@ -55,7 +49,7 @@ public class ModuleImport {
         }
     }
 
-    private void statementsExecute(String path) throws IOException {
+    private static void statementsExecute(String path) throws IOException {
         List<Statement> statements = new Parser(new Lexer(new String(Files.readAllBytes(Paths.get(path)))).lex()).parse();
 
         statements.forEach(x -> x.accept(new FunctionAdder()));
