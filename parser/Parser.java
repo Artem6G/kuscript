@@ -96,25 +96,6 @@ public class Parser {
             return elementArrayAssignment();
 
 
-        return incrementStatement();
-    }
-
-    private Statement incrementStatement() {
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.INCREMENT))
-            return rightUnary(TokenType.INCREMENT, UnaryExpression.OPERATORS.RIGHT_INCREMENT);
-        else if (compareType(TokenType.INCREMENT) && compareType(1, TokenType.WORD))
-            return leftUnary(TokenType.INCREMENT, UnaryExpression.OPERATORS.LEFT_INCREMENT);
-
-
-        return decrementStatement();
-    }
-
-    private Statement decrementStatement() {
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.DECREMENT))
-            return rightUnary(TokenType.DECREMENT, UnaryExpression.OPERATORS.RIGHT_DECREMENT);
-        else if (compareType(TokenType.DECREMENT) && compareType(1, TokenType.WORD))
-            return leftUnary(TokenType.DECREMENT, UnaryExpression.OPERATORS.LEFT_DECREMENT);
-
         return new ExpressionStatement(expression());
     }
 
@@ -529,19 +510,6 @@ public class Parser {
         return new AssignmentOperatorExpression(word, expression(), AssignmentOperatorExpression.ASSIGNMENT_OPERATORS.getType(operator));
     }
 
-    private Statement leftUnary(TokenType tokenType, UnaryExpression.OPERATORS operator) {
-        consume(tokenType);
-        final String word = getCurrentToken().getValue();
-        consume(TokenType.WORD);
-        return new UnaryStatement(new UnaryExpression(operator, new VariableExpression(word)));
-    }
-
-    private Statement rightUnary(TokenType tokenType, UnaryExpression.OPERATORS operator) {
-        final String word = getCurrentToken().getValue();
-        consume(TokenType.WORD, tokenType);
-        return new UnaryStatement(new UnaryExpression(operator, new VariableExpression(word)));
-    }
-
     private Statement doWhile() {
         Statement statement = rawBlockOrStatement();
         consume(TokenType.WHILE);
@@ -715,20 +683,6 @@ public class Parser {
         }
 
         return null;
-    }
-
-    private FunctionCallValueExpression functionCallExpression() {
-        String word = getCurrentToken().getValue();
-        consume(TokenType.WORD, TokenType.LEFT_PAREN);
-        ArrayList<Expression> expressions = new ArrayList<>();
-
-        if (!match(TokenType.RIGHT_PAREN)) {
-            do {
-                expressions.add(expression());
-            } while (match(TokenType.COMMA));
-            consume(TokenType.RIGHT_PAREN);
-        }
-        return new FunctionCallValueExpression(new VariableExpression(word), expressions);
     }
 
     private Expression element() {

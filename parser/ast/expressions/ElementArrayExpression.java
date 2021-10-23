@@ -28,9 +28,8 @@ public class ElementArrayExpression implements Expression {
     public ArrayValue getArray() {
         ArrayValue array = consumeArray(Variables.get(variable));
         final int last = expressionIndexes.size() - 1;
-        for (int i = 0; i < last; i++) {
+        for (int i = 0; i < last; i++)
             array = consumeArray(array.get(index(i)));
-        }
         return array;
     }
 
@@ -48,11 +47,10 @@ public class ElementArrayExpression implements Expression {
     }
 
     private ArrayValue consumeArray(Value value) {
-        if (value instanceof ArrayValue) {
+        if (value instanceof ArrayValue)
             return (ArrayValue) value;
-        } else {
+        else
             throw new RuntimeException("");
-        }
     }
 
     @Override
