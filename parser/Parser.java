@@ -93,7 +93,20 @@ public class Parser {
     }
 
     public Expression expression() {
-        return logical_equivalence();
+        return ternary();
+    }
+
+    private Expression ternary() {
+        Expression expression = logical_equivalence();
+
+        if (match(TokenType.QUERY)) {
+            final Expression trueExpr = logical_equivalence();
+            match(TokenType.COLON);
+            final Expression falseExpr = logical_equivalence();
+            return new TernaryExpression(expression, trueExpr, falseExpr);
+        }
+
+        return expression;
     }
 
     private Expression logical_equivalence() {
@@ -163,7 +176,7 @@ public class Parser {
     }
 
     private Expression logical_conjunction() {
-        Expression expression = ternary();
+        Expression expression = conditional();
 
         while (true) {
             if (match(TokenType.CONJUNCTION)) {
@@ -182,19 +195,6 @@ public class Parser {
             }
 
             break;
-        }
-
-        return expression;
-    }
-
-    private Expression ternary() {
-        Expression expression = conditional();
-
-        if (match(TokenType.QUERY)) {
-            final Expression trueExpr = conditional();
-            match(TokenType.COLON);
-            final Expression falseExpr = conditional();
-            return new TernaryExpression(expression, trueExpr, falseExpr);
         }
 
         return expression;
@@ -233,30 +233,6 @@ public class Parser {
         }
 
         return expression;
-    }
-
-    private Expression conditional_expr(BinaryExpression.OPERATORS operator, Expression expression1, Expression expression2) {
-
-        if (match(TokenType.CORRESPONDENCE)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.CORRESPONDENCE, expression1, expression2, logical_implication());
-        }
-        else if (match(TokenType.NOT_CORRESPONDENCE)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.NOT_CORRESPONDENCE, expression1, expression2, logical_implication());
-        }
-        else if (match(TokenType.SMALLER)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.SMALLER, expression1, expression2, spaceship());
-        }
-        else if (match(TokenType.STRICTLY_MORE)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.STRICTLY_MORE, expression1, expression2, spaceship());
-        }
-        else if (match(TokenType.STRICTLY_SMALLER)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.STRICTLY_SMALLER, expression1, expression2, spaceship());
-        }
-        else if (match(TokenType.MORE)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.MORE, expression1, expression2, spaceship());
-        }
-
-        return new BinaryExpression(operator, expression1, expression2);
     }
 
     private Expression spaceship() {
@@ -677,6 +653,30 @@ public class Parser {
         }
 
         return new ArrayExpression(elements);
+    }
+
+    private Expression conditional_expr(BinaryExpression.OPERATORS operator, Expression expression1, Expression expression2) {
+
+        if (match(TokenType.CORRESPONDENCE)) {
+            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.CORRESPONDENCE, expression1, expression2, logical_implication());
+        }
+        else if (match(TokenType.NOT_CORRESPONDENCE)) {
+            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.NOT_CORRESPONDENCE, expression1, expression2, logical_implication());
+        }
+        else if (match(TokenType.SMALLER)) {
+            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.SMALLER, expression1, expression2, spaceship());
+        }
+        else if (match(TokenType.STRICTLY_MORE)) {
+            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.STRICTLY_MORE, expression1, expression2, spaceship());
+        }
+        else if (match(TokenType.STRICTLY_SMALLER)) {
+            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.STRICTLY_SMALLER, expression1, expression2, spaceship());
+        }
+        else if (match(TokenType.MORE)) {
+            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.MORE, expression1, expression2, spaceship());
+        }
+
+        return new BinaryExpression(operator, expression1, expression2);
     }
 
     private String word() {
