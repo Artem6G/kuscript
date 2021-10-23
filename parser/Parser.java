@@ -34,38 +34,31 @@ public class Parser {
         return result;
     }
 
-    private Statement rawBlockOrStatement() {
-        ArrayList<Statement> statements = anyBlock();
-
-        if (statements != null)
-            return new RawBlockStatement(statements);
-
-        return statement();
-    }
-
     private Statement blockOrStatement() {
-        String label = label();
-
         ArrayList<Statement> statements = anyBlock();
 
         if (statements != null)
-            if (label == null)
-                return new BlockStatement(statements);
-            else
-                return new BlockStatement(statements, label);
+            return new BlockStatement(statements);
 
         return statement();
     }
 
     private Statement statement() {
-        if (match(TokenType.IF))
+        if (compareType(TokenType.WORD) && compareType(1, TokenType.COLON)) {
+
+            String word = getCurrentToken().getValue();
+            consume(TokenType.WORD, TokenType.COLON);
+
+            return new LabelStatement(word, blockOrStatement());
+        }
+        else if (match(TokenType.IF))
             return ifElse();
         else if (match(TokenType.DEF))
             return def();
         else if (match(TokenType.IMPORT))
             return new ImportStatement(expression());
         else if (match(TokenType.WHILE))
-            return new WhileStatement(expression(), rawBlockOrStatement());
+            return new WhileStatement(expression(), blockOrStatement());
         else if (match(TokenType.SWITCH))
             return _switch();
         else if (match(TokenType.FOR))
@@ -100,34 +93,13 @@ public class Parser {
     }
 
     public Expression expression() {
-        return ternary();
-    }
-
-    private Expression ternary() {
-        Expression expression = logical_equivalence();
-
-        if (match(TokenType.QUERY)) {
-            final Expression trueExpr = logical_equivalence();
-            match(TokenType.COLON);
-            final Expression falseExpr = logical_equivalence();
-            return new TernaryExpression(expression, trueExpr, falseExpr);
-        }
-
-        return expression;
+        return logical_equivalence();
     }
 
     private Expression logical_equivalence() {
         Expression expression = logical_implication();
 
         while (true) {
-            if (match(TokenType.CORRESPONDENCE)) {
-                expression = conditional_expr(BinaryExpression.OPERATORS.CORRESPONDENCE, expression, logical_implication());
-                continue;
-            }
-            if (match(TokenType.NOT_CORRESPONDENCE)) {
-                expression = conditional_expr(BinaryExpression.OPERATORS.NOT_CORRESPONDENCE, expression, logical_implication());
-                continue;
-            }
             if (match(TokenType.EQUIVALENCE)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.EQUIVALENCE, expression, logical_implication());
                 continue;
@@ -191,7 +163,7 @@ public class Parser {
     }
 
     private Expression logical_conjunction() {
-        Expression expression = conditional();
+        Expression expression = ternary();
 
         while (true) {
             if (match(TokenType.CONJUNCTION)) {
@@ -199,13 +171,13 @@ public class Parser {
                 continue;
             }
 
-            if (match(TokenType.NOR)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.NOR, expression, conditional());
+            if (match(TokenType.AND)) {
+                expression = new BinaryExpression(BinaryExpression.OPERATORS.AND, expression, conditional());
                 continue;
             }
 
-            if (match(TokenType.AND)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.AND, expression, conditional());
+            if (match(TokenType.NOR)) {
+                expression = new BinaryExpression(BinaryExpression.OPERATORS.NOR, expression, conditional());
                 continue;
             }
 
@@ -215,10 +187,31 @@ public class Parser {
         return expression;
     }
 
+    private Expression ternary() {
+        Expression expression = conditional();
+
+        if (match(TokenType.QUERY)) {
+            final Expression trueExpr = conditional();
+            match(TokenType.COLON);
+            final Expression falseExpr = conditional();
+            return new TernaryExpression(expression, trueExpr, falseExpr);
+        }
+
+        return expression;
+    }
+
     private Expression conditional() {
         Expression expression = spaceship();
 
         while (true) {
+            if (match(TokenType.CORRESPONDENCE)) {
+                expression = conditional_expr(BinaryExpression.OPERATORS.CORRESPONDENCE, expression, spaceship());
+                continue;
+            }
+            if (match(TokenType.NOT_CORRESPONDENCE)) {
+                expression = conditional_expr(BinaryExpression.OPERATORS.NOT_CORRESPONDENCE, expression, spaceship());
+                continue;
+            }
             if (match(TokenType.MORE)) {
                 expression = conditional_expr(BinaryExpression.OPERATORS.MORE, expression, spaceship());
                 continue;
@@ -280,7 +273,6 @@ public class Parser {
 
         return expression;
     }
-
 
     private Expression shift() {
         Expression expression = additive();
@@ -511,7 +503,7 @@ public class Parser {
     }
 
     private Statement doWhile() {
-        Statement statement = rawBlockOrStatement();
+        Statement statement = blockOrStatement();
         consume(TokenType.WHILE);
         return new DoWhileStatement(statement, expression());
     }
@@ -530,13 +522,13 @@ public class Parser {
     private Statement fullBypassForeach() {
         VariableExpression variableExpression = (VariableExpression) expression();
         consume(TokenType.FULL_BYPASS);
-        return new FullBypassForEachStatement(variableExpression, expression(), rawBlockOrStatement());
+        return new FullBypassForEachStatement(variableExpression, expression(), blockOrStatement());
     }
 
     private Statement foreach() {
         VariableExpression variableExpression = (VariableExpression) expression();
         consume(TokenType.COLON);
-        return new ForEachStatement(variableExpression, expression(), rawBlockOrStatement());
+        return new ForEachStatement(variableExpression, expression(), blockOrStatement());
     }
 
     private Statement rangeFor() {
@@ -554,20 +546,20 @@ public class Parser {
         }
 
         consume(TokenType.RIGHT_PAREN);
-        return new ForRangeStatement(expression, expressions, rawBlockOrStatement());
+        return new ForRangeStatement(expression, expressions, blockOrStatement());
     }
 
     private Statement ifElse() {
         LinkedHashMap<Expression, Statement> conditionals = new LinkedHashMap<>();
 
-        conditionals.put(expression(), rawBlockOrStatement());
+        conditionals.put(expression(), blockOrStatement());
 
         while (match(TokenType.ELIF)) {
-            conditionals.put(expression(), rawBlockOrStatement());
+            conditionals.put(expression(), blockOrStatement());
         }
 
         if (match(TokenType.ELSE)) {
-            return new IfElseStatement(conditionals, rawBlockOrStatement());
+            return new IfElseStatement(conditionals, blockOrStatement());
         } else {
             return new IfStatement(conditionals);
         }
@@ -599,16 +591,16 @@ public class Parser {
             consume(TokenType.RIGHT_PAREN);
         }
 
-        return new DefineFunctionStatement(word, arguments, rawBlockOrStatement());
+        return new DefineFunctionStatement(word, arguments, blockOrStatement());
     }
 
-    private BreakStatement _break() {
+    private Statement _break() {
         String word = word();
 
         if (word == null)
             return new BreakStatement();
         else {
-            return new BreakStatement(word);
+            return new BreakLabelStatement(word);
         }
     }
 
@@ -634,15 +626,15 @@ public class Parser {
             if (compareType(TokenType.CASE))
                 statement = new PassStatement();
             else
-                statement = rawBlockOrStatement();
+                statement = blockOrStatement();
 
             conditionals.put(expression, statement);
         }
 
         if (match(TokenType.DEFAULT)) {
             if (breakSwitch)
-                return new SwitchBreakStatement(valueExpression, conditionals, rawBlockOrStatement());
-            return new SwitchStatement(valueExpression, conditionals, rawBlockOrStatement());
+                return new SwitchBreakStatement(valueExpression, conditionals, blockOrStatement());
+            return new SwitchStatement(valueExpression, conditionals, blockOrStatement());
         } else {
             if (breakSwitch)
                 return new SwitchBreakStatement(valueExpression, conditionals, new PassStatement());
@@ -685,17 +677,6 @@ public class Parser {
         }
 
         return new ArrayExpression(elements);
-    }
-
-    private String label() {
-        String label = null;
-
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.COLON)) {
-            label = getCurrentToken().getValue();
-            consume(TokenType.WORD, TokenType.COLON);
-        }
-
-        return label;
     }
 
     private String word() {

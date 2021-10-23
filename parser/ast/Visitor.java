@@ -22,7 +22,6 @@ public interface Visitor {
     void visit(IfStatement ifStatement);
     void visit(MultiplyAssignmentStatement multiplyAssignmentStatement);
     void visit(PassStatement passStatement);
-    void visit(RawBlockStatement rawBlockStatement);
     void visit(SwitchBreakStatement switchBreakStatement);
     void visit(SwitchStatement switchStatement);
     void visit(UnaryStatement unaryStatement);
@@ -38,4 +37,6 @@ public interface Visitor {
     void visit(ElementValueArrayExpression elementValueArrayExpression);
     void visit(FunctionCallValueExpression elementFunctionArrayExpression);
     void visit(ExpressionStatement expressionStatement);
+    void visit(LabelStatement labelStatement);
+    void visit(BreakLabelStatement breakLabelStatement);
 }

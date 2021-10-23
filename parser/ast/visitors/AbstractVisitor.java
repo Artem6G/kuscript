@@ -133,6 +133,16 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
+    public void visit(LabelStatement labelStatement) {
+        labelStatement.statement.accept(this);
+    }
+
+    @Override
+    public void visit(BreakLabelStatement breakLabelStatement) {
+
+    }
+
+    @Override
     public void visit(BlockStatement blockStatement) {
         for (Statement statement : blockStatement.statements)
             statement.accept(this);
@@ -179,12 +189,6 @@ public class AbstractVisitor implements Visitor {
     public void visit(MultiplyAssignmentStatement multiplyAssignmentStatement) {
         for (parser.ast.Expression expression : multiplyAssignmentStatement.expressions)
             expression.accept(this);
-    }
-
-    @Override
-    public void visit(RawBlockStatement rawBlockStatement) {
-        for (Statement statement : rawBlockStatement.statements)
-            statement.accept(this);
     }
 
     @Override
