@@ -18,7 +18,6 @@ public interface Visitor {
     void visit(DoWhileStatement doWhileStatement);
     void visit(ElementAssignmentArrayStatement elementAssignmentArrayStatement);
     void visit(ForRangeStatement forRangeStatement);
-    void visit(ForStatement forStatement);
     void visit(IfElseStatement ifElseStatement);
     void visit(ContinueStatement continueStatement);
     void visit(IfStatement ifStatement);

@@ -1,5 +1,1 @@
 import "std"
-
-a = 3
-a += 1
-println(a)

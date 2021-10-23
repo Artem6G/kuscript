@@ -517,9 +517,6 @@ public class Parser {
     }
 
     private Statement anyFor() {
-        Statement[] statements = new Statement[2];
-        Expression expression;
-
         if (compareType(1, TokenType.COLON) && compareType(2, TokenType.RANGE))
             return rangeFor();
         else if (compareType(1, TokenType.COLON))
@@ -527,26 +524,7 @@ public class Parser {
         else if (compareType(1, TokenType.FULL_BYPASS))
             return fullBypassForeach();
 
-        if (match(TokenType.COMMA)) {
-            statements[0] = new PassStatement();
-        } else {
-            statements[0] = statement();
-            consume(TokenType.COMMA);
-        }
-
-        if (match(TokenType.COMMA))
-            expression = new ValueExpression(true);
-        else {
-            expression = expression();
-            consume(TokenType.COMMA);
-        }
-
-        if (match(TokenType.COMMA))
-            statements[1] = new PassStatement();
-        else
-            statements[1] = statement();
-
-        return new ForStatement(statements[0], expression, statements[1], rawBlockOrStatement());
+        throw new RuntimeException("");
     }
 
     private Statement fullBypassForeach() {

@@ -164,14 +164,6 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(ForStatement forStatement) {
-        forStatement.firstStatement.accept(this);
-        forStatement.secondStatement.accept(this);
-        forStatement.thirdStatement.accept(this);
-        forStatement.expression.accept(this);
-    }
-
-    @Override
     public void visit(IfElseStatement ifElseStatement) {
         ifElseStatement.elseStatement.accept(this);
         for (parser.ast.Expression expression : ifElseStatement.expressions)

@@ -1,6 +1,5 @@
 package parser.ast.statements;
 
-import lib.variables.Variables;
 import parser.ast.Statement;
 import parser.ast.Visitor;
 
