@@ -1,5 +1,7 @@
 import "std"
 
 f:
-     a = 4
-break f
+for i : range(100) {
+    continue
+    println(i)
+}

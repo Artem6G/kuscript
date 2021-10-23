@@ -70,7 +70,7 @@ public class Parser {
         else if (match(TokenType.DO))
             return doWhile();
         else if (match(TokenType.CONTINUE))
-            return _continue();
+            return new ContinueStatement();
         else if (match(TokenType.PASS))
             return new PassStatement();
 
@@ -578,15 +578,6 @@ public class Parser {
         else {
             return new BreakLabelStatement(word);
         }
-    }
-
-    private ContinueStatement _continue() {
-        String word = word();
-
-        if (word == null)
-            return new ContinueStatement();
-        else
-            return new ContinueStatement(word);
     }
 
     private Statement _switch() {
