@@ -139,11 +139,6 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(CultivatedStatement cultivatedStatement) {
-        cultivatedStatement.statement.accept(this);
-    }
-
-    @Override
     public void visit(DoWhileStatement doWhileStatement) {
         doWhileStatement.statement.accept(this);
         doWhileStatement.expression.accept(this);

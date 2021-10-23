@@ -14,7 +14,6 @@ public interface Visitor {
     void visit(VariableExpression variableExpression);
     void visit(BlockStatement blockStatement);
     void visit(BreakStatement breakStatement);
-    void visit(CultivatedStatement cultivatedStatement);
     void visit(DoWhileStatement doWhileStatement);
     void visit(ElementAssignmentArrayStatement elementAssignmentArrayStatement);
     void visit(ForRangeStatement forRangeStatement);
