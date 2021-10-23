@@ -2,6 +2,7 @@ import lexer.Lexer;
 import lexer.Token;
 import parser.Parser;
 import parser.ast.Statement;
+import parser.ast.statements.BreakLabelStatement;
 import parser.ast.statements.BreakStatement;
 import parser.ast.statements.ContinueStatement;
 
@@ -30,8 +31,8 @@ public class Main {
         // answer
         try {
             statements.forEach(Statement::execute);
-        } catch (BreakStatement | ContinueStatement sta) {
-            throw new RuntimeException("unknown label " + sta.getMessage());
+        } catch (BreakLabelStatement breakLabelStatement) {
+            throw new RuntimeException("unknown label " + breakLabelStatement.name);
         }
     }
 }

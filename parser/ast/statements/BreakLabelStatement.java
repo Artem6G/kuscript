@@ -20,4 +20,9 @@ public class BreakLabelStatement extends RuntimeException implements Statement {
     public void execute() {
         throw this;
     }
+
+    @Override
+    public String toString() {
+        return "break " + name;
+    }
 }

@@ -1,2 +1,5 @@
 import "std"
-print(1 + 2 > 2 ? 3 : 5)
+
+f:
+     a = 4
+break f

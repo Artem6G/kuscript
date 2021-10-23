@@ -1,1 +1,5 @@
 import "std"
+
+f:
+     a = 4
+break f
