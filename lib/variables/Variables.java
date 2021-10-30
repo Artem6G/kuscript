@@ -1,7 +1,6 @@
 package lib.variables;
 
-import lib.Value;
-import lib.values.NoneValue;
+import lib.Value;;
 
 import java.util.HashMap;
 import java.util.Stack;

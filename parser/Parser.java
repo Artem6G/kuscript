@@ -388,6 +388,23 @@ public class Parser {
         if (compareType(TokenType.WORD) && compareType(1, TokenType.OPERATOR_EQUALS))
             return assignmentOperator();
 
+        return lambda();
+    }
+
+    private Expression lambda() {
+        if (match(TokenType.LAMBDA)) {
+            Arguments arguments = new Arguments();
+
+            do {
+                arguments.add(getCurrentToken().getValue());
+                consume(TokenType.WORD);
+            } while(match(TokenType.COMMA));
+
+            consume(TokenType.COLON);
+
+            return new LambdaExpression(arguments, expression());
+        }
+
         return primary();
     }
 

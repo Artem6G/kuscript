@@ -132,6 +132,11 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
+    public void visit(LambdaExpression lambdaExpression) {
+        lambdaExpression.expression.accept(this);
+    }
+
+    @Override
     public void visit(BlockStatement blockStatement) {
         for (Statement statement : blockStatement.statements)
             statement.accept(this);

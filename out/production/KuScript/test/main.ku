@@ -1,8 +1,1 @@
-import "time"
-start = time()
-
-f = 0
-for i : range(500_000_000)
-    f++
-
-println("Затраченное время", time() - start)
+println((lambda x: x ** 2)(3))

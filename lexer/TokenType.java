@@ -35,6 +35,7 @@ public enum TokenType {
     CONTINUE,
 
     DEF,
+    LAMBDA,
     RETURN,
 
     IMPORT,
