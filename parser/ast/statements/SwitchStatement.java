@@ -11,13 +11,13 @@ import java.util.LinkedHashMap;
 
 public class SwitchStatement implements Statement {
 
-    public final parser.ast.Expression valueExpression;
+    public final Expression valueExpression;
     public final ArrayList<Expression> expressions;
     public final ArrayList<Statement> statements;
     public final Statement defaultStatement;
     protected final int size;
 
-    public SwitchStatement(parser.ast.Expression valueExpression, LinkedHashMap<Expression, Statement> conditions, Statement defaultStatement) {
+    public SwitchStatement(Expression valueExpression, LinkedHashMap<Expression, Statement> conditions, Statement defaultStatement) {
         size = conditions.size();
         this.valueExpression = valueExpression;
         this.expressions = new ArrayList<>(conditions.keySet());

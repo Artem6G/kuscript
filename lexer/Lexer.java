@@ -12,8 +12,6 @@ public class Lexer {
     private final ArrayList<Token> TOKENS;
     private final String OPERATOR_CHARS = ";+-/*(){}[]%<>*|=^~&!?:,";
     private final String WORD_CHARS = "`_$";
-    private final String FORMAT_CHARS = "\"tfrnb'\\";
-    private final String FORMAT_EQUALS_CHARS = "\"\t\f\r\n\b'\\";
     private final int LENGTH;
     private final ArrayList<String> STATEMENTS = new ArrayList<>(Arrays.asList(
             "if",
@@ -76,7 +74,6 @@ public class Lexer {
         put("--", TokenType.DECREMENT);
         put(",", TokenType.COMMA);
         put("$", TokenType.PRINT_EXPRESSION);
-        put("*:", TokenType.FULL_BYPASS);
     }};
     private final ArrayList<String> OPERATOR_EQUALS = new ArrayList<>(Arrays.asList(
             "+=",
@@ -129,8 +126,6 @@ public class Lexer {
                 multilineComment();
             } else if (Character.isLetter(currentChar) || WORD_CHARS.indexOf(currentChar) != -1) {
                 tokenizeWord();
-            } else if (compareChar('\'')) {
-                tokenizeChar();
             } else if (compareChar('"')) {
                 tokenizeText();
             } else if (compareChar('#')) {
@@ -272,9 +267,11 @@ public class Lexer {
              if (currentChar == '\\') {
                  char peeked = peek(1);
 
+                 String FORMAT_CHARS = "\"tfrnb'\\";
                  int index = FORMAT_CHARS.indexOf(peeked);
 
                  if (index != -1) {
+                     String FORMAT_EQUALS_CHARS = "\"\t\f\r\n\b'\\";
                      stringBuilder.append(FORMAT_EQUALS_CHARS.charAt(index));
                      next(2);
                      continue;
@@ -289,29 +286,6 @@ public class Lexer {
         next();
 
         addToken(TokenType.STRING_VALUE, stringBuilder.toString());
-    }
-
-    private void tokenizeChar() {
-        next();
-        char ch = currentChar;
-
-        if (ch == '\\') {
-            int index = FORMAT_CHARS.indexOf(peek(1));
-
-            if (index != -1) {
-                ch = FORMAT_EQUALS_CHARS.charAt(index);
-                next();
-            }
-            else
-                exception("illegal escape character");
-        }
-
-        if (next() != '\'')
-            exception("illegal escape character");
-
-        next();
-
-        addToken(TokenType.CHAR_VALUE, Character.toString(ch));
     }
 
     private void multilineComment() {

@@ -1,10 +1,8 @@
 package parser.ast.statements;
 
-import parser.ast.Statement;
 import parser.ast.Visitor;
 
-public class BreakLabelStatement extends RuntimeException implements Statement {
-
+public class BreakLabelStatement extends BreakStatement {
     public final String name;
 
     public BreakLabelStatement(String name) {
@@ -17,12 +15,7 @@ public class BreakLabelStatement extends RuntimeException implements Statement {
     }
 
     @Override
-    public void execute() {
-        throw this;
-    }
-
-    @Override
     public String toString() {
-        return "break " + name;
+        return String.format("%s %s", super.toString(), name);
     }
 }

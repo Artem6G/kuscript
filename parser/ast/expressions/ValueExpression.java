@@ -21,10 +21,6 @@ public class ValueExpression implements Expression {
         this.VALUE = new StringValue(value);
     }
 
-    public ValueExpression(char value) {
-        this.VALUE = new CharValue(value);
-    }
-
     public ValueExpression(boolean value) {
         this.VALUE = new BooleanValue(value);
     }

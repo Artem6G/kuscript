@@ -12,11 +12,13 @@ public class ForEachStatement implements Statement {
     public final VariableExpression variableExpression;
     public final Expression expression;
     public final Statement statement;
+    public final Statement elseStatement;
 
-    public ForEachStatement (VariableExpression variableExpression, Expression expression, Statement statement) {
+    public ForEachStatement (VariableExpression variableExpression, Expression expression, Statement statement, Statement elseStatement) {
         this.variableExpression = variableExpression;
         this.expression = expression;
         this.statement = statement;
+        this.elseStatement = elseStatement;
     }
 
     @Override
@@ -28,14 +30,10 @@ public class ForEachStatement implements Statement {
                 Variables.setVariable(word, value);
                 statement.execute();
             } catch (BreakStatement breakStatement) {
-                if (breakStatement.getMessage() == null)
-                    break;
-                else
-                    throw breakStatement;
-            } catch (ContinueStatement continueStatement) {
-                if (continueStatement.getMessage() != null)
-                    throw continueStatement;
-            }
+                return;
+            } catch (ContinueStatement ignored) {}
+
+        elseStatement.execute();
     }
 
     @Override

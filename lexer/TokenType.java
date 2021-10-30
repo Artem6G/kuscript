@@ -4,6 +4,7 @@ public enum TokenType {
     WORD,
 
     NULL,
+    NONE,
 
     HEX_NUM,
     OCTAL_NUM,
@@ -13,7 +14,6 @@ public enum TokenType {
     DOUBLE_VALUE,
     BOOLEAN_VALUE,
     STRING_VALUE,
-    CHAR_VALUE,
 
     IF,
     ELIF,
@@ -45,8 +45,6 @@ public enum TokenType {
 
     QUERY, // ?
     COLON, // :
-
-    FULL_BYPASS, // *:
 
     EQUALS, // =
     NOT_CORRESPONDENCE, // !=

@@ -4,14 +4,9 @@ import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.Visitor;
 
-public class DoWhileStatement implements Statement {
-
-    public final Statement statement;
-    public final Expression expression;
-
-    public DoWhileStatement (Statement statement, Expression expression) {
-        this.statement = statement;
-        this.expression = expression;
+public class DoWhileStatement extends WhileStatement implements Statement {
+    public DoWhileStatement (Expression expression, Statement statement, Statement elseStatement) {
+        super(expression, statement, elseStatement);
     }
 
     @Override
@@ -20,20 +15,16 @@ public class DoWhileStatement implements Statement {
             try {
                 statement.execute();
             } catch (BreakStatement breakStatement) {
-                if (breakStatement.getMessage() == null)
-                    break;
-                else
-                    throw breakStatement;
-            } catch (ContinueStatement continueStatement) {
-                if (continueStatement.getMessage() != null)
-                    throw continueStatement;
-            }
+                return;
+            } catch (ContinueStatement ignored) {}
         } while (expression.eval().asBoolean());
+
+        elseStatement.execute();
     }
 
     @Override
     public String toString() {
-        return String.format("while %s %s", statement, expression);
+        return String.format("while %s %s else %s", statement, expression, elseStatement);
     }
 
     @Override

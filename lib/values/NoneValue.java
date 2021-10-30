@@ -15,7 +15,7 @@ public class NoneValue implements Value {
 
     @Override
     public String asString() {
-        throw new RuntimeException("");
+        return "none";
     }
 
     @Override
@@ -35,11 +35,11 @@ public class NoneValue implements Value {
 
     @Override
     public FunctionValue asFunction() {
-        return null;
+        throw new RuntimeException("");
     }
 
     @Override
     public String toString() {
-        return "none";
+        return asString();
     }
 }

@@ -15,11 +15,13 @@ public class ForRangeStatement implements Statement {
     public final Expression expression;
     public final ArrayList<Expression> expressions;
     public final Statement statement;
+    public final Statement elseStatement;
 
-    public ForRangeStatement (Expression expression, ArrayList<Expression> expressions, Statement statement) {
+    public ForRangeStatement (Expression expression, ArrayList<Expression> expressions, Statement statement, Statement elseStatement) {
         this.expression = expression;
         this.expressions = expressions;
         this.statement = statement;
+        this.elseStatement = elseStatement;
     }
 
     @Override
@@ -56,14 +58,10 @@ public class ForRangeStatement implements Statement {
                 Variables.setVariable(word, new IntegerValue(i));
                 statement.execute();
             } catch (BreakStatement breakStatement) {
-                if (breakStatement.getMessage() == null)
-                    break;
-                else
-                    throw breakStatement;
-            } catch (ContinueStatement continueStatement) {
-                if (continueStatement.getMessage() != null)
-                    throw continueStatement;
-            }
+                return;
+            } catch (ContinueStatement ignored) {}
+
+        elseStatement.execute();
     }
 
     @Override

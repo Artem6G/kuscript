@@ -7,7 +7,6 @@ public interface Visitor {
     void visit(ArrayExpression arrayExpression);
     void visit(BinaryExpression binaryExpression);
     void visit(ElementArrayExpression elementArrayExpression);
-    void visit(NullValueExpression nullValueExpression);
     void visit(TernaryExpression ternaryExpression);
     void visit(UnaryExpression unaryExpression);
     void visit(ValueExpression valueExpression);
@@ -17,9 +16,8 @@ public interface Visitor {
     void visit(DoWhileStatement doWhileStatement);
     void visit(ElementAssignmentArrayStatement elementAssignmentArrayStatement);
     void visit(ForRangeStatement forRangeStatement);
-    void visit(IfElseStatement ifElseStatement);
+    void visit(ConditionalStatement ifElseStatement);
     void visit(ContinueStatement continueStatement);
-    void visit(IfStatement ifStatement);
     void visit(MultiplyAssignmentStatement multiplyAssignmentStatement);
     void visit(PassStatement passStatement);
     void visit(SwitchBreakStatement switchBreakStatement);
@@ -29,7 +27,6 @@ public interface Visitor {
     void visit(ReturnStatement returnStatement);
     void visit(DefineFunctionStatement defineFunctionStatement);
     void visit(ForEachStatement forEachStatement);
-    void visit(FullBypassForEachStatement fullBypassForEachStatement);
     void visit(BinaryConditionalExpression binaryConditionalExpression);
     void visit(ImportStatement importStatement);
     void visit(AssignmentExpression assignmentExpression);

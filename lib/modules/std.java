@@ -71,8 +71,6 @@ public class std {
                 return new IntegerValue(args.get(0).asBoolean() ? 1 : 0);
             case STRING:
                 return new IntegerValue(Integer.parseInt(args.get(0).asString()));
-            case CHAR:
-                return new IntegerValue(Integer.parseInt(Character.toString(args.get(0).asChar())));
         }
 
         throw new RuntimeException(String.format("%s cannot be cast to int", DataType.type(args.get(0))));
@@ -107,8 +105,6 @@ public class std {
                 return new DoubleValue(args.get(0).asInteger());
             case STRING:
                 return new DoubleValue(Double.parseDouble(args.get(0).asString()));
-            case CHAR:
-                return new DoubleValue(Double.parseDouble(Character.toString(args.get(0).asChar())));
         }
 
         throw new RuntimeException(String.format("%s cannot be cast to double", DataType.type(args.get(0))));
@@ -126,7 +122,6 @@ public class std {
             case INT:
             case BOOLEAN:
             case ARRAY:
-            case CHAR:
                 return new StringValue(args.get(0).asString());
         }
 

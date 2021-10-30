@@ -7,16 +7,18 @@ import parser.ast.Visitor;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class IfStatement implements Statement {
+public class ConditionalStatement implements Statement {
 
     public final ArrayList<Expression> expressions;
     public final ArrayList<Statement> statements;
+    public final Statement elseStatement;
     private final int size;
 
-    public IfStatement(LinkedHashMap<Expression, Statement> conditions) {
+    public ConditionalStatement(LinkedHashMap<Expression, Statement> conditions, Statement elseStatement) {
         size = conditions.size();
         this.expressions = new ArrayList<>(conditions.keySet());
         this.statements =  new ArrayList<>(conditions.values());
+        this.elseStatement = elseStatement;
     }
 
     @Override
@@ -27,6 +29,8 @@ public class IfStatement implements Statement {
                     return;
                 }
             }
+
+            elseStatement.execute();
     }
 
     @Override
@@ -37,6 +41,8 @@ public class IfStatement implements Statement {
 
         for (int i = 1; i < size; i++)
             stringBuilder.append(String.format("\nelif %s %s", expressions.get(i), statements.get(i)));
+
+        stringBuilder.append(String.format("\nelse %s", elseStatement));
 
         return stringBuilder.toString();
     }

@@ -5,7 +5,6 @@ import lib.Value;
 public enum DataType {
     INT,
     DOUBLE,
-    CHAR,
     BOOLEAN,
     STRING,
     NULL,
@@ -17,8 +16,6 @@ public enum DataType {
             return INT;
         else if (value instanceof DoubleValue)
             return DOUBLE;
-        else if (value instanceof CharValue)
-            return CHAR;
         else if (value instanceof BooleanValue)
             return BOOLEAN;
         else if (value instanceof StringValue)

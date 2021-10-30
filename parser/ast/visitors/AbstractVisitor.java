@@ -8,11 +8,6 @@ import parser.ast.statements.*;
 
 public class AbstractVisitor implements Visitor {
     @Override
-    public void visit(NullValueExpression nullValueExpression) {
-
-    }
-
-    @Override
     public void visit(ValueExpression valueExpression) {
 
     }
@@ -83,13 +78,7 @@ public class AbstractVisitor implements Visitor {
         forEachStatement.variableExpression.accept(this);
         forEachStatement.expression.accept(this);
         forEachStatement.statement.accept(this);
-    }
-
-    @Override
-    public void visit(FullBypassForEachStatement fullBypassForEachStatement) {
-        fullBypassForEachStatement.variableExpression.accept(this);
-        fullBypassForEachStatement.expression.accept(this);
-        fullBypassForEachStatement.statement.accept(this);
+        forEachStatement.elseStatement.accept(this);
     }
 
     @Override
@@ -152,6 +141,7 @@ public class AbstractVisitor implements Visitor {
     public void visit(DoWhileStatement doWhileStatement) {
         doWhileStatement.statement.accept(this);
         doWhileStatement.expression.accept(this);
+        doWhileStatement.elseStatement.accept(this);
     }
 
     @Override
@@ -165,23 +155,16 @@ public class AbstractVisitor implements Visitor {
         for (parser.ast.Expression expression : forRangeStatement.expressions)
             expression.accept(this);
         forRangeStatement.statement.accept(this);
+        forRangeStatement.elseStatement.accept(this);
         forRangeStatement.expression.accept(this);
     }
 
     @Override
-    public void visit(IfElseStatement ifElseStatement) {
+    public void visit(ConditionalStatement ifElseStatement) {
         ifElseStatement.elseStatement.accept(this);
         for (parser.ast.Expression expression : ifElseStatement.expressions)
             expression.accept(this);
         for (Statement statement : ifElseStatement.statements)
-            statement.accept(this);
-    }
-
-    @Override
-    public void visit(IfStatement ifStatement) {
-        for (parser.ast.Expression expression : ifStatement.expressions)
-            expression.accept(this);
-        for (Statement statement : ifStatement.statements)
             statement.accept(this);
     }
 
@@ -218,6 +201,7 @@ public class AbstractVisitor implements Visitor {
     public void visit(WhileStatement whileStatement) {
         whileStatement.expression.accept(this);
         whileStatement.statement.accept(this);
+        whileStatement.elseStatement.accept(this);
     }
 
 }

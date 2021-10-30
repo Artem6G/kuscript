@@ -4,6 +4,8 @@ import lexer.Token;
 import lexer.TokenType;
 import lib.arguments.Arguments;
 import lib.functions.DefineFunction;
+import lib.values.NoneValue;
+import lib.values.NullValue;
 import parser.ast.Expression;
 import parser.ast.Statement;
 import parser.ast.expressions.*;
@@ -58,7 +60,7 @@ public class Parser {
         else if (match(TokenType.IMPORT))
             return new ImportStatement(expression());
         else if (match(TokenType.WHILE))
-            return new WhileStatement(expression(), blockOrStatement());
+            return whileLoop();
         else if (match(TokenType.SWITCH))
             return _switch();
         else if (match(TokenType.FOR))
@@ -112,7 +114,7 @@ public class Parser {
     private Expression logical_equivalence() {
         Expression expression = logical_implication();
 
-        while (true) {
+        for (;;) {
             if (match(TokenType.EQUIVALENCE)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.EQUIVALENCE, expression, logical_implication());
                 continue;
@@ -127,7 +129,7 @@ public class Parser {
     private Expression logical_implication() {
         Expression expression = logical_disjunction();
 
-        while (true) {
+        for (;;) {
             if (match(TokenType.IMPLICATION)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.IMPLICATION, expression, logical_disjunction());
                 continue;
@@ -148,7 +150,7 @@ public class Parser {
     private Expression logical_disjunction() {
         Expression expression = logical_conjunction();
 
-        while (true) {
+        for (;;) {
             if (match(TokenType.DISJUNCTION)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.DISJUNCTION, expression, logical_conjunction());
                 continue;
@@ -178,7 +180,7 @@ public class Parser {
     private Expression logical_conjunction() {
         Expression expression = conditional();
 
-        while (true) {
+        for (;;) {
             if (match(TokenType.CONJUNCTION)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.CONJUNCTION, expression, conditional());
                 continue;
@@ -203,7 +205,7 @@ public class Parser {
     private Expression conditional() {
         Expression expression = spaceship();
 
-        while (true) {
+        for (;;) {
             if (match(TokenType.CORRESPONDENCE)) {
                 expression = conditional_expr(BinaryExpression.OPERATORS.CORRESPONDENCE, expression, spaceship());
                 continue;
@@ -238,7 +240,7 @@ public class Parser {
     private Expression spaceship() {
         Expression expression = shift();
 
-        while (true) {
+        for (;;) {
             if (match(TokenType.SPACESHIP)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.SPACESHIP, expression, shift());
                 continue;
@@ -253,7 +255,7 @@ public class Parser {
     private Expression shift() {
         Expression expression = additive();
 
-        while (true) {
+        for(;;) {
             if (match(TokenType.LEFT_SHIFT)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.LEFT_SHIFT, expression, additive());
                 continue;
@@ -268,7 +270,6 @@ public class Parser {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.RIGHT_UNSIGNED_SHIFT, expression, additive());
                 continue;
             }
-
             break;
         }
 
@@ -278,7 +279,7 @@ public class Parser {
     private Expression additive() {
         Expression expression = multiplicative();
 
-        while (true) {
+        for (;;){
             if (match(TokenType.PLUS)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.ADD, expression, multiplicative());
                 continue;
@@ -287,7 +288,6 @@ public class Parser {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.SUBTRACT, expression, multiplicative());
                 continue;
             }
-
             break;
         }
 
@@ -297,7 +297,7 @@ public class Parser {
     private Expression multiplicative() {
         Expression expression = power();
 
-        while (true) {
+        for (;;) {
             if (match(TokenType.MULTIPLY)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.MULTIPLY, expression, power());
                 continue;
@@ -320,7 +320,7 @@ public class Parser {
     private Expression power() {
         Expression expression = arrOrFunc();
 
-        while (true) {
+        for (;;) {
             if (match(TokenType.POWER)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.POWER, expression, arrOrFunc());
                 continue;
@@ -333,7 +333,7 @@ public class Parser {
     private Expression arrOrFunc() {
         Expression expression = unary();
 
-        while (true) {
+        for (;;) {
             if (match(TokenType.LEFT_SQUARE)) {
                 expression = new ElementValueArrayExpression(expression, expression());
                 consume(TokenType.RIGHT_SQUARE);
@@ -409,11 +409,11 @@ public class Parser {
         if (match(TokenType.BINARY_NUM))
             return new ValueExpression(Integer.parseInt(currentToken.getValue(), 2));
         if (match(TokenType.NULL))
-            return new NullValueExpression();
+            return new ValueExpression(new NullValue());
+        if (match(TokenType.NONE))
+            return new ValueExpression(new NoneValue());
         if (match(TokenType.STRING_VALUE))
             return new ValueExpression(currentToken.getValue());
-        if (match(TokenType.CHAR_VALUE))
-            return new ValueExpression(currentToken.getValue().charAt(0));
         if (match(TokenType.WORD)) {
             return new VariableExpression(currentToken.getValue());
         }
@@ -478,10 +478,25 @@ public class Parser {
         return new AssignmentOperatorExpression(word, expression(), AssignmentOperatorExpression.ASSIGNMENT_OPERATORS.getType(operator));
     }
 
+    private Statement whileLoop() {
+        Expression expression = expression();
+        Statement statement = blockOrStatement();
+
+        if(match(TokenType.ELSE))
+            return new WhileStatement(expression, statement, blockOrStatement());
+        else
+            return new WhileStatement(expression, statement, new PassStatement());
+    }
+
     private Statement doWhile() {
         Statement statement = blockOrStatement();
         consume(TokenType.WHILE);
-        return new DoWhileStatement(statement, expression());
+        Expression expression = expression();
+
+        if(match(TokenType.ELSE))
+            return new DoWhileStatement(expression, statement, blockOrStatement());
+        else
+            return new DoWhileStatement(expression, statement, new PassStatement());
     }
 
     private Statement anyFor() {
@@ -489,22 +504,20 @@ public class Parser {
             return rangeFor();
         else if (compareType(1, TokenType.COLON))
             return foreach();
-        else if (compareType(1, TokenType.FULL_BYPASS))
-            return fullBypassForeach();
 
         throw new RuntimeException("");
-    }
-
-    private Statement fullBypassForeach() {
-        VariableExpression variableExpression = (VariableExpression) expression();
-        consume(TokenType.FULL_BYPASS);
-        return new FullBypassForEachStatement(variableExpression, expression(), blockOrStatement());
     }
 
     private Statement foreach() {
         VariableExpression variableExpression = (VariableExpression) expression();
         consume(TokenType.COLON);
-        return new ForEachStatement(variableExpression, expression(), blockOrStatement());
+        Expression expression = expression();
+        Statement statement = blockOrStatement();
+
+        if (match(TokenType.ELSE))
+            return new ForEachStatement(variableExpression, expression, statement, blockOrStatement());
+        else
+            return new ForEachStatement(variableExpression, expression, statement, new PassStatement());
     }
 
     private Statement rangeFor() {
@@ -522,7 +535,13 @@ public class Parser {
         }
 
         consume(TokenType.RIGHT_PAREN);
-        return new ForRangeStatement(expression, expressions, blockOrStatement());
+
+        Statement statement = blockOrStatement();
+
+        if (match(TokenType.ELSE))
+            return new ForRangeStatement(expression, expressions, statement, blockOrStatement());
+        else
+            return new ForRangeStatement(expression, expressions, statement, new PassStatement());
     }
 
     private Statement ifElse() {
@@ -535,9 +554,9 @@ public class Parser {
         }
 
         if (match(TokenType.ELSE)) {
-            return new IfElseStatement(conditionals, blockOrStatement());
+            return new ConditionalStatement(conditionals, blockOrStatement());
         } else {
-            return new IfStatement(conditionals);
+            return new ConditionalStatement(conditionals, new PassStatement());
         }
     }
 

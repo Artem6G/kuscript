@@ -6,12 +6,14 @@ import parser.ast.Visitor;
 
 public class WhileStatement implements Statement {
 
+    public final Statement elseStatement;
     public final Expression expression;
     public final Statement statement;
 
-    public WhileStatement (Expression expression, Statement statement) {
+    public WhileStatement (Expression expression, Statement statement, Statement elseStatement) {
         this.expression = expression;
         this.statement = statement;
+        this.elseStatement = elseStatement;
     }
 
     @Override
@@ -20,19 +22,15 @@ public class WhileStatement implements Statement {
              try {
                  statement.execute();
              } catch (BreakStatement breakStatement) {
-                 if (breakStatement.getMessage() == null)
-                     break;
-                 else
-                     throw breakStatement;
-             } catch (ContinueStatement continueStatement) {
-                 if (continueStatement.getMessage() != null)
-                     throw continueStatement;
-             }
+                     return;
+             } catch (ContinueStatement ignored) {}
+
+         elseStatement.execute();
     }
 
     @Override
     public String toString() {
-        return String.format("while %s %s", expression, statement);
+        return String.format("while %s %s else %s", expression, statement, elseStatement);
     }
 
     @Override

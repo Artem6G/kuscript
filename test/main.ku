@@ -1,7 +1,8 @@
-import "std"
-
-f:
 for i : range(100) {
-    continue
-    println(i)
+    if i % 10 == 0
+        println(i)
+    elif i == 99
+        break
 }
+else
+    println(1030)

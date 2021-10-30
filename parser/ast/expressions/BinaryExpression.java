@@ -236,10 +236,6 @@ public class BinaryExpression implements Expression {
                 return new BooleanValue(value1.asDouble() == value2.asDouble());
             case STRING:
                 return new BooleanValue(value1.asString().equals(value2.asString()));
-            case CHAR:
-                return new BooleanValue(value1.asChar() == value2.asChar());
-            case NULL:
-                return new BooleanValue(Objects.equals(value1.asString(), value2.asString()));
             default:
                 throw new RuntimeException("");
         }
@@ -258,10 +254,6 @@ public class BinaryExpression implements Expression {
                 return new BooleanValue(value1.asDouble() != value2.asDouble());
             case STRING:
                 return new BooleanValue(!value1.asString().equals(value2.asString()));
-            case CHAR:
-                return new BooleanValue(value1.asChar() != value2.asChar());
-            case NULL:
-                return new BooleanValue(!Objects.equals(value1.asString(), value2.asString()));
             default:
                 throw new RuntimeException("");
         }

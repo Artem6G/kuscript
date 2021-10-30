@@ -1,10 +1,9 @@
 import lexer.Lexer;
 import lexer.Token;
+import lib.ModuleImport;
 import parser.Parser;
 import parser.ast.Statement;
 import parser.ast.statements.BreakLabelStatement;
-import parser.ast.statements.BreakStatement;
-import parser.ast.statements.ContinueStatement;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,6 +26,8 @@ public class Main {
         statements.forEach(System.out::println);
 
         System.out.println("====================================");
+
+        ModuleImport.importModule("std");
 
         // answer
         try {
