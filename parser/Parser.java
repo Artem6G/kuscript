@@ -395,6 +395,7 @@ public class Parser {
         if (match(TokenType.LAMBDA)) {
             Arguments arguments = new Arguments();
 
+            if (compareType(TokenType.WORD))
             do {
                 arguments.add(getCurrentToken().getValue());
                 consume(TokenType.WORD);

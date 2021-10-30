@@ -1,1 +1,6 @@
-println((lambda x: x ** 2)(3))
+a = fill(15)
+for i : range(15)
+    a[i] = lambda x: x ** i
+
+for i : range(15)
+    println(a[i](2))
