@@ -56,7 +56,7 @@ public class ArrayValue implements Value {
 
     @Override
     public FunctionValue asFunction() {
-        return null;
+        throw new RuntimeException("");
     }
 
     @Override
