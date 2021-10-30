@@ -175,15 +175,6 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(SwitchBreakStatement switchBreakStatement) {
-        switchBreakStatement.defaultStatement.accept(this);
-        for (parser.ast.Expression expression : switchBreakStatement.expressions)
-            expression.accept(this);
-        for (Statement statement : switchBreakStatement.statements)
-            statement.accept(this);
-    }
-
-    @Override
     public void visit(SwitchStatement switchStatement) {
         switchStatement.defaultStatement.accept(this);
         for (parser.ast.Expression expression : switchStatement.expressions)

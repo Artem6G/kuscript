@@ -603,7 +603,6 @@ public class Parser {
         Statement statement;
         Expression expression;
         LinkedHashMap<Expression, Statement> conditionals = new LinkedHashMap<>();
-        boolean breakSwitch = match(TokenType.BREAK);
         Expression valueExpression = expression();
 
         while (match(TokenType.CASE)) {
@@ -618,12 +617,8 @@ public class Parser {
         }
 
         if (match(TokenType.DEFAULT)) {
-            if (breakSwitch)
-                return new SwitchBreakStatement(valueExpression, conditionals, blockOrStatement());
             return new SwitchStatement(valueExpression, conditionals, blockOrStatement());
         } else {
-            if (breakSwitch)
-                return new SwitchBreakStatement(valueExpression, conditionals, new PassStatement());
             return new SwitchStatement(valueExpression, conditionals, new PassStatement());
         }
     }

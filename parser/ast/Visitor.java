@@ -20,7 +20,6 @@ public interface Visitor {
     void visit(ContinueStatement continueStatement);
     void visit(MultiplyAssignmentStatement multiplyAssignmentStatement);
     void visit(PassStatement passStatement);
-    void visit(SwitchBreakStatement switchBreakStatement);
     void visit(SwitchStatement switchStatement);
     void visit(UnaryStatement unaryStatement);
     void visit(WhileStatement whileStatement);

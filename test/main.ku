@@ -1,8 +1,14 @@
-for i : range(100) {
+import "time"
+start = time()
+
+for i : range(100)
     if i % 10 == 0
         println(i)
     elif i == 99
         break
-}
+    else
+        pass
 else
     println(1030)
+
+println("Затраченное время", time() - start)
