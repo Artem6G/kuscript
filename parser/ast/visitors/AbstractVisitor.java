@@ -189,11 +189,6 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(UnaryStatement unaryStatement) {
-        unaryStatement.unaryExpression.accept(this);
-    }
-
-    @Override
     public void visit(WhileStatement whileStatement) {
         whileStatement.expression.accept(this);
         whileStatement.statement.accept(this);

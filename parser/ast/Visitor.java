@@ -21,7 +21,6 @@ public interface Visitor {
     void visit(MultiplyAssignmentStatement multiplyAssignmentStatement);
     void visit(PassStatement passStatement);
     void visit(SwitchStatement switchStatement);
-    void visit(UnaryStatement unaryStatement);
     void visit(WhileStatement whileStatement);
     void visit(ReturnStatement returnStatement);
     void visit(DefineFunctionStatement defineFunctionStatement);
