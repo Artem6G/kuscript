@@ -9,7 +9,6 @@ import parser.ast.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -54,7 +53,7 @@ public class std {
         if (args.size() != 1)
             throw new RuntimeException("zero argument");
 
-        return new StringValue(DataType.type(args.get(0)).toString().toLowerCase(Locale.ROOT));
+        return new StringValue(args.get(0).getClass().toString());
     }
 
     @FunctionInit

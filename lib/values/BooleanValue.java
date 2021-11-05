@@ -22,7 +22,7 @@ public class BooleanValue implements Value {
 
     @Override
     public int asInteger() {
-        return value ? 1 : 0;
+        throw new RuntimeException("");
     }
 
     @Override
