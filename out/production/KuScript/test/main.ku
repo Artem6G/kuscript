@@ -1,0 +1,7 @@
+import "time"
+
+a, start = 0, time()
+for i : range(144_444_444)
+    a = a + 1
+
+println(time() - start)

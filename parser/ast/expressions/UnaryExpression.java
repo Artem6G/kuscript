@@ -66,13 +66,11 @@ public class UnaryExpression implements Expression {
 
         switch (DataType.type(value)) {
             case INT:
-                int ans = value.asInteger();
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new IntegerValue(ans + 1));
-                return new IntegerValue(ans);
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, new IntegerValue(value.asInteger() + 1));
+                return value;
             case DOUBLE:
-                double ans1  = value.asDouble();
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new DoubleValue(ans1 + 1));
-                return new DoubleValue(ans1);
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, new DoubleValue(value.asDouble() + 1));
+                return value;
             default:
                 throw new RuntimeException("");
         }
@@ -84,13 +82,11 @@ public class UnaryExpression implements Expression {
 
         switch (DataType.type(value)) {
             case INT:
-                int ans = value.asInteger();
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new IntegerValue(ans - 1));
-                return new IntegerValue(ans);
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, new IntegerValue(value.asInteger() - 1));
+                return value;
             case DOUBLE:
-                double ans1 = value.asDouble();
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new DoubleValue(ans1 - 1));
-                return new DoubleValue(ans1);
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, new DoubleValue(value.asDouble() - 1));
+                return value;
             default:
                 throw new RuntimeException("");
         }
@@ -102,13 +98,13 @@ public class UnaryExpression implements Expression {
 
         switch (DataType.type(value)) {
             case INT:
-                int ans = value.asInteger() + 1;
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new IntegerValue(ans));
-                return new IntegerValue(ans);
+                IntegerValue integerValue = new IntegerValue(value.asInteger() + 1);
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, integerValue);
+                return integerValue;
             case DOUBLE:
-                double ans1 = value.asDouble() + 1;
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new DoubleValue(ans1));
-                return new DoubleValue(ans1);
+                DoubleValue doubleValue = new DoubleValue(value.asDouble() + 1);
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, doubleValue);
+                return doubleValue;
             default:
                 throw new RuntimeException("");
         }
@@ -120,13 +116,13 @@ public class UnaryExpression implements Expression {
 
         switch (DataType.type(value)) {
             case INT:
-                int ans = value.asInteger() - 1;
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new IntegerValue(ans));
-                return new IntegerValue(ans);
+                IntegerValue integerValue = new IntegerValue(value.asInteger() - 1);
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, integerValue);
+                return integerValue;
             case DOUBLE:
-                double ans1 = value.asDouble() - 1;
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new DoubleValue(ans1));
-                return new DoubleValue(ans1);
+                DoubleValue doubleValue = new DoubleValue(value.asDouble() - 1);
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, doubleValue);
+                return doubleValue;
             default:
                 throw new RuntimeException("");
         }
