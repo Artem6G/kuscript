@@ -49,7 +49,7 @@ public class std {
     }
 
     @FunctionInit
-    private static StringValue type(List<Value> args) {
+    private static StringValue $type(List<Value> args) {
         if (args.size() != 1)
             throw new RuntimeException("zero argument");
 
