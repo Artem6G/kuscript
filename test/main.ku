@@ -1,1 +1,13 @@
-import "time"
+def lol(a, b) {
+    length = len(a)
+    result = fill(length)
+
+    for i : range(length)
+        result[i] = b(a[i])
+
+    return result
+}
+
+println(lol({1, 2, 3}, lambda _: _ ** 3))
+
+

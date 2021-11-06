@@ -4,7 +4,6 @@ import lib.ModuleImport;
 import parser.Parser;
 import parser.ast.Statement;
 import parser.ast.statements.BreakLabelStatement;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

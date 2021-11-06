@@ -57,6 +57,14 @@ public class std {
     }
 
     @FunctionInit
+    private static IntegerValue $len(List<Value> args) {
+        if (args.size() != 1)
+            throw new RuntimeException("zero argument");
+
+        return new IntegerValue(args.get(0).asArray().values.length);
+    }
+
+    @FunctionInit
     private static IntegerValue $int(List<Value> args) {
         if (args.size() != 1)
             throw new RuntimeException("zero argument");
