@@ -1,1 +1,20 @@
-import "time"
+def lol(a, b) {
+    length = len(a)
+    result = fill(length)
+
+    for i : range(length)
+        result[i] = b(a[i])
+
+    return result
+}
+
+def xrange(a) {
+    result = fill(a)
+
+    for i : range(a)
+        result[i] = i
+
+    return result
+}
+
+println(lol(xrange(25), lambda _: 2 ** _))

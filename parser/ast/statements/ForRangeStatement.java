@@ -36,19 +36,19 @@ public class ForRangeStatement implements Statement {
         step = 1;
 
         if (expressions.size() == 1)
-            stop = expressions.get(0).eval().asInteger();
+            stop = expressions.get(0).eval().asNumber().intValue();
         else if (expressions.size() == 2) {
-            start = expressions.get(0).eval().asInteger();
-            stop = expressions.get(1).eval().asInteger();
+            start = expressions.get(0).eval().asNumber().intValue();
+            stop = expressions.get(1).eval().asNumber().intValue();
             if (stop < start) {
                 int temp = start;
                 start = stop;
                 stop = temp;
             }
         } else if (expressions.size() == 3) {
-            start = expressions.get(0).eval().asInteger();
-            stop = expressions.get(1).eval().asInteger();
-            step = expressions.get(2).eval().asInteger();
+            start = expressions.get(0).eval().asNumber().intValue();
+            stop = expressions.get(1).eval().asNumber().intValue();
+            step = expressions.get(2).eval().asNumber().intValue();
         } else {
             throw new RuntimeException("");
         }

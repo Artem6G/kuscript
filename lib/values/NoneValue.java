@@ -4,12 +4,7 @@ import lib.Value;
 
 public class NoneValue implements Value {
     @Override
-    public double asDouble() {
-        throw new RuntimeException("");
-    }
-
-    @Override
-    public int asInteger() {
+    public Number asNumber() {
         throw new RuntimeException("");
     }
 

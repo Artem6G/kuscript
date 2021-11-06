@@ -16,13 +16,8 @@ public class DoubleValue implements Value {
     }
 
     @Override
-    public double asDouble() {
+    public Number asNumber() {
         return value;
-    }
-
-    @Override
-    public int asInteger() {
-        return (int) value;
     }
 
     @Override

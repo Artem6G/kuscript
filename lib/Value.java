@@ -4,8 +4,7 @@ import lib.values.ArrayValue;
 import lib.values.FunctionValue;
 
 public interface Value {
-    double asDouble();
-    int asInteger();
+    Number asNumber();
     String asString();
     boolean asBoolean();
     ArrayValue asArray();

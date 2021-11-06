@@ -16,7 +16,7 @@ public class ElementValueArrayExpression implements Expression {
 
     @Override
     public Value eval() {
-        return ((ArrayValue) expression.eval()).get(expressionIndex.eval().asInteger());
+        return ((ArrayValue) expression.eval()).get(expressionIndex.eval().asNumber().intValue());
     }
 
     @Override

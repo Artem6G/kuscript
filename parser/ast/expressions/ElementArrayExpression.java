@@ -43,7 +43,7 @@ public class ElementArrayExpression implements Expression {
         if (!(ind instanceof IntegerValue))
             throw new RuntimeException("");
 
-        return ind.asInteger();
+        return ind.asNumber().intValue();
     }
 
     private ArrayValue consumeArray(Value value) {

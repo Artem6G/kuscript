@@ -19,7 +19,7 @@ public class math {
         if (args.size() != 1)
             throw new RuntimeException();
 
-        return new DoubleValue(Math.sin(args.get(0).asDouble()));
+        return new DoubleValue(Math.sin(args.get(0).asNumber().doubleValue()));
     }
 
     @FunctionInit
@@ -27,7 +27,7 @@ public class math {
         if (args.size() != 1)
             throw new RuntimeException();
 
-        return new DoubleValue(Math.cos(args.get(0).asDouble()));
+        return new DoubleValue(Math.cos(args.get(0).asNumber().doubleValue()));
     }
 
     @FunctionInit
@@ -35,15 +35,15 @@ public class math {
         if (args.size() != 1)
             throw new RuntimeException();
 
-        return new DoubleValue(Math.tan(args.get(0).asDouble()));
+        return new DoubleValue(Math.tan(args.get(0).asNumber().doubleValue()));
     }
 
     @FunctionInit
     private static Value $log(List<Value> args) {
         if (args.size() == 1)
-            return new DoubleValue(Math.log(args.get(0).asDouble()));
+            return new DoubleValue(Math.log(args.get(0).asNumber().doubleValue()));
         else if(args.size() == 2)
-            return new DoubleValue(Math.log(args.get(0).asDouble()) / Math.log(args.get(1).asDouble()));
+            return new DoubleValue(Math.log(args.get(0).asNumber().doubleValue()) / Math.log(args.get(1).asNumber().doubleValue()));
         else
             throw new RuntimeException("");
     }

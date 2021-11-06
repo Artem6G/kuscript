@@ -8,6 +8,13 @@ def lol(a, b) {
     return result
 }
 
-println(lol({1, 2, 3}, lambda _: _ ** 3))
+def xrange(a) {
+    result = fill(a)
 
+    for i : range(a)
+        result[i] = i
 
+    return result
+}
+
+println(lol(xrange(25), lambda _: 2 ** _))

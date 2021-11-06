@@ -66,10 +66,10 @@ public class UnaryExpression implements Expression {
 
         switch (DataType.type(value)) {
             case INT:
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new IntegerValue(value.asInteger() + 1));
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, new IntegerValue(value.asNumber().intValue() + 1));
                 return value;
             case DOUBLE:
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new DoubleValue(value.asDouble() + 1));
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, new DoubleValue(value.asNumber().doubleValue() + 1));
                 return value;
             default:
                 throw new RuntimeException("");
@@ -82,10 +82,10 @@ public class UnaryExpression implements Expression {
 
         switch (DataType.type(value)) {
             case INT:
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new IntegerValue(value.asInteger() - 1));
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, new IntegerValue(value.asNumber().intValue() - 1));
                 return value;
             case DOUBLE:
-                Variables.setVariable(((VariableExpression) EXPR1).WORD, new DoubleValue(value.asDouble() - 1));
+                Variables.setVariable(((VariableExpression) EXPR1).WORD, new DoubleValue(value.asNumber().doubleValue() - 1));
                 return value;
             default:
                 throw new RuntimeException("");
@@ -98,11 +98,11 @@ public class UnaryExpression implements Expression {
 
         switch (DataType.type(value)) {
             case INT:
-                IntegerValue integerValue = new IntegerValue(value.asInteger() + 1);
+                IntegerValue integerValue = new IntegerValue(value.asNumber().intValue() + 1);
                 Variables.setVariable(((VariableExpression) EXPR1).WORD, integerValue);
                 return integerValue;
             case DOUBLE:
-                DoubleValue doubleValue = new DoubleValue(value.asDouble() + 1);
+                DoubleValue doubleValue = new DoubleValue(value.asNumber().doubleValue() + 1);
                 Variables.setVariable(((VariableExpression) EXPR1).WORD, doubleValue);
                 return doubleValue;
             default:
@@ -116,11 +116,11 @@ public class UnaryExpression implements Expression {
 
         switch (DataType.type(value)) {
             case INT:
-                IntegerValue integerValue = new IntegerValue(value.asInteger() - 1);
+                IntegerValue integerValue = new IntegerValue(value.asNumber().intValue() - 1);
                 Variables.setVariable(((VariableExpression) EXPR1).WORD, integerValue);
                 return integerValue;
             case DOUBLE:
-                DoubleValue doubleValue = new DoubleValue(value.asDouble() - 1);
+                DoubleValue doubleValue = new DoubleValue(value.asNumber().doubleValue() - 1);
                 Variables.setVariable(((VariableExpression) EXPR1).WORD, doubleValue);
                 return doubleValue;
             default:
@@ -138,7 +138,7 @@ public class UnaryExpression implements Expression {
     private Value negation() {
         switch (DataType.type(value)) {
             case INT:
-                return new IntegerValue(~value.asInteger());
+                return new IntegerValue(~value.asNumber().intValue());
             case BOOLEAN:
                 return new BooleanValue(!value.asBoolean());
             default:
@@ -149,9 +149,9 @@ public class UnaryExpression implements Expression {
     public Value minus() {
         switch (DataType.type(value)) {
             case INT:
-                return new IntegerValue(-value.asInteger());
+                return new IntegerValue(-value.asNumber().intValue());
             case DOUBLE:
-                return new DoubleValue(-value.asDouble());
+                return new DoubleValue(-value.asNumber().doubleValue());
             default:
                 throw new RuntimeException("");
         }

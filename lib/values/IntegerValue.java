@@ -3,6 +3,7 @@ package lib.values;
 import lib.Value;
 
 public class IntegerValue implements Value {
+
     private final int value;
 
     public IntegerValue(int value) {
@@ -15,12 +16,7 @@ public class IntegerValue implements Value {
     }
 
     @Override
-    public int asInteger () {
-        return value;
-    }
-
-    @Override
-    public double asDouble () {
+    public Number asNumber() {
         return value;
     }
 

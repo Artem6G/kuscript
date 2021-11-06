@@ -73,7 +73,7 @@ public class std {
             case INT:
                 return (IntegerValue) args.get(0);
             case DOUBLE:
-                return new IntegerValue(args.get(0).asInteger());
+                return new IntegerValue(args.get(0).asNumber().intValue());
             case BOOLEAN:
                 return new IntegerValue(args.get(0).asBoolean() ? 1 : 0);
             case STRING:
@@ -92,7 +92,7 @@ public class std {
             case BOOLEAN:
                 return (BooleanValue) args.get(0);
             case INT:
-                return new BooleanValue(args.get(0).asInteger() != 0);
+                return new BooleanValue(args.get(0).asNumber().intValue() != 0);
             case STRING:
                 return new BooleanValue(Boolean.parseBoolean(args.get(0).asString()));
         }
@@ -109,7 +109,7 @@ public class std {
             case DOUBLE:
                 return (DoubleValue) args.get(0);
             case INT:
-                return new DoubleValue(args.get(0).asInteger());
+                return new DoubleValue(args.get(0).asNumber().intValue());
             case STRING:
                 return new DoubleValue(Double.parseDouble(args.get(0).asString()));
         }
@@ -143,7 +143,7 @@ public class std {
         List<Integer> sizes = new ArrayList<>();
 
         for (Value value : args)
-            sizes.add(value.asInteger());
+            sizes.add(value.asNumber().intValue());
 
         return fill(sizes, 0);
     }
