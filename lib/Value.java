@@ -8,7 +8,6 @@ public interface Value {
     int asInteger();
     String asString();
     boolean asBoolean();
-    char asChar();
     ArrayValue asArray();
     FunctionValue asFunction();
 }

@@ -40,11 +40,6 @@ public class IntegerValue implements Value {
     }
 
     @Override
-    public char asChar() {
-        throw new RuntimeException("");
-    }
-
-    @Override
     public String toString() {
         return asString();
     }

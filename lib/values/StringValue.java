@@ -41,11 +41,6 @@ public class StringValue implements Value {
 
 
     @Override
-    public char asChar() {
-        throw new RuntimeException("");
-    }
-
-    @Override
     public String toString() {
         return String.format("\"%s\"", asString());
     }

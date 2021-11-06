@@ -45,11 +45,6 @@ public class ArrayValue implements Value {
     }
 
     @Override
-    public char asChar() {
-        throw new RuntimeException("");
-    }
-
-    @Override
     public ArrayValue asArray() {
         return this;
     }

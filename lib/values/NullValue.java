@@ -24,11 +24,6 @@ public class NullValue implements Value {
     }
 
     @Override
-    public char asChar() {
-        throw new RuntimeException("");
-    }
-
-    @Override
     public ArrayValue asArray() {
         throw new RuntimeException("");
     }

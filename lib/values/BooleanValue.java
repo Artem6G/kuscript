@@ -41,11 +41,6 @@ public class BooleanValue implements Value {
     }
 
     @Override
-    public char asChar() {
-        throw new RuntimeException("");
-    }
-
-    @Override
     public String toString() {
         return value ? "true" : "false";
     }
