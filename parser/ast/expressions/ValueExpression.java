@@ -4,17 +4,17 @@ import lib.*;
 import lib.values.*;
 import parser.ast.Expression;
 import parser.ast.Visitor;
-
 public class ValueExpression implements Expression {
 
     private final Value VALUE;
 
-    public ValueExpression(double value) {
-        this.VALUE = new DoubleValue(value);
-    }
-
-    public ValueExpression(int value) {
-        this.VALUE = new IntegerValue(value);
+    public ValueExpression(Number value) {
+        if (value instanceof Double)
+            this.VALUE = new DoubleValue(value.doubleValue());
+        else if (value instanceof Integer)
+            this.VALUE = new IntegerValue(value.intValue());
+        else
+            throw new RuntimeException("");
     }
 
     public ValueExpression(String value) {

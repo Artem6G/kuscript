@@ -5,8 +5,6 @@ import lib.values.*;
 import parser.ast.Expression;
 import parser.ast.Visitor;
 
-import java.util.Objects;
-
 public class BinaryExpression implements Expression {
 
     public final Expression EXPR1, EXPR2;

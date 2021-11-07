@@ -11,6 +11,7 @@ import parser.ast.Statement;
 import parser.ast.expressions.*;
 import parser.ast.statements.*;
 
+import java.math.BigInteger;
 import java.util.*;
 
 public class Parser {
@@ -415,17 +416,17 @@ public class Parser {
         if (compareType(TokenType.LEFT_BRACKET))
             return array();
         if (match(TokenType.INTEGER_VALUE))
-            return new ValueExpression(Integer.parseInt(currentToken.getValue()));
+            return new ValueExpression(createNumber(currentToken.getValue(), 10));
+        if (match(TokenType.HEX_NUM))
+            return new ValueExpression(createNumber(currentToken.getValue(), 16));
+        if (match(TokenType.OCTAL_NUM))
+            return new ValueExpression(createNumber(currentToken.getValue(), 8));
+        if (match(TokenType.BINARY_NUM))
+            return new ValueExpression(createNumber(currentToken.getValue(), 2));
         if (match(TokenType.BOOLEAN_VALUE))
             return new ValueExpression(Boolean.parseBoolean(currentToken.getValue()));
         if (match(TokenType.DOUBLE_VALUE))
             return new ValueExpression(Double.parseDouble(currentToken.getValue()));
-        if (match(TokenType.HEX_NUM))
-            return new ValueExpression(Integer.parseInt(currentToken.getValue(), 16));
-        if (match(TokenType.OCTAL_NUM))
-            return new ValueExpression(Integer.parseInt(currentToken.getValue(), 8));
-        if (match(TokenType.BINARY_NUM))
-            return new ValueExpression(Integer.parseInt(currentToken.getValue(), 2));
         if (match(TokenType.NULL))
             return new ValueExpression(new NullValue());
         if (match(TokenType.NONE))
@@ -442,6 +443,10 @@ public class Parser {
         }
 
         throw new RuntimeException("unknown expression");
+    }
+
+    private Number createNumber(String str, int radix) {
+        return Integer.parseInt(str, radix);
     }
 
     private Expression expressionForArray() {
