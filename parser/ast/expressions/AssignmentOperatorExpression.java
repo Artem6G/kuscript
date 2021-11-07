@@ -20,13 +20,8 @@ public class AssignmentOperatorExpression implements Expression {
         RIGHT_SHIFT_EQUALS(">>="),
         RIGHT_UNSIGNED_SHIFT_EQUALS(">>>="),
         XOR_EQUALS("^="),
-        NOR_EQUALS("~|="),
-        NAND_EQUALS("~&="),
         CONJUNCTION_EQUALS("&="),
         DISJUNCTION_EQUALS("|="),
-        IMPLICATION_EQUALS("->="),
-        REVERSE_IMPLICATION_EQUALS("<-="),
-        EQUIVALENCE_EQUALS("<>="),
         NULL_MERGER_EQUALS("??=");
 
         private final String NAME;
@@ -49,13 +44,8 @@ public class AssignmentOperatorExpression implements Expression {
                 case ">>=": return RIGHT_SHIFT_EQUALS;
                 case ">>>=": return RIGHT_UNSIGNED_SHIFT_EQUALS;
                 case "^=": return XOR_EQUALS;
-                case "~|=": return NOR_EQUALS;
-                case "~&=": return NAND_EQUALS;
                 case "&=": return CONJUNCTION_EQUALS;
                 case "|=": return DISJUNCTION_EQUALS;
-                case "->=": return IMPLICATION_EQUALS;
-                case "<-=": return REVERSE_IMPLICATION_EQUALS;
-                case "<>=": return EQUIVALENCE_EQUALS;
             }
             throw new RuntimeException("");
         }
@@ -109,20 +99,10 @@ public class AssignmentOperatorExpression implements Expression {
                 return BinaryExpression.right_unsigned_shift(firstValue, value);
             case XOR_EQUALS:
                 return BinaryExpression.xor(firstValue, value);
-            case NOR_EQUALS:
-                return BinaryExpression.nor(firstValue, value);
-            case NAND_EQUALS:
-                return BinaryExpression.nand(firstValue, value);
             case CONJUNCTION_EQUALS:
                 return BinaryExpression.conjunction(firstValue, value);
             case DISJUNCTION_EQUALS:
                 return BinaryExpression.disjunction(firstValue, value);
-            case IMPLICATION_EQUALS:
-                return BinaryExpression.implication(firstValue, value);
-            case REVERSE_IMPLICATION_EQUALS:
-                return BinaryExpression.reverse_implication(firstValue, value);
-            case EQUIVALENCE_EQUALS:
-                return BinaryExpression.equivalence(firstValue, value);
             default:
                 throw new RuntimeException("");
         }

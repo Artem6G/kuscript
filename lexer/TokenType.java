@@ -82,12 +82,6 @@ public enum TokenType {
     DISJUNCTION, // |
     XOR, // ^
     NEGATION, // ~
-    NOR, // ~|
-    NAND, // ~&
-
-    EQUIVALENCE, // <>
-    IMPLICATION, // ->
-    REVERSE_IMPLICATION, // <-
 
     LEFT_SHIFT, // <<
     RIGHT_SHIFT, // >>

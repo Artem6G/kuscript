@@ -51,8 +51,6 @@ public class Lexer {
         put("<=>", TokenType.SPACESHIP);
         put("&", TokenType.CONJUNCTION);
         put("~", TokenType.NEGATION);
-        put("~|", TokenType.NOR);
-        put("~&", TokenType.NAND);
         put("&&", TokenType.AND);
         put("!", TokenType.NO);
         put("^", TokenType.XOR);
@@ -65,9 +63,6 @@ public class Lexer {
         put("<<", TokenType.LEFT_SHIFT);
         put(">>", TokenType.RIGHT_SHIFT);
         put(">>>", TokenType.RIGHT_UNSIGNED_SHIFT);
-        put("->", TokenType.IMPLICATION);
-        put("<-", TokenType.REVERSE_IMPLICATION);
-        put("<>", TokenType.EQUIVALENCE);
         put("=", TokenType.EQUALS);
         put("!=", TokenType.NOT_CORRESPONDENCE);
         put("==", TokenType.CORRESPONDENCE);
@@ -88,13 +83,8 @@ public class Lexer {
             ">>=",
             ">>>=",
             "^=",
-            "~|=",
-            "~&=",
             "&=",
-            "|=",
-            "<>=",
-            "->=",
-            "<-="
+            "|="
     ));
 
     private int currentPosition = 0;

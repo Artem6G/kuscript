@@ -11,7 +11,6 @@ import parser.ast.Statement;
 import parser.ast.expressions.*;
 import parser.ast.statements.*;
 
-import java.math.BigInteger;
 import java.util.*;
 
 public class Parser {
@@ -100,53 +99,17 @@ public class Parser {
     }
 
     private Expression ternary() {
-        Expression expression = logical_equivalence();
+        Expression expression = logical_disjunction();
 
         if (match(TokenType.QUERY)) {
-            final Expression trueExpr = logical_equivalence();
+            final Expression trueExpr = logical_disjunction();
             match(TokenType.COLON);
-            final Expression falseExpr = logical_equivalence();
+            final Expression falseExpr = logical_disjunction();
             return new TernaryExpression(expression, trueExpr, falseExpr);
         }
 
         return expression;
     }
-
-    private Expression logical_equivalence() {
-        Expression expression = logical_implication();
-
-        for (;;) {
-            if (match(TokenType.EQUIVALENCE)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.EQUIVALENCE, expression, logical_implication());
-                continue;
-            }
-
-            break;
-        }
-
-        return expression;
-    }
-
-    private Expression logical_implication() {
-        Expression expression = logical_disjunction();
-
-        for (;;) {
-            if (match(TokenType.IMPLICATION)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.IMPLICATION, expression, logical_disjunction());
-                continue;
-            }
-
-            if (match(TokenType.REVERSE_IMPLICATION)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.REVERSE_IMPLICATION, expression, logical_disjunction());
-                continue;
-            }
-
-            break;
-        }
-
-        return expression;
-    }
-
 
     private Expression logical_disjunction() {
         Expression expression = logical_conjunction();
@@ -154,11 +117,6 @@ public class Parser {
         for (;;) {
             if (match(TokenType.DISJUNCTION)) {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.DISJUNCTION, expression, logical_conjunction());
-                continue;
-            }
-
-            if (match(TokenType.NAND)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.NAND, expression, logical_conjunction());
                 continue;
             }
 
@@ -191,12 +149,6 @@ public class Parser {
                 expression = new BinaryExpression(BinaryExpression.OPERATORS.AND, expression, conditional());
                 continue;
             }
-
-            if (match(TokenType.NOR)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.NOR, expression, conditional());
-                continue;
-            }
-
             break;
         }
 
@@ -686,10 +638,10 @@ public class Parser {
     private Expression conditional_expr(BinaryExpression.OPERATORS operator, Expression expression1, Expression expression2) {
 
         if (match(TokenType.CORRESPONDENCE)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.CORRESPONDENCE, expression1, expression2, logical_implication());
+            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.CORRESPONDENCE, expression1, expression2, logical_disjunction());
         }
         else if (match(TokenType.NOT_CORRESPONDENCE)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.NOT_CORRESPONDENCE, expression1, expression2, logical_implication());
+            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.NOT_CORRESPONDENCE, expression1, expression2, logical_disjunction());
         }
         else if (match(TokenType.SMALLER)) {
             return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.SMALLER, expression1, expression2, spaceship());
