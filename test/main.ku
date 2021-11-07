@@ -1,2 +1,2 @@
-a = 4 ** -1
-print(a)
+a = 'Hello, Bro!'
+println(a)

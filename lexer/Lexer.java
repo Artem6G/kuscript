@@ -88,21 +88,20 @@ public class Lexer {
     ));
 
     private int currentPosition = 0;
-    private int currentLine, currentPositionOnLine;
+    private int currentPositionOnLine = 1;
+    private int currentLine = 1;
     private char currentChar;
 
     public Lexer(String input) {
         TOKENS = new ArrayList<>();
         LENGTH = input.length();
-        this.INPUT = input;
-        currentLine = currentPositionOnLine = 1;
+        INPUT = input;
     }
 
     public ArrayList<Token> lex() {
         currentChar = currentChar();
 
         while (currentPosition < LENGTH) {
-
             if (compareChar('0') && compareChar(1, 'b')) {
                 tokenizeBinaryNumber();
             } else if (compareChar('0') && compareChar(1, 'x')) {
@@ -118,12 +117,14 @@ public class Lexer {
             } else if (Character.isLetter(currentChar) || WORD_CHARS.indexOf(currentChar) != -1) {
                 tokenizeWord();
             } else if (compareChar('"')) {
-                tokenizeText();
+                tokenizeText('"');
+            } else if (compareChar('\'')) {
+                tokenizeText('\'');
             } else if (compareChar('#')) {
                 tokenizeHexNumber();
             } else if (OPERATOR_CHARS.indexOf(currentChar) != -1) {
                 tokenizeOperator();
-            }  else {
+            } else {
                 next();
             }
         }
@@ -249,11 +250,13 @@ public class Lexer {
             addToken(TokenType.WORD, word);
     }
 
-    private void tokenizeText() {
+    private void tokenizeText(char literal) {
         clearBuilder();
         next(); // skip "
 
-         while (currentChar != '"') {
+         while (currentChar != literal) {
+             if (currentChar == '\0')
+                 exception("unclosed string literal");
 
              if (currentChar == '\\') {
                  char peeked = peek(1);
@@ -268,7 +271,7 @@ public class Lexer {
                      continue;
                  }
                  else
-                     exception("string not closed");
+                     exception("illegal escape character");
              }
 
              stringBuilder.append(currentChar);
