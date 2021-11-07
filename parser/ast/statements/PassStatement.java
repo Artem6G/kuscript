@@ -11,7 +11,7 @@ public class PassStatement implements Statement {
 
     @Override
     public String toString() {
-        return "pass";
+        return ";";
     }
 
     @Override
