@@ -102,17 +102,17 @@ public class Lexer {
         currentChar = currentChar();
 
         while (currentPosition < LENGTH) {
-            if (compareChar('0') && compareChar(1, 'b')) {
+            if (compareChar('0') && afterCompareChar('b')) {
                 tokenizeBinaryNumber();
-            } else if (compareChar('0') && compareChar(1, 'x')) {
+            } else if (compareChar('0') && afterCompareChar('x')) {
                 tokenizeOctalNumber();
             } else if (Character.isDigit(currentChar)) {
                 tokenizeNumber();
-            } else if (compareChar('/') && compareChar(1, '/')) {
-                next(2);
+            } else if (compareChar('/') && afterCompareChar('/')) {
+                double_next();
                 comment();
-            } else if (compareChar('/') && compareChar(1, '*')) {
-                next(2);
+            } else if (compareChar('/') && afterCompareChar('*')) {
+                double_next();
                 multilineComment();
             } else if (Character.isLetter(currentChar) || WORD_CHARS.indexOf(currentChar) != -1) {
                 tokenizeWord();
@@ -267,7 +267,7 @@ public class Lexer {
                  if (index != -1) {
                      String FORMAT_EQUALS_CHARS = "\"\t\f\r\n\b'\\";
                      stringBuilder.append(FORMAT_EQUALS_CHARS.charAt(index));
-                     next(2);
+                     double_next();
                      continue;
                  }
                  else
@@ -285,10 +285,10 @@ public class Lexer {
     private void multilineComment() {
         while (true) {
             if (currentChar == '\0') exception("multiline comment not closed");
-            if (currentChar == '*' && compareChar(1, '/')) break;
+            if (currentChar == '*' && afterCompareChar('/')) break;
             currentChar = next();
         }
-        next(2);
+        double_next();
     }
 
     private void comment() {
@@ -297,13 +297,9 @@ public class Lexer {
         }
     }
 
-    private char next(int n) {
-        for (int i = 0; i < n; i++) {
-            currentPosition++;
-            check();
-        }
-
-        return currentChar;
+    private void double_next() {
+        next();
+        next();
     }
 
     private char next() {
@@ -326,11 +322,11 @@ public class Lexer {
         return currentChar;
     }
 
-    private boolean compareChar(int fromPosition, char ch) {
-        return peek(fromPosition) == ch;
+    private boolean afterCompareChar(char ch) {
+        return peek(1) == ch;
     }
 
-    private boolean compareChar (char ch) {
+    private boolean compareChar(char ch) {
         return currentChar == ch;
     }
 
