@@ -39,8 +39,6 @@ public class BinaryExpression implements Expression {
         CORRESPONDENCE("=="),
         NOT_CORRESPONDENCE("!="),
 
-        NULL_MERGER("??"),
-
         CONCATENATE(".");
 
         private final String NAME;
