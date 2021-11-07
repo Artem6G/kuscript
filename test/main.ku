@@ -1,2 +1,2 @@
-a = 10000
-println(a)
+a = 4 ** -1
+print(a)

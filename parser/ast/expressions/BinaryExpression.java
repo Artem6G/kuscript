@@ -403,17 +403,7 @@ public class BinaryExpression implements Expression {
     }
 
     public static Value divide(Value value1, Value value2) {
-        switch (DataType.type(value1)) {
-            case INT:
-                if (DataType.type(value2) == DataType.DOUBLE)
-                    return new DoubleValue(value1.asNumber().doubleValue() / value2.asNumber().doubleValue());
-
-                return new IntegerValue(value1.asNumber().intValue() / value2.asNumber().intValue());
-            case DOUBLE:
-                return new DoubleValue(value1.asNumber().doubleValue() / value2.asNumber().doubleValue());
-            default:
-                throw new RuntimeException("");
-        }
+        return new DoubleValue(value1.asNumber().doubleValue() / value2.asNumber().doubleValue());
     }
 
     public static Value mod(Value value1, Value value2) {
@@ -433,7 +423,7 @@ public class BinaryExpression implements Expression {
     public static Value power(Value value1, Value value2) {
         switch (DataType.type(value1)) {
             case INT:
-                if (DataType.type(value2) == DataType.DOUBLE)
+                if (DataType.type(value2) == DataType.DOUBLE || value2.asNumber().intValue() < 0)
                     return new DoubleValue(Math.pow(value1.asNumber().doubleValue(), value2.asNumber().doubleValue()));
 
                 return new IntegerValue((int) Math.pow(value1.asNumber().doubleValue(), value2.asNumber().doubleValue()));
