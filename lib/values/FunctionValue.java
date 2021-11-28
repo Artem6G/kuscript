@@ -4,7 +4,6 @@ import lib.Value;
 import lib.functions.Function;
 
 public class FunctionValue implements Value {
-
     public final Function function;
 
     public FunctionValue(Function function) {
@@ -18,7 +17,7 @@ public class FunctionValue implements Value {
 
     @Override
     public String asString() {
-        return null;
+        return "function" + function.hashCode();
     }
 
     @Override

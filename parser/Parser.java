@@ -3,7 +3,7 @@ package parser;
 import lexer.Token;
 import lexer.TokenType;
 import lib.arguments.Arguments;
-import lib.functions.DefineFunction;
+import lib.functions.DefineExternalFunction;
 import lib.values.NoneValue;
 import lib.values.NullValue;
 import parser.ast.Expression;
@@ -539,7 +539,7 @@ public class Parser {
         Expression expression;
 
         if (match(TokenType.PASS))
-            expression = new ValueExpression(DefineFunction.DEFAULT_VALUE);
+            expression = new ValueExpression(DefineExternalFunction.DEFAULT_VALUE);
         else
             expression = expression();
 

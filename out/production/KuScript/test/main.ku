@@ -1,1 +1,5 @@
-a=0b0101011;println(a)
+a = lambda x: lambda z: lambda n: x ** z ** n
+b = a(2)
+c = b(2)
+z = c(2)
+println(z)
