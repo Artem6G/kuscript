@@ -1,10 +1,6 @@
 package parser.ast.expressions;
 
 import lib.Value;
-import lib.functions.DefineExternalFunction;
-import lib.functions.DefineFunction;
-import lib.functions.DefineLocalFunction;
-import lib.values.FunctionValue;
 import parser.ast.Expression;
 import parser.ast.Visitor;
 
@@ -27,17 +23,7 @@ public class FunctionCallValueExpression implements Expression {
         for (Expression expression : expressionList)
             valueList.add(expression.eval());
 
-        FunctionValue functionValue = (FunctionValue) variable.eval();
-        if (functionValue.function instanceof DefineExternalFunction)
-            return (functionValue).function.execute(valueList);
-        else {
-            DefineFunction.isExternal = false;
-            try {
-                return (functionValue).function.execute(valueList);
-            } finally {
-                DefineFunction.isExternal = true;
-            }
-        }
+        return variable.eval().asFunction().function.execute(valueList);
     }
 
     @Override

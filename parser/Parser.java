@@ -3,7 +3,7 @@ package parser;
 import lexer.Token;
 import lexer.TokenType;
 import lib.arguments.Arguments;
-import lib.functions.DefineExternalFunction;
+import lib.functions.DefineFunction;
 import lib.values.NoneValue;
 import lib.values.NullValue;
 import parser.ast.Expression;
@@ -55,6 +55,8 @@ public class Parser {
         }
         else if (match(TokenType.IF))
             return ifElse();
+        else if (match(TokenType.CLASS))
+            return _class();
         else if (match(TokenType.DEF))
             return def();
         else if (match(TokenType.IMPORT))
@@ -77,6 +79,10 @@ public class Parser {
             return new PassStatement();
 
         return assignmentStatement();
+    }
+
+    private Statement _class() {
+        return null;
     }
 
     private Statement assignmentStatement() {
@@ -310,15 +316,15 @@ public class Parser {
 
     private Expression unary() {
         if (match(TokenType.NEGATION))
-            return new UnaryExpression(UnaryExpression.OPERATORS.NEGATION, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.NEGATION, expression());
         if (match(TokenType.NO))
-            return new UnaryExpression(UnaryExpression.OPERATORS.NO, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.NO, expression());
         if (match(TokenType.PLUS))
-            return new UnaryExpression(UnaryExpression.OPERATORS.PLUS, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.PLUS, expression());
         if (match(TokenType.INCREMENT))
-            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_INCREMENT, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_INCREMENT, expression());
         if (match(TokenType.DECREMENT))
-            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_DECREMENT, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_DECREMENT, expression());
         if (compareType(TokenType.WORD) && compareType(1, TokenType.INCREMENT)) {
             final Token token = getCurrentToken();
             consume(TokenType.WORD, TokenType.INCREMENT);
@@ -330,7 +336,7 @@ public class Parser {
             return new UnaryExpression(UnaryExpression.OPERATORS.RIGHT_DECREMENT, new VariableExpression(token.getValue()));
         }
         if (match(TokenType.MINUS))
-            return new UnaryExpression(UnaryExpression.OPERATORS.MINUS, primary());
+            return new UnaryExpression(UnaryExpression.OPERATORS.MINUS, expression());
 
         return assignmentExpression();
     }
@@ -539,7 +545,7 @@ public class Parser {
         Expression expression;
 
         if (match(TokenType.PASS))
-            expression = new ValueExpression(DefineExternalFunction.DEFAULT_VALUE);
+            expression = new ValueExpression(DefineFunction.DEFAULT_VALUE);
         else
             expression = expression();
 

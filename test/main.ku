@@ -1,5 +1,12 @@
-a = lambda x: lambda z: lambda n: x ** z ** n
-b = a(2)
-c = b(2)
-z = c(2)
-println(z)
+def filter(a, b) {
+    length = len(a)
+
+    result = fill(length)
+    for i : range(length)
+        if(b(a[i]))
+            result[i] = a[i]
+
+    return result
+}
+
+print(filter({1, 2, 3, 4, 5}, lambda x: !2 < x < 5))

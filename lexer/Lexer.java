@@ -30,7 +30,8 @@ public class Lexer {
             "null",
             "def",
             "return",
-            "lambda"
+            "lambda",
+            "class"
     ));
     private final HashMap<String, TokenType> OPERATORS = new HashMap<>() {{
         put(";", TokenType.PASS);

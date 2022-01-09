@@ -40,6 +40,8 @@ public enum TokenType {
 
     IMPORT,
 
+    CLASS,
+
     PRINT_EXPRESSION, // $
 
     COMMA, // ,

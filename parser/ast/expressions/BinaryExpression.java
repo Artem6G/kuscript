@@ -16,30 +16,23 @@ public class BinaryExpression implements Expression {
         MULTIPLY("*"),
         DIVIDE("/"),
         MOD("%"),
-
         POWER("**"),
-
         CONJUNCTION("&"),
         DISJUNCTION("|"),
         XOR("^"),
-
         LEFT_SHIFT("<<"),
         RIGHT_SHIFT(">>"),
         RIGHT_UNSIGNED_SHIFT(">>>"),
-
         AND("&&"),
         OR("||"),
-
         MORE(">"),
         SMALLER("<"),
         STRICTLY_MORE(">="),
         STRICTLY_SMALLER("<="),
         SPACESHIP("<=>"),
-
         CORRESPONDENCE("=="),
         NOT_CORRESPONDENCE("!="),
-
-        CONCATENATE(".");
+        COMPOSITION(".");
 
         private final String NAME;
 

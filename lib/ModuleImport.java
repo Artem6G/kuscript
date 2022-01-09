@@ -11,10 +11,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 public class ModuleImport {
+    public static Path currentPath = null;
+
     public static void importModule(String name) {
         try {
             Class<?> aClass = Class.forName("lib.modules." + name);
@@ -49,7 +52,7 @@ public class ModuleImport {
     }
 
     private static void statementsExecute(String path) throws IOException {
-        List<Statement> statements = new Parser(new Lexer(new String(Files.readAllBytes(Paths.get(path)))).lex()).parse();
+        List<Statement> statements = new Parser(new Lexer(new String(Files.readAllBytes(Paths.get(currentPath.getParent() + "/" + path + ".ku")))).lex()).parse();
         statements.forEach(Statement::execute);
     }
 }

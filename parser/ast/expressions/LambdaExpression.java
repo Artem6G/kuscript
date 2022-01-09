@@ -3,6 +3,7 @@ package parser.ast.expressions;
 import lib.Value;
 import lib.arguments.Arguments;
 import lib.functions.DefineFunction;
+import lib.values.FunctionValue;
 import parser.ast.Expression;
 import parser.ast.Visitor;
 import parser.ast.statements.ReturnStatement;
@@ -18,7 +19,7 @@ public class LambdaExpression implements Expression {
 
     @Override
     public Value eval() {
-        return DefineFunction.define(arguments, new ReturnStatement(expression));
+        return new FunctionValue(new DefineFunction(arguments, new ReturnStatement(expression)));
     }
 
     @Override

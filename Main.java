@@ -12,22 +12,16 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        ArrayList<Token> tokens = new Lexer(new String(Files.readAllBytes(Paths.get("test/main.ku")))).lex();
-
+        ModuleImport.currentPath = Paths.get("test/main.ku");
+        ArrayList<Token> tokens = new Lexer(new String(Files.readAllBytes(Paths.get(String.valueOf(ModuleImport.currentPath))))).lex();
         // tokens
         tokens.forEach(System.out::print);
-
         System.out.println();
-
         List<Statement> statements = new Parser(tokens).parse();
-
         // ast
         statements.forEach(System.out::println);
-
         System.out.println("====================================");
-
         ModuleImport.importModule("std");
-
         // answer
         try {
             statements.forEach(Statement::execute);
