@@ -44,6 +44,9 @@ public class BinaryConditionalExpression implements Expression {
 
     @Override
     public String toString() {
-        return null;
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < expressions.size(); i++)
+            res.append(expressions.get(i)).append(i == expressions.size() - 1 ? "" : operators.get(i));
+        return String.format("(%s)", res);
     }
 }
