@@ -35,4 +35,6 @@ public interface Visitor {
     void visit(LabelStatement labelStatement);
     void visit(BreakLabelStatement breakLabelStatement);
     void visit(LambdaExpression lambdaExpression);
+    void visit(ClassStatement classStatement);
+    void visit(ClassCallValueExpression classCallValueExpression);
 }

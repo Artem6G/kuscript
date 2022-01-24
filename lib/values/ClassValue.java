@@ -1,8 +1,15 @@
 package lib.values;
 
 import lib.Value;
+import lib.classes.Class;
 
-public class NoneValue implements Value {
+public class ClassValue implements Value {
+    public final Class aClass;
+
+    public ClassValue(Class aClass) {
+        this.aClass = aClass;
+    }
+
     @Override
     public Number asNumber() {
         throw new RuntimeException("");
@@ -10,7 +17,7 @@ public class NoneValue implements Value {
 
     @Override
     public String asString() {
-        return "none";
+        return "class" + this.hashCode();
     }
 
     @Override
@@ -28,13 +35,7 @@ public class NoneValue implements Value {
         throw new RuntimeException("");
     }
 
-    @Override
     public ClassValue asClass() {
-        throw new RuntimeException("");
-    }
-
-    @Override
-    public String toString() {
-        return asString();
+        return this;
     }
 }

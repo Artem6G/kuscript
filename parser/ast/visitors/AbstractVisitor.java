@@ -83,9 +83,8 @@ public class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(BinaryConditionalExpression binaryConditionalExpression) {
-        binaryConditionalExpression.EXPR1.accept(this);
-        binaryConditionalExpression.EXPR2.accept(this);
-        binaryConditionalExpression.EXPR3.accept(this);
+        for (Expression expression : binaryConditionalExpression.expressions)
+            expression.accept(this);
     }
 
     @Override
@@ -134,6 +133,16 @@ public class AbstractVisitor implements Visitor {
     @Override
     public void visit(LambdaExpression lambdaExpression) {
         lambdaExpression.expression.accept(this);
+    }
+
+    @Override
+    public void visit(ClassStatement classStatement) {
+        classStatement.statement.accept(this);
+    }
+
+    @Override
+    public void visit(ClassCallValueExpression classCallValueExpression) {
+        classCallValueExpression.expression.accept(this);
     }
 
     @Override

@@ -5,27 +5,32 @@ import lib.values.BooleanValue;
 import parser.ast.Expression;
 import parser.ast.Visitor;
 
-public class BinaryConditionalExpression implements Expression {
-    public final Expression EXPR1, EXPR2, EXPR3;
-    private final BinaryExpression.OPERATORS OPERATION1;
-    private final BinaryExpression.OPERATORS OPERATION2;
+import java.util.ArrayList;
 
-    public BinaryConditionalExpression(BinaryExpression.OPERATORS operation1, BinaryExpression.OPERATORS operation2, Expression expr1, Expression expr2, Expression expr3) {
-        this.EXPR1 = expr1;
-        this.EXPR2 = expr2;
-        this.EXPR3 = expr3;
-        this.OPERATION1 = operation1;
-        this.OPERATION2 = operation2;
+public class BinaryConditionalExpression implements Expression {
+    public final ArrayList<Expression> expressions;
+    private final ArrayList<BinaryExpression.OPERATORS> operators;
+
+    public BinaryConditionalExpression(ArrayList<BinaryExpression.OPERATORS> operators, ArrayList<Expression> expressions) {
+        this.operators = operators;
+        this.expressions = expressions;
     }
 
     @Override
     public Value eval() {
-        Value secondValue = EXPR2.eval();
+        Value temp = null;
+        for (int i = 0; i < operators.size(); i++) {
+            if (i % 2 == 0) {
+                temp = expressions.get(i + 1).eval();
+                if (!compare(operators.get(i), expressions.get(i).eval(), temp))
+                    return new BooleanValue(false);
+            }
+            else
+                if (!compare(operators.get(i), temp, expressions.get(i + 1).eval()))
+                    return new BooleanValue(false);
+        }
 
-        if (!compare(OPERATION1, EXPR1.eval(), secondValue))
-            return new BooleanValue(false);
-
-        return new BooleanValue(compare(OPERATION2, secondValue, EXPR3.eval()));
+        return new BooleanValue(true);
     }
 
     private boolean compare(BinaryExpression.OPERATORS operator, Value value1, Value value2) {
@@ -39,6 +44,6 @@ public class BinaryConditionalExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("(%s %s %s %s %s)", EXPR1, OPERATION1, EXPR2, OPERATION2, EXPR3);
+        return null;
     }
 }

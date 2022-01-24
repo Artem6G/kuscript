@@ -1,6 +1,7 @@
 package lib;
 
 import lib.values.ArrayValue;
+import lib.values.ClassValue;
 import lib.values.FunctionValue;
 
 public interface Value {
@@ -9,4 +10,5 @@ public interface Value {
     boolean asBoolean();
     ArrayValue asArray();
     FunctionValue asFunction();
+    ClassValue asClass();
 }

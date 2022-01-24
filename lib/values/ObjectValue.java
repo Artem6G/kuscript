@@ -2,21 +2,25 @@ package lib.values;
 
 import lib.Value;
 
-public class BooleanValue implements Value {
+public class ObjectValue implements Value {
+    public final ClassValue classValue;
 
-    private final boolean value;
-
-    public BooleanValue(boolean value) {
-        this.value = value;
-    }
-
-    @Override
-    public boolean asBoolean() {
-        return value;
+    public ObjectValue(ClassValue classValue) {
+        this.classValue = classValue;
     }
 
     @Override
     public Number asNumber() {
+        throw new RuntimeException("");
+    }
+
+    @Override
+    public String asString() {
+        return "object" + this.hashCode();
+    }
+
+    @Override
+    public boolean asBoolean() {
         throw new RuntimeException("");
     }
 
@@ -33,15 +37,5 @@ public class BooleanValue implements Value {
     @Override
     public ClassValue asClass() {
         throw new RuntimeException("");
-    }
-
-    @Override
-    public String asString() {
-        return value ? "true" : "false";
-    }
-
-    @Override
-    public String toString() {
-        return value ? "true" : "false";
     }
 }

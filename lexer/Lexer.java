@@ -10,7 +10,7 @@ public class Lexer {
     private final String INPUT;
     private final StringBuilder stringBuilder = new StringBuilder();
     private final ArrayList<Token> TOKENS;
-    private final String OPERATOR_CHARS = ";+-/*(){}[]%<>*|=^~&!?:,";
+    private final String OPERATOR_CHARS = ";+-/*(){}[]%<>*|=^~&!?:,.";
     private final String WORD_CHARS = "`_$";
     private final int LENGTH;
     private final ArrayList<String> STATEMENTS = new ArrayList<>(Arrays.asList(
@@ -35,6 +35,7 @@ public class Lexer {
     ));
     private final HashMap<String, TokenType> OPERATORS = new HashMap<>() {{
         put(";", TokenType.PASS);
+        put(".", TokenType.DOT);
         put("+", TokenType.PLUS);
         put("-", TokenType.MINUS);
         put("/", TokenType.DIVIDE);

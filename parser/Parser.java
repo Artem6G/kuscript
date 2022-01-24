@@ -81,10 +81,6 @@ public class Parser {
         return assignmentStatement();
     }
 
-    private Statement _class() {
-        return null;
-    }
-
     private Statement assignmentStatement() {
         if (compareType(TokenType.WORD) && (compareType(1, TokenType.COMMA)))
             return multiplyAssignment();
@@ -164,36 +160,41 @@ public class Parser {
     private Expression conditional() {
         Expression expression = spaceship();
 
-        for (;;) {
-            if (match(TokenType.CORRESPONDENCE)) {
-                expression = conditional_expr(BinaryExpression.OPERATORS.CORRESPONDENCE, expression, spaceship());
-                continue;
-            }
-            if (match(TokenType.NOT_CORRESPONDENCE)) {
-                expression = conditional_expr(BinaryExpression.OPERATORS.NOT_CORRESPONDENCE, expression, spaceship());
-                continue;
-            }
-            if (match(TokenType.MORE)) {
-                expression = conditional_expr(BinaryExpression.OPERATORS.MORE, expression, spaceship());
-                continue;
-            }
-            if (match(TokenType.SMALLER)) {
-                expression = conditional_expr(BinaryExpression.OPERATORS.SMALLER, expression, spaceship());
-                continue;
-            }
-            if (match(TokenType.STRICTLY_MORE)) {
-                expression = conditional_expr(BinaryExpression.OPERATORS.STRICTLY_MORE, expression, spaceship());
-                continue;
-            }
-            if (match(TokenType.STRICTLY_SMALLER)) {
-                expression = conditional_expr(BinaryExpression.OPERATORS.STRICTLY_SMALLER, expression, spaceship());
-                continue;
-            }
+        ArrayList<Expression> expressions = new ArrayList<>();
+        ArrayList<BinaryExpression.OPERATORS> operators = new ArrayList<>();
 
-            break;
+        while(Arrays.asList(new TokenType[]{TokenType.CORRESPONDENCE, TokenType.NOT_CORRESPONDENCE,
+                TokenType.MORE, TokenType.SMALLER, TokenType.STRICTLY_MORE, TokenType.STRICTLY_SMALLER}).contains(getCurrentToken().getType())) {
+            if (expressions.size() == 0)
+                expressions.add(expression);
+
+            operators.add(conditionalConverter(getCurrentToken().getType()));
+            consume(getCurrentToken().getType());
+            expressions.add(spaceship());
         }
+        if (operators.size() != 0)
+            return new BinaryConditionalExpression(operators, expressions);
 
         return expression;
+    }
+
+    private BinaryExpression.OPERATORS conditionalConverter(TokenType tokenType) {
+        switch (tokenType) {
+            case CORRESPONDENCE:
+                return BinaryExpression.OPERATORS.CORRESPONDENCE;
+            case SMALLER:
+                return BinaryExpression.OPERATORS.SMALLER;
+            case STRICTLY_MORE:
+                return BinaryExpression.OPERATORS.STRICTLY_MORE;
+            case STRICTLY_SMALLER:
+                return BinaryExpression.OPERATORS.STRICTLY_SMALLER;
+            case NOT_CORRESPONDENCE:
+                return BinaryExpression.OPERATORS.NOT_CORRESPONDENCE;
+            case MORE:
+                return BinaryExpression.OPERATORS.MORE;
+        }
+
+        throw new RuntimeException("");
     }
 
     private Expression spaceship() {
@@ -277,11 +278,11 @@ public class Parser {
     }
 
     private Expression power() {
-        Expression expression = arrOrFunc();
+        Expression expression = unary();
 
         for (;;) {
             if (match(TokenType.POWER)) {
-                expression = new BinaryExpression(BinaryExpression.OPERATORS.POWER, expression, arrOrFunc());
+                expression = new BinaryExpression(BinaryExpression.OPERATORS.POWER, expression, unary());
                 continue;
             }
 
@@ -289,8 +290,35 @@ public class Parser {
         }
     }
 
-    private Expression arrOrFunc() {
-        Expression expression = unary();
+    private Expression unary() {
+        if (match(TokenType.NEGATION))
+            return new UnaryExpression(UnaryExpression.OPERATORS.NEGATION, call());
+        if (match(TokenType.NO))
+            return new UnaryExpression(UnaryExpression.OPERATORS.NO, call());
+        if (match(TokenType.PLUS))
+            return new UnaryExpression(UnaryExpression.OPERATORS.PLUS, call());
+        if (match(TokenType.INCREMENT))
+            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_INCREMENT, call());
+        if (match(TokenType.DECREMENT))
+            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_DECREMENT, call());
+        if (compareType(TokenType.WORD) && compareType(1, TokenType.INCREMENT)) {
+            final Token token = getCurrentToken();
+            consume(TokenType.WORD, TokenType.INCREMENT);
+            return new UnaryExpression(UnaryExpression.OPERATORS.RIGHT_INCREMENT, new VariableExpression(token.getValue()));
+        }
+        if (compareType(TokenType.WORD) && compareType(1, TokenType.DECREMENT)) {
+            final Token token = getCurrentToken();
+            consume(TokenType.WORD, TokenType.DECREMENT);
+            return new UnaryExpression(UnaryExpression.OPERATORS.RIGHT_DECREMENT, new VariableExpression(token.getValue()));
+        }
+        if (match(TokenType.MINUS))
+            return new UnaryExpression(UnaryExpression.OPERATORS.MINUS, call());
+
+        return call();
+    }
+
+    private Expression call() {
+        Expression expression = assignmentExpression();
 
         for (;;) {
             if (match(TokenType.LEFT_SQUARE)) {
@@ -309,36 +337,13 @@ public class Parser {
                 expression = new FunctionCallValueExpression(expression, expressions);
                 continue;
             }
+            if (match(TokenType.DOT)) {
+                expression = new ClassCallValueExpression(expression, consume(TokenType.WORD).getValue());
+                continue;
+            }
 
             return expression;
         }
-    }
-
-    private Expression unary() {
-        if (match(TokenType.NEGATION))
-            return new UnaryExpression(UnaryExpression.OPERATORS.NEGATION, expression());
-        if (match(TokenType.NO))
-            return new UnaryExpression(UnaryExpression.OPERATORS.NO, expression());
-        if (match(TokenType.PLUS))
-            return new UnaryExpression(UnaryExpression.OPERATORS.PLUS, expression());
-        if (match(TokenType.INCREMENT))
-            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_INCREMENT, expression());
-        if (match(TokenType.DECREMENT))
-            return new UnaryExpression(UnaryExpression.OPERATORS.LEFT_DECREMENT, expression());
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.INCREMENT)) {
-            final Token token = getCurrentToken();
-            consume(TokenType.WORD, TokenType.INCREMENT);
-            return new UnaryExpression(UnaryExpression.OPERATORS.RIGHT_INCREMENT, new VariableExpression(token.getValue()));
-        }
-        if (compareType(TokenType.WORD) && compareType(1, TokenType.DECREMENT)) {
-            final Token token = getCurrentToken();
-            consume(TokenType.WORD, TokenType.DECREMENT);
-            return new UnaryExpression(UnaryExpression.OPERATORS.RIGHT_DECREMENT, new VariableExpression(token.getValue()));
-        }
-        if (match(TokenType.MINUS))
-            return new UnaryExpression(UnaryExpression.OPERATORS.MINUS, expression());
-
-        return assignmentExpression();
     }
 
     private Expression assignmentExpression() {
@@ -552,6 +557,12 @@ public class Parser {
         return new ReturnStatement(expression);
     }
 
+    private Statement _class() {
+        String word = getCurrentToken().getValue();
+        consume(TokenType.WORD);
+        return new ClassStatement(word, blockOrStatement());
+    }
+
     private Statement def() {
         String word = getCurrentToken().getValue();
         consume(TokenType.WORD);
@@ -639,30 +650,6 @@ public class Parser {
         }
 
         return new ArrayExpression(elements);
-    }
-
-    private Expression conditional_expr(BinaryExpression.OPERATORS operator, Expression expression1, Expression expression2) {
-
-        if (match(TokenType.CORRESPONDENCE)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.CORRESPONDENCE, expression1, expression2, logical_disjunction());
-        }
-        else if (match(TokenType.NOT_CORRESPONDENCE)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.NOT_CORRESPONDENCE, expression1, expression2, logical_disjunction());
-        }
-        else if (match(TokenType.SMALLER)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.SMALLER, expression1, expression2, spaceship());
-        }
-        else if (match(TokenType.STRICTLY_MORE)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.STRICTLY_MORE, expression1, expression2, spaceship());
-        }
-        else if (match(TokenType.STRICTLY_SMALLER)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.STRICTLY_SMALLER, expression1, expression2, spaceship());
-        }
-        else if (match(TokenType.MORE)) {
-            return new BinaryConditionalExpression(operator, BinaryExpression.OPERATORS.MORE, expression1, expression2, spaceship());
-        }
-
-        return new BinaryExpression(operator, expression1, expression2);
     }
 
     private String word() {

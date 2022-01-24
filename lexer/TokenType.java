@@ -42,6 +42,8 @@ public enum TokenType {
 
     CLASS,
 
+    DOT, // .
+
     PRINT_EXPRESSION, // $
 
     COMMA, // ,

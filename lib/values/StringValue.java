@@ -34,6 +34,11 @@ public class StringValue implements Value {
         throw new RuntimeException("");
     }
 
+    @Override
+    public ClassValue asClass() {
+        throw new RuntimeException("");
+    }
+
 
     @Override
     public String toString() {

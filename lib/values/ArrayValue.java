@@ -50,6 +50,11 @@ public class ArrayValue implements Value {
     }
 
     @Override
+    public ClassValue asClass() {
+        throw new RuntimeException("");
+    }
+
+    @Override
     public String toString() {
         return asString();
     }

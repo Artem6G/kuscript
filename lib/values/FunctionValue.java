@@ -34,4 +34,9 @@ public class FunctionValue implements Value {
     public FunctionValue asFunction() {
         return this;
     }
+
+    @Override
+    public ClassValue asClass() {
+        throw new RuntimeException("");
+    }
 }

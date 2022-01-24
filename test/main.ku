@@ -1,12 +1,3 @@
-def filter(a, b) {
-    length = len(a)
-
-    result = fill(length)
-    for i : range(length)
-        if(b(a[i]))
-            result[i] = a[i]
-
-    return result
-}
-
-print(filter({1, 2, 3, 4, 5}, lambda x: !2 < x < 5))
+x = 3
+y = 2
+print(x > y > 1 > 0 > -y > -x)
