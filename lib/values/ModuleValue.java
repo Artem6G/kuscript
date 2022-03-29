@@ -1,28 +1,28 @@
 package lib.values;
 
+import lib.Module;
 import lib.Value;
 
-public class IntegerValue implements Value {
+public class ModuleValue implements Value {
+    public final Module module;
 
-    private final int value;
+    public ModuleValue(Module module) {
+        this.module = module;
+    }
 
-    public IntegerValue(int value) {
-        this.value = value;
+    @Override
+    public Number asNumber() {
+        throw new RuntimeException("");
+    }
+
+    @Override
+    public String asString() {
+        return "module" + module.hashCode();
     }
 
     @Override
     public boolean asBoolean() {
         throw new RuntimeException("");
-    }
-
-    @Override
-    public Number asNumber() {
-        return value;
-    }
-
-    @Override
-    public String asString() {
-        return String.valueOf(value);
     }
 
     @Override
@@ -42,11 +42,6 @@ public class IntegerValue implements Value {
 
     @Override
     public ModuleValue asModule() {
-        throw new RuntimeException("");
-    }
-
-    @Override
-    public String toString() {
-        return asString();
+        return this;
     }
 }

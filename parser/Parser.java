@@ -60,7 +60,9 @@ public class Parser {
         else if (match(TokenType.DEF))
             return def();
         else if (match(TokenType.IMPORT))
-            return new ImportStatement(expression());
+            return new ImportStatement(word());
+        else if (match(TokenType.FROM))
+            return fromImport();
         else if (match(TokenType.WHILE))
             return whileLoop();
         else if (match(TokenType.SWITCH))
@@ -338,7 +340,7 @@ public class Parser {
                 continue;
             }
             if (match(TokenType.DOT)) {
-                expression = new ClassCallValueExpression(expression, consume(TokenType.WORD).getValue());
+                expression = new LocatedCallValueExpression(expression, consume(TokenType.WORD).getValue());
                 continue;
             }
 
@@ -555,6 +557,24 @@ public class Parser {
             expression = expression();
 
         return new ReturnStatement(expression);
+    }
+
+    private Statement fromImport() {
+        String word = getCurrentToken().getValue();
+        List<String> list = new ArrayList<>();
+        consume(TokenType.WORD);
+        consume(TokenType.IMPORT);
+        do {
+            if (match(TokenType.MULTIPLY)) {
+                list.add("*all*");
+                continue;
+            }
+            list.add(getCurrentToken().getValue());
+            consume(TokenType.WORD);
+        } while (match(TokenType.COMMA));
+
+
+        return new FromImportStatement(word, list);
     }
 
     private Statement _class() {

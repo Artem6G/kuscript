@@ -36,6 +36,11 @@ public class BooleanValue implements Value {
     }
 
     @Override
+    public ModuleValue asModule() {
+        throw new RuntimeException("");
+    }
+
+    @Override
     public String asString() {
         return value ? "true" : "false";
     }

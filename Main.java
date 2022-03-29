@@ -21,7 +21,7 @@ public class Main {
         // ast
         statements.forEach(System.out::println);
         System.out.println("====================================");
-        ModuleImport.importModule("std");
+        ModuleImport.importModule("std", List.of("*all*"));
         // answer
         try {
             statements.forEach(Statement::execute);

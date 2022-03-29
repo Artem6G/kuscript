@@ -3,6 +3,7 @@ package lib;
 import lib.values.ArrayValue;
 import lib.values.ClassValue;
 import lib.values.FunctionValue;
+import lib.values.ModuleValue;
 
 public interface Value {
     Number asNumber();
@@ -11,4 +12,5 @@ public interface Value {
     ArrayValue asArray();
     FunctionValue asFunction();
     ClassValue asClass();
+    ModuleValue asModule();
 }

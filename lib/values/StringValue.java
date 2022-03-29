@@ -39,6 +39,11 @@ public class StringValue implements Value {
         throw new RuntimeException("");
     }
 
+    @Override
+    public ModuleValue asModule() {
+        throw new RuntimeException("");
+    }
+
 
     @Override
     public String toString() {

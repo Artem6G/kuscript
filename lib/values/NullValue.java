@@ -34,6 +34,11 @@ public class NullValue implements Value {
     }
 
     @Override
+    public ModuleValue asModule() {
+        throw new RuntimeException("");
+    }
+
+    @Override
     public String toString() {
         return asString();
     }

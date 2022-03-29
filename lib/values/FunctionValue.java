@@ -39,4 +39,9 @@ public class FunctionValue implements Value {
     public ClassValue asClass() {
         throw new RuntimeException("");
     }
+
+    @Override
+    public ModuleValue asModule() {
+        throw new RuntimeException("");
+    }
 }

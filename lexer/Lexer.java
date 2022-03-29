@@ -31,6 +31,7 @@ public class Lexer {
             "def",
             "return",
             "lambda",
+            "from",
             "class"
     ));
     private final HashMap<String, TokenType> OPERATORS = new HashMap<>() {{

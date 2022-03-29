@@ -38,6 +38,7 @@ public enum TokenType {
     LAMBDA,
     RETURN,
 
+    FROM,
     IMPORT,
 
     CLASS,

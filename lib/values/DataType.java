@@ -9,6 +9,8 @@ public enum DataType {
     STRING,
     NULL,
     FUNCTION,
+    CLASS,
+    MODULE,
     ARRAY;
 
     public static DataType type(Value value) {
@@ -26,6 +28,10 @@ public enum DataType {
             return NULL;
         else if (value instanceof FunctionValue)
             return FUNCTION;
+        else if (value instanceof ModuleValue)
+            return MODULE;
+        else if (value instanceof ClassValue)
+            return CLASS;
 
         throw new RuntimeException("");
     }

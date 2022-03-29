@@ -37,7 +37,6 @@ public final class Variables {
 
     public static Value get(String key) {
         if (!isExists(key)) throw new RuntimeException("");
-
         return variables.get(key);
     }
 

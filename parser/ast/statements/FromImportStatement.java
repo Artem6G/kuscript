@@ -5,17 +5,21 @@ import lib.ModuleImport;
 import parser.ast.Statement;
 import parser.ast.Visitor;
 
-public class ImportStatement implements Statement {
+import java.util.List;
+
+public class FromImportStatement implements Statement {
 
     public final String name;
+    public final List<String> subjects;
 
-    public ImportStatement(String name) {
+    public FromImportStatement(String name, List<String> subjects) {
         this.name = name;
+        this.subjects = subjects;
     }
 
     @Override
     public void execute() {
-        ModuleImport.importModule(name, null);
+        ModuleImport.importModule(name, subjects);
     }
 
     @Override
@@ -25,6 +29,6 @@ public class ImportStatement implements Statement {
 
     @Override
     public String toString() {
-        return "import " + name;
+        return "from " + name + " import " + subjects.toString();
     }
 }

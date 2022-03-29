@@ -1,21 +1,28 @@
 package parser.ast.expressions;
 
 import lib.Value;
+import lib.values.DataType;
 import parser.ast.Expression;
 import parser.ast.Visitor;
 
-public class ClassCallValueExpression implements Expression {
+public class LocatedCallValueExpression implements Expression {
     public final Expression expression;
     public final String variable;
 
-    public ClassCallValueExpression(Expression expression, String variable) {
+    public LocatedCallValueExpression(Expression expression, String variable) {
         this.expression = expression;
         this.variable = variable;
     }
 
     @Override
     public Value eval() {
-        return expression.eval().asClass().aClass.variables.get(variable);
+        Value value = expression.eval();
+        if (DataType.type(value) == DataType.CLASS)
+            return value.asClass().aClass.variables.get(variable);
+        else if (DataType.type(value) == DataType.MODULE)
+            return value.asModule().module.variables.get(variable);
+        else
+            throw new RuntimeException("");
     }
 
     @Override

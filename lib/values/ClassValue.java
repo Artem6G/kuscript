@@ -38,4 +38,9 @@ public class ClassValue implements Value {
     public ClassValue asClass() {
         return this;
     }
+
+    @Override
+    public ModuleValue asModule() {
+        throw new RuntimeException("");
+    }
 }

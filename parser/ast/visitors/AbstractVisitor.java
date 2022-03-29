@@ -89,7 +89,7 @@ public class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(ImportStatement importStatement) {
-        importStatement.expression.accept(this);
+
     }
 
     @Override
@@ -141,8 +141,13 @@ public class AbstractVisitor implements Visitor {
     }
 
     @Override
-    public void visit(ClassCallValueExpression classCallValueExpression) {
+    public void visit(LocatedCallValueExpression classCallValueExpression) {
         classCallValueExpression.expression.accept(this);
+    }
+
+    @Override
+    public void visit(FromImportStatement fromImportStatement) {
+
     }
 
     @Override
